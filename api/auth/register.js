@@ -25,10 +25,14 @@ module.exports = async function handler(req, res) {
         email: String(email).toLowerCase().trim(),
         phoneNumber: String(phoneNumber).trim(),
         role: String(role),
+        username: username ? String(username).trim() : String(email).split('@')[0],
+        bio: bio ? String(bio).trim() : '',
+        followers: [],
+        following: [],
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      const publicUser = { id: 'demo-user', fullName: user.fullName, email: user.email, phoneNumber: user.phoneNumber, role: user.role };
+      const publicUser = { id: 'demo-user', fullName: user.fullName, email: user.email, phoneNumber: user.phoneNumber, role: user.role, username: user.username };
       const token = jwt.sign(publicUser, getJwtSecret(), { expiresIn: '7d' });
       res.setHeader('Set-Cookie', cookie.serialize('auth_token', token, {
         httpOnly: true,
