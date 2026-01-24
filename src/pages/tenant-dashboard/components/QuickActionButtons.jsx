@@ -18,12 +18,13 @@ const QuickActionButtons = () => {
     },
     {
       id: 2,
-      title: 'View Applications',
-      description: 'Track your applications',
-      icon: 'FileText',
-      color: 'bg-secondary text-secondary-foreground',
-      action: () => navigate('/applications'),
-      primary: true
+      title: 'Community',
+      description: 'Join the social platform',
+      icon: 'Share2',
+      color: 'bg-gradient-to-r from-rose-500 to-pink-500 text-white',
+      action: () => navigate('/feed'),
+      primary: true,
+      badge: 'NEW'
     },
     {
       id: 3,
