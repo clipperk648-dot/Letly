@@ -148,62 +148,69 @@ const LandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary/5">
+      <section className="py-20 bg-gradient-to-r from-rose-50 to-pink-50 border-t border-gray-200">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-foreground mb-6">Ready to Get Started?</h2>
-          <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-            Join thousands of happy users who found their perfect home or tenant through Homely.
+          <h2 className="text-4xl font-bold text-black mb-4">Join Our Community Today</h2>
+          <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+            Share your property listings, discover amazing spaces, and connect with agents and renters.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" onClick={() => navigate('/register')}>
-              Create Free Account
+            <Button
+              size="lg"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3"
+              onClick={() => navigate('/register')}
+            >
+              Get Started
             </Button>
-            <Button variant="outline" size="lg" onClick={() => navigate('/property-search')}>
-              Browse Properties
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-2 border-gray-400 hover:border-gray-600 px-8 py-3"
+              onClick={() => navigate('/login')}
+            >
+              Sign In
             </Button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-background border-t py-12">
+      <footer className="bg-black text-white py-12">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-6 md:mb-0">
-              <div className="flex items-center">
-                <Home className="h-8 w-8 text-primary mr-2" />
-                <span className="text-xl font-bold">Homely</span>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+            <div>
+              <div className="flex items-center mb-4">
+                <Camera className="h-6 w-6 mr-2" />
+                <span className="text-lg font-light tracking-widest">Homely</span>
               </div>
-              <p className="text-muted-foreground mt-2">Making property management simple.</p>
+              <p className="text-gray-400 text-sm">Your social platform for property sharing and community connection.</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-              <div>
-                <h3 className="font-semibold mb-4">For Tenants</h3>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li><Link to="/property-search" className="hover:underline">Find a Home</Link></li>
-                  <li><Link to="/register" className="hover:underline">Create Account</Link></li>
-                  <li><Link to="/login/tenant" className="hover:underline">Tenant Login</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-4">For Landlords</h3>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li><Link to="/login/landlord" className="hover:underline">Landlord Login</Link></li>
-                  <li><Link to="/register" className="hover:underline">List Property</Link></li>
-                  <li><Link to="/help" className="hover:underline">Help Center</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-4">Company</h3>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li><Link to="/about" className="hover:underline">About Us</Link></li>
-                  <li><Link to="/contact" className="hover:underline">Contact</Link></li>
-                  <li><Link to="/privacy" className="hover:underline">Privacy Policy</Link></li>
-                </ul>
-              </div>
+            <div>
+              <h3 className="font-semibold mb-4">For You</h3>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li><Link to="/login" className="hover:text-white transition">Log in</Link></li>
+                <li><Link to="/register" className="hover:text-white transition">Sign up</Link></li>
+                <li><Link to="/" className="hover:text-white transition">Explore</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">About</h3>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li><Link to="/" className="hover:text-white transition">About Homely</Link></li>
+                <li><Link to="/" className="hover:text-white transition">Blog</Link></li>
+                <li><Link to="/" className="hover:text-white transition">Help Center</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Legal</h3>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li><Link to="/" className="hover:text-white transition">Privacy</Link></li>
+                <li><Link to="/" className="hover:text-white transition">Terms</Link></li>
+                <li><Link to="/" className="hover:text-white transition">Cookies</Link></li>
+              </ul>
             </div>
           </div>
-          <div className="border-t mt-12 pt-8 text-center text-muted-foreground text-sm">
+          <div className="border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
             &copy; {new Date().getFullYear()} Homely. All rights reserved.
           </div>
         </div>
