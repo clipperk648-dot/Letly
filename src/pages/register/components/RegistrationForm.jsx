@@ -223,6 +223,33 @@ const RegistrationForm = () => {
         onRoleChange={(role) => handleInputChange('role', role)}
         error={errors?.role}
       />
+      {/* Optional Social Profile Fields */}
+      <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <p className="text-sm font-semibold text-blue-900 mb-4">Create Your Social Profile (Optional)</p>
+        {/* Username */}
+        <Input
+          label="Username"
+          type="text"
+          placeholder="Choose your username"
+          value={formData?.username}
+          onChange={(e) => handleInputChange('username', e?.target?.value)}
+          description="This will appear on your social profile"
+          maxLength={30}
+        />
+        {/* Bio */}
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+          <textarea
+            placeholder="Tell us about yourself..."
+            value={formData?.bio}
+            onChange={(e) => handleInputChange('bio', e?.target?.value)}
+            maxLength={150}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+            rows={3}
+          />
+          <p className="text-xs text-gray-500 mt-1">{formData?.bio?.length || 0}/150 characters</p>
+        </div>
+      </div>
       {/* Terms and Privacy */}
       <div className="space-y-4">
         <Checkbox
