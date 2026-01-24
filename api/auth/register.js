@@ -13,7 +13,7 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
   try {
-    const { fullName, email, password, phoneNumber, role } = req.body || {};
+    const { fullName, email, password, phoneNumber, role, username, bio } = req.body || {};
     if (!fullName || !email || !password || !phoneNumber || !role) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
