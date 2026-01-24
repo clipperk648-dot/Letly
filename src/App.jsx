@@ -11,7 +11,7 @@ function App() {
 
   useEffect(() => {
     // Show SocialNavBar on social platform pages
-    const socialPaths = ['/feed', '/explore', '/create-post', '/notifications', '/messages', '/profile'];
+    const socialPaths = ['/feed', '/explore', '/create-post', '/notifications', '/social-messages', '/profile'];
     setShowSocialNav(socialPaths.some(path => location.pathname.startsWith(path)));
   }, [location.pathname]);
 
