@@ -14,14 +14,16 @@ const RoleBasedNavBar = ({ userRole = 'tenant', isAuthenticated = true }) => {
     { label: 'Dashboard', path: '/landlord-dashboard', icon: 'Home' },
     { label: 'Properties', path: '/properties', icon: 'Building' },
     { label: 'Messages', path: '/messages', icon: 'MessageSquare' },
-    { label: 'Analytics', path: '/analytics', icon: 'BarChart3' }
+    { label: 'Analytics', path: '/analytics', icon: 'BarChart3' },
+    { label: 'Community', path: '/feed', icon: 'Share2', badge: 'Social' }
   ];
 
   const tenantNavItems = [
     { label: 'Dashboard', path: '/tenant-dashboard', icon: 'Home' },
     { label: 'Search', path: '/property-search', icon: 'Search' },
     { label: 'Favorites', path: '/favorites', icon: 'Heart' },
-    { label: 'Messages', path: '/messages', icon: 'MessageSquare' }
+    { label: 'Messages', path: '/messages', icon: 'MessageSquare' },
+    { label: 'Community', path: '/feed', icon: 'Share2', badge: 'Social' }
   ];
 
   const moreMenuItems = [
