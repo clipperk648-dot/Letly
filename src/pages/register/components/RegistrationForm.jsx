@@ -18,6 +18,8 @@ const RegistrationForm = () => {
     confirmPassword: '',
     phoneNumber: '',
     role: '',
+    username: '',
+    bio: '',
     agreeToTerms: false,
     agreeToPrivacy: false
   });
