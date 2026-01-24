@@ -2,29 +2,29 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import { Search, Home, Shield, Users, BarChart2 } from 'lucide-react';
+import { Heart, MessageCircle, Share2, Compass, Users, Sparkles, Camera, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const features = [
   {
-    icon: <Home className="h-6 w-6 text-primary" />,
-    title: "Property Listings",
-    description: "Browse thousands of properties with detailed information and high-quality images."
+    icon: <Camera className="h-6 w-6 text-rose-500" />,
+    title: "Share Your Story",
+    description: "Post photos and updates. Show your style, properties, or lifestyle with beautiful images."
   },
   {
-    icon: <Shield className="h-6 w-6 text-primary" />,
-    title: "Secure Transactions",
-    description: "Safe and secure payment processing for all your rental agreements."
+    icon: <Heart className="h-6 w-6 text-rose-500" />,
+    title: "Connect & Engage",
+    description: "Like, comment, and connect with landlords, agents, and renters in your community."
   },
   {
-    icon: <Users className="h-6 w-6 text-primary" />,
-    title: "Tenant Management",
-    description: "Easily manage your tenants, leases, and maintenance requests in one place."
+    icon: <Compass className="h-6 w-6 text-rose-500" />,
+    title: "Discover Amazing",
+    description: "Explore trending posts from agents and customers. Find inspiration and opportunities."
   },
   {
-    icon: <BarChart2 className="h-6 w-6 text-primary" />,
-    title: "Analytics Dashboard",
-    description: "Get insights into your property performance and financials."
+    icon: <MessageCircle className="h-6 w-6 text-rose-500" />,
+    title: "Direct Messages",
+    description: "Chat directly with landlords and tenants. Quick, easy, and secure communication."
   }
 ];
 
