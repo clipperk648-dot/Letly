@@ -55,6 +55,7 @@ const Routes = () => {
             {/* Social Platform Pages */}
             <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
             <Route path="/explore" element={<ProtectedRoute><Explore /></ProtectedRoute>} />
+            <Route path="/create-post" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><SocialProfile /></ProtectedRoute>} />
 
             {/* Protected: Landlord only */}
