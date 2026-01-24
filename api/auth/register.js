@@ -55,6 +55,10 @@ module.exports = async function handler(req, res) {
       email: String(email).toLowerCase().trim(),
       phoneNumber: String(phoneNumber).trim(),
       role: String(role),
+      username: username ? String(username).trim() : String(email).split('@')[0],
+      bio: bio ? String(bio).trim() : '',
+      followers: [],
+      following: [],
       passwordHash,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -62,7 +66,7 @@ module.exports = async function handler(req, res) {
 
     const result = await users.insertOne(user);
 
-    const publicUser = { id: result.insertedId, fullName: user.fullName, email: user.email, phoneNumber: user.phoneNumber, role: user.role };
+    const publicUser = { id: result.insertedId, fullName: user.fullName, email: user.email, phoneNumber: user.phoneNumber, role: user.role, username: user.username };
 
     const token = jwt.sign(publicUser, getJwtSecret(), { expiresIn: '7d' });
     res.setHeader('Set-Cookie', cookie.serialize('auth_token', token, {
