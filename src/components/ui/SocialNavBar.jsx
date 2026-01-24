@@ -38,7 +38,7 @@ const SocialNavBar = () => {
     { path: '/explore', icon: Compass, label: 'Explore' },
     { path: '/create-post', icon: Camera, label: 'Create' },
     { path: '/notifications', icon: Heart, label: 'Likes' },
-    { path: '/messages', icon: MessageCircle, label: 'Messages' },
+    { path: '/social-messages', icon: MessageCircle, label: 'Messages' },
     { path: '/profile', icon: User, label: 'Profile' },
   ];
 
