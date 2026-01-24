@@ -115,6 +115,8 @@ const RegistrationForm = () => {
           password: formData.password,
           phoneNumber: formData.phoneNumber,
           role: formData.role,
+          username: formData.username || undefined,
+          bio: formData.bio || undefined,
         },
         { headers: { "Content-Type": "application/json" } }
       );
