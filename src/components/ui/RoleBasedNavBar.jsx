@@ -131,7 +131,7 @@ const RoleBasedNavBar = ({ userRole = 'tenant', isAuthenticated = true }) => {
                 <button
                   key={item?.path}
                   onClick={() => handleNavigation(item?.path)}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-smooth ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-smooth relative ${
                     isActivePath(item?.path)
                       ? 'text-primary bg-primary/10' :'text-muted-foreground hover:text-foreground hover:bg-muted'
                   }`}
@@ -139,6 +139,11 @@ const RoleBasedNavBar = ({ userRole = 'tenant', isAuthenticated = true }) => {
                 >
                   <Icon name={item?.icon} size={18} />
                   <span>{item?.label}</span>
+                  {item?.badge && (
+                    <span className="ml-1 px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full">
+                      {item?.badge}
+                    </span>
+                  )}
                 </button>
               ))}
 
