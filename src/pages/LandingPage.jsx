@@ -147,6 +147,81 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Community Highlight Section */}
+      <section className="py-20 bg-white border-t border-gray-200">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* Left Side - Image/Visual */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative h-96"
+            >
+              <div className="w-full h-full rounded-2xl bg-gradient-to-br from-rose-100 via-pink-50 to-blue-100 flex items-center justify-center overflow-hidden shadow-xl">
+                <div className="text-center">
+                  <Users className="h-20 w-20 text-rose-500 mx-auto mb-4" />
+                  <p className="text-2xl font-bold text-gray-800">Community Hub</p>
+                  <p className="text-gray-600 mt-2">Connect with thousands of agents and renters</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right Side - Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-4xl font-bold text-black mb-4">Join Our Community</h2>
+              <p className="text-gray-600 text-lg mb-6">
+                Share your stories, connect with neighbors, and build relationships with agents and renters. Our social platform makes it easy to showcase properties and discover opportunities.
+              </p>
+
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center flex-shrink-0 mt-1">
+                    <Check size={16} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-black">Share Your Story</h3>
+                    <p className="text-gray-600">Post beautiful property photos and updates</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center flex-shrink-0 mt-1">
+                    <Check size={16} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-black">Connect & Engage</h3>
+                    <p className="text-gray-600">Like, comment, and follow other community members</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center flex-shrink-0 mt-1">
+                    <Check size={16} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-black">Direct Messaging</h3>
+                    <p className="text-gray-600">Chat privately with agents and renters</p>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                className="bg-rose-500 hover:bg-rose-600 text-white flex items-center gap-2"
+                onClick={() => navigate('/feed')}
+              >
+                Explore Community
+                <ArrowRight size={18} />
+              </Button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-rose-50 to-pink-50 border-t border-gray-200">
         <div className="container mx-auto px-4 text-center">
