@@ -33,6 +33,7 @@ const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Feed = lazy(() => import("./pages/feed"));
 const Explore = lazy(() => import("./pages/explore"));
 const SocialProfile = lazy(() => import("./pages/social-profile"));
+const CreatePost = lazy(() => import("./pages/create-post"));
 
 const Routes = () => {
   return (
