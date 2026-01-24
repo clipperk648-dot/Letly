@@ -195,8 +195,6 @@ const SocialNavBar = () => {
         })}
       </nav>
 
-      {/* Spacing for fixed navigation */}
-      <div className="md:ml-64 md:pt-0 pt-14 pb-20 md:pb-0" />
     </>
   );
 };
