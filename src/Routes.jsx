@@ -30,6 +30,9 @@ const BulkEdit = lazy(() => import("./pages/bulk-edit"));
 const ExportPage = lazy(() => import("./pages/export"));
 const Reports = lazy(() => import("./pages/reports"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
+const Feed = lazy(() => import("./pages/feed"));
+const Explore = lazy(() => import("./pages/explore"));
+const SocialProfile = lazy(() => import("./pages/social-profile"));
 
 const Routes = () => {
   return (
