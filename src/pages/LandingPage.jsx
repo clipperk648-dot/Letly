@@ -116,15 +116,15 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-background">
+      <section className="py-20 bg-white border-t border-gray-200">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Why Choose Homely?</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Our platform is designed to make property management and finding your next home simple and efficient.
+            <h2 className="text-4xl font-bold text-black mb-4">How Homely Works</h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Simple tools built for property sharing and community connection.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <motion.div
@@ -134,16 +134,12 @@ const LandingPage = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <div className="h-full hover:shadow-lg transition-shadow bg-card border border-border rounded-lg p-6">
-                  <div className="mb-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      {feature.icon}
-                    </div>
-                    <h3 className="text-xl font-semibold">{feature.title}</h3>
+                <div className="text-center group">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
+                    {feature.icon}
                   </div>
-                  <div>
-                    <p className="text-muted-foreground">{feature.description}</p>
-                  </div>
+                  <h3 className="text-lg font-semibold text-black mb-2">{feature.title}</h3>
+                  <p className="text-gray-600">{feature.description}</p>
                 </div>
               </motion.div>
             ))}
