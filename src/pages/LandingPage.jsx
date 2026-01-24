@@ -30,60 +30,90 @@ const features = [
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = React.useState('');
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/property-search?q=${encodeURIComponent(searchQuery)}`);
-    }
-  };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Hero Section */}
-      <header className="bg-gradient-to-b from-primary/5 to-background">
-        <div className="container mx-auto px-4 py-16 md:py-24">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h1 
-              className="text-4xl md:text-6xl font-bold text-foreground mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              Find Your Perfect <span className="text-primary">Home</span> Today
-            </motion.h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Discover thousands of properties for rent and sale. Whether you're looking for an apartment, house, or commercial space, we've got you covered.
-            </p>
-            
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto flex flex-col sm:flex-row gap-2 mb-12">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Search by location, property type, or price..."
-                  className="pl-10 py-6 text-base"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <Button type="submit" size="lg" className="py-6 px-8">
-                Search
-              </Button>
-            </form>
-
-            <div className="flex flex-wrap justify-center gap-4 mt-8">
-              <Button variant="outline" onClick={() => navigate('/login/tenant')}>
-                I'm a Tenant
-              </Button>
-              <Button onClick={() => navigate('/login/landlord')}>
-                I'm a Landlord
-              </Button>
-            </div>
+    <div className="min-h-screen flex flex-col bg-white">
+      {/* Header with Logo */}
+      <header className="border-b border-gray-200">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center">
+            <Camera className="h-8 w-8 text-black mr-3" />
+            <span className="text-2xl font-light tracking-widest text-black">Homely</span>
+          </div>
+          <div className="flex gap-4">
+            <Button variant="ghost" onClick={() => navigate('/login')}>
+              Log in
+            </Button>
+            <Button className="bg-blue-500 hover:bg-blue-600 text-white" onClick={() => navigate('/register')}>
+              Sign up
+            </Button>
           </div>
         </div>
       </header>
+
+      {/* Hero Section - Instagram Style */}
+      <section className="flex-1 flex items-center">
+        <div className="container mx-auto px-4 py-16 md:py-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
+            {/* Left side - Text */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1 className="text-5xl md:text-6xl font-bold text-black mb-4 leading-tight">
+                Capture Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-500">Space</span>
+              </h1>
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Share amazing properties, connect with your community, and find your perfect home or next tenant.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                  size="lg"
+                  className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-8"
+                  onClick={() => navigate('/register')}
+                >
+                  Create Account
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="py-3 px-8 border-2 border-gray-300 hover:border-gray-400"
+                  onClick={() => navigate('/login')}
+                >
+                  Sign In
+                </Button>
+              </div>
+
+              <p className="text-gray-500 text-sm mt-6">
+                Join thousands of agents, landlords, and renters sharing their stories.
+              </p>
+            </motion.div>
+
+            {/* Right side - Illustration/Visual */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="relative h-96 md:h-full hidden md:flex items-center justify-center"
+            >
+              <div className="w-full aspect-square max-w-sm">
+                <div className="relative w-full h-full rounded-3xl bg-gradient-to-br from-rose-100 via-pink-50 to-blue-100 overflow-hidden shadow-2xl">
+                  {/* Instagram-like phone mockup */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <Camera className="h-16 w-16 text-rose-500 mx-auto mb-4" />
+                      <p className="text-xl font-semibold text-gray-800">Your Stories</p>
+                      <p className="text-gray-600 mt-2">Share moments that matter</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
       {/* Features Section */}
       <section className="py-16 bg-background">
