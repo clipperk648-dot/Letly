@@ -51,6 +51,11 @@ const Routes = () => {
             <Route path="/property-search" element={<PropertySearch />} />
             <Route path="/property-details" element={<PropertyDetails />} />
 
+            {/* Social Platform Pages */}
+            <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
+            <Route path="/explore" element={<ProtectedRoute><Explore /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><SocialProfile /></ProtectedRoute>} />
+
             {/* Protected: Landlord only */}
             <Route path="/landlord-dashboard" element={<ProtectedRoute allowedRole="landlord"><LandlordDashboard /></ProtectedRoute>} />
             <Route path="/landlord-dashboard/activity" element={<ProtectedRoute allowedRole="landlord"><LandlordActivity /></ProtectedRoute>} />
