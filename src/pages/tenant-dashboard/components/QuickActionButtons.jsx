@@ -28,6 +28,14 @@ const QuickActionButtons = () => {
     },
     {
       id: 3,
+      title: 'View Applications',
+      description: 'Track your applications',
+      icon: 'FileText',
+      color: 'bg-secondary text-secondary-foreground',
+      action: () => navigate('/applications')
+    },
+    {
+      id: 4,
       title: 'Messages',
       description: 'Chat with landlords',
       icon: 'MessageSquare',
