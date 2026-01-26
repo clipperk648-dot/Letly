@@ -88,10 +88,7 @@ const TenantDashboard = () => {
         <div className="mb-8 bg-gradient-to-r from-rose-50 to-pink-50 rounded-lg border border-rose-200 p-6">
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Icon name="Share2" size={20} className="text-rose-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Discover Our Community</h3>
-              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Discover Our Community</h3>
               <p className="text-gray-700 mb-4">Connect with agents, share your rental journey, and discover opportunities in our new social platform.</p>
               <Button
                 variant="default"
@@ -101,7 +98,7 @@ const TenantDashboard = () => {
                 Join Community Now
               </Button>
             </div>
-            <div className="hidden sm:flex text-5xl">+</div>
+            <div className="hidden sm:flex text-5xl text-rose-300">+</div>
           </div>
         </div>
 
