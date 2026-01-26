@@ -101,7 +101,7 @@ const TenantDashboard = () => {
                 Join Community Now
               </Button>
             </div>
-            <div className="hidden sm:flex text-5xl">📱</div>
+            <div className="hidden sm:flex text-5xl">+</div>
           </div>
         </div>
 
