@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import RoleBasedNavBar from '../../components/ui/RoleBasedNavBar';
 import UserProfileDropdown from '../../components/ui/UserProfileDropdown';
 import NotificationIndicator from '../../components/ui/NotificationIndicator';
@@ -11,9 +12,11 @@ import ApplicationTracker from './components/ApplicationTracker';
 import SlideshowBanner from './components/SlideshowBanner';
 import MessageNotifications from './components/MessageNotifications';
 import MobileAppFooter from '../../components/ui/MobileAppFooter';
+import Button from '../../components/ui/Button';
 import { getProfile } from '../../services/authServices';
 
 const TenantDashboard = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({ name: '', email: '', role: 'tenant', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face' });
 
   useEffect(() => {
@@ -78,6 +81,24 @@ const TenantDashboard = () => {
         {/* Quick Actions */}
         <div className="mb-8">
           <QuickActionButtons />
+        </div>
+
+        {/* Community Promotion Card */}
+        <div className="mb-8 bg-gradient-to-r from-rose-50 to-pink-50 rounded-lg border border-rose-200 p-6">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Discover Our Community</h3>
+              <p className="text-gray-700 mb-4">Connect with agents, share your rental journey, and discover opportunities in our new social platform.</p>
+              <Button
+                variant="default"
+                className="bg-rose-600 hover:bg-rose-700 text-white"
+                onClick={() => navigate('/feed')}
+              >
+                Join Community Now
+              </Button>
+            </div>
+            <div className="hidden sm:flex text-5xl text-rose-300">+</div>
+          </div>
         </div>
 
         {/* Main Dashboard Grid */}

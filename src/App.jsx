@@ -10,7 +10,7 @@ function App() {
       {/* Toast container (must be inside App once) */}
       <ToastContainer
         position="top-right"
-        autoClose={3000} // auto close after 3s
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop
         closeOnClick

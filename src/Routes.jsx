@@ -30,6 +30,12 @@ const BulkEdit = lazy(() => import("./pages/bulk-edit"));
 const ExportPage = lazy(() => import("./pages/export"));
 const Reports = lazy(() => import("./pages/reports"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
+const Feed = lazy(() => import("./pages/feed"));
+const Explore = lazy(() => import("./pages/explore"));
+const SocialProfile = lazy(() => import("./pages/social-profile"));
+const CreatePost = lazy(() => import("./pages/create-post"));
+const SocialNotifications = lazy(() => import("./pages/social-notifications"));
+const SocialMessages = lazy(() => import("./pages/social-messages"));
 
 const Routes = () => {
   return (
@@ -47,6 +53,14 @@ const Routes = () => {
             {/* Public pages */}
             <Route path="/property-search" element={<PropertySearch />} />
             <Route path="/property-details" element={<PropertyDetails />} />
+
+            {/* Social Platform Pages */}
+            <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
+            <Route path="/explore" element={<ProtectedRoute><Explore /></ProtectedRoute>} />
+            <Route path="/create-post" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
+            <Route path="/notifications" element={<ProtectedRoute><SocialNotifications /></ProtectedRoute>} />
+            <Route path="/social-messages" element={<ProtectedRoute><SocialMessages /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><SocialProfile /></ProtectedRoute>} />
 
             {/* Protected: Landlord only */}
             <Route path="/landlord-dashboard" element={<ProtectedRoute allowedRole="landlord"><LandlordDashboard /></ProtectedRoute>} />

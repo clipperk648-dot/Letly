@@ -14,20 +14,23 @@ const RoleBasedNavBar = ({ userRole = 'tenant', isAuthenticated = true }) => {
     { label: 'Dashboard', path: '/landlord-dashboard', icon: 'Home' },
     { label: 'Properties', path: '/properties', icon: 'Building' },
     { label: 'Messages', path: '/messages', icon: 'MessageSquare' },
-    { label: 'Analytics', path: '/analytics', icon: 'BarChart3' }
+    { label: 'Analytics', path: '/analytics', icon: 'BarChart3' },
+    { label: 'Community', path: '/feed', icon: 'Share2', badge: 'Social' }
   ];
 
   const tenantNavItems = [
     { label: 'Dashboard', path: '/tenant-dashboard', icon: 'Home' },
     { label: 'Search', path: '/property-search', icon: 'Search' },
     { label: 'Favorites', path: '/favorites', icon: 'Heart' },
-    { label: 'Messages', path: '/messages', icon: 'MessageSquare' }
+    { label: 'Messages', path: '/messages', icon: 'MessageSquare' },
+    { label: 'Community', path: '/feed', icon: 'Share2', badge: 'Social' }
   ];
 
   const moreMenuItems = [
     { label: 'Settings', path: '/settings', icon: 'Settings' },
     { label: 'Help', path: '/help', icon: 'HelpCircle' },
-    { label: 'Support', path: '/support', icon: 'LifeBuoy' }
+    { label: 'Support', path: '/support', icon: 'LifeBuoy' },
+    { label: 'Community', path: '/feed', icon: 'Share2', badge: 'Social', divider: true }
   ];
 
   const currentNavItems = userRole === 'landlord' ? landlordNavItems : tenantNavItems;
@@ -129,7 +132,7 @@ const RoleBasedNavBar = ({ userRole = 'tenant', isAuthenticated = true }) => {
                 <button
                   key={item?.path}
                   onClick={() => handleNavigation(item?.path)}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-smooth ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-smooth relative ${
                     isActivePath(item?.path)
                       ? 'text-primary bg-primary/10' :'text-muted-foreground hover:text-foreground hover:bg-muted'
                   }`}
@@ -137,6 +140,11 @@ const RoleBasedNavBar = ({ userRole = 'tenant', isAuthenticated = true }) => {
                 >
                   <Icon name={item?.icon} size={18} />
                   <span>{item?.label}</span>
+                  {item?.badge && (
+                    <span className="ml-1 px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full">
+                      {item?.badge}
+                    </span>
+                  )}
                 </button>
               ))}
 
@@ -152,18 +160,27 @@ const RoleBasedNavBar = ({ userRole = 'tenant', isAuthenticated = true }) => {
                 </button>
 
                 {activeDropdown === 'more' && (
-                  <div className="absolute right-0 mt-2 w-48 bg-popover border border-border rounded-md elevation-2 animate-slide-down">
+                  <div className="absolute right-0 mt-2 w-56 bg-popover border border-border rounded-md elevation-2 animate-slide-down">
                     <div className="py-1">
-                      {moreMenuItems?.map((item) => (
-                        <button
-                          key={item?.path}
-                          onClick={() => handleNavigation(item?.path)}
-                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-popover-foreground hover:bg-muted transition-smooth"
-                          type="button"
-                        >
-                          <Icon name={item?.icon} size={16} />
-                          <span>{item?.label}</span>
-                        </button>
+                      {moreMenuItems?.map((item, idx) => (
+                        <div key={item?.path}>
+                          {item?.divider && idx > 0 && <div className="border-t border-border my-1" />}
+                          <button
+                            onClick={() => handleNavigation(item?.path)}
+                            className="flex items-center justify-between space-x-2 w-full px-4 py-2 text-sm text-popover-foreground hover:bg-muted transition-smooth"
+                            type="button"
+                          >
+                            <div className="flex items-center space-x-2">
+                              <Icon name={item?.icon} size={16} />
+                              <span>{item?.label}</span>
+                            </div>
+                            {item?.badge && (
+                              <span className="px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full">
+                                {item?.badge}
+                              </span>
+                            )}
+                          </button>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -191,28 +208,44 @@ const RoleBasedNavBar = ({ userRole = 'tenant', isAuthenticated = true }) => {
                   <button
                     key={item?.path}
                     onClick={() => handleNavigation(item?.path)}
-                    className={`flex items-center space-x-3 w-full px-3 py-2 rounded-md text-base font-medium transition-smooth ${
+                    className={`flex items-center space-x-3 w-full px-3 py-2 rounded-md text-base font-medium transition-smooth justify-between ${
                       isActivePath(item?.path)
                         ? 'text-primary bg-primary/10' :'text-muted-foreground hover:text-foreground hover:bg-muted'
                     }`}
                     type="button"
                   >
-                    <Icon name={item?.icon} size={20} />
-                    <span>{item?.label}</span>
+                    <div className="flex items-center space-x-3">
+                      <Icon name={item?.icon} size={20} />
+                      <span>{item?.label}</span>
+                    </div>
+                    {item?.badge && (
+                      <span className="px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full">
+                        {item?.badge}
+                      </span>
+                    )}
                   </button>
                 ))}
 
                 <div className="border-t border-border pt-2 mt-2">
-                  {moreMenuItems?.map((item) => (
-                    <button
-                      key={item?.path}
-                      onClick={() => handleNavigation(item?.path)}
-                      className="flex items-center space-x-3 w-full px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-smooth"
-                      type="button"
-                    >
-                      <Icon name={item?.icon} size={20} />
-                      <span>{item?.label}</span>
-                    </button>
+                  {moreMenuItems?.map((item, idx) => (
+                    <div key={item?.path}>
+                      {item?.divider && idx > 0 && <div className="border-t border-border my-2" />}
+                      <button
+                        onClick={() => handleNavigation(item?.path)}
+                        className="flex items-center justify-between space-x-3 w-full px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-smooth"
+                        type="button"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <Icon name={item?.icon} size={20} />
+                          <span>{item?.label}</span>
+                        </div>
+                        {item?.badge && (
+                          <span className="px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full">
+                            {item?.badge}
+                          </span>
+                        )}
+                      </button>
+                    </div>
                   ))}
                 </div>
               </div>

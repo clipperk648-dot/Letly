@@ -2,99 +2,129 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import { Search, Home, Shield, Users, BarChart2 } from 'lucide-react';
+import { Heart, MessageCircle, Share2, Compass, Users, Camera, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const features = [
   {
-    icon: <Home className="h-6 w-6 text-primary" />,
-    title: "Property Listings",
-    description: "Browse thousands of properties with detailed information and high-quality images."
+    icon: <Camera className="h-6 w-6 text-rose-500" />,
+    title: "Share Your Story",
+    description: "Post photos and updates. Show your style, properties, or lifestyle with beautiful images."
   },
   {
-    icon: <Shield className="h-6 w-6 text-primary" />,
-    title: "Secure Transactions",
-    description: "Safe and secure payment processing for all your rental agreements."
+    icon: <Heart className="h-6 w-6 text-rose-500" />,
+    title: "Connect & Engage",
+    description: "Like, comment, and connect with landlords, agents, and renters in your community."
   },
   {
-    icon: <Users className="h-6 w-6 text-primary" />,
-    title: "Tenant Management",
-    description: "Easily manage your tenants, leases, and maintenance requests in one place."
+    icon: <Compass className="h-6 w-6 text-rose-500" />,
+    title: "Discover Amazing",
+    description: "Explore trending posts from agents and customers. Find inspiration and opportunities."
   },
   {
-    icon: <BarChart2 className="h-6 w-6 text-primary" />,
-    title: "Analytics Dashboard",
-    description: "Get insights into your property performance and financials."
+    icon: <MessageCircle className="h-6 w-6 text-rose-500" />,
+    title: "Direct Messages",
+    description: "Chat directly with landlords and tenants. Quick, easy, and secure communication."
   }
 ];
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = React.useState('');
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/property-search?q=${encodeURIComponent(searchQuery)}`);
-    }
-  };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Hero Section */}
-      <header className="bg-gradient-to-b from-primary/5 to-background">
-        <div className="container mx-auto px-4 py-16 md:py-24">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h1 
-              className="text-4xl md:text-6xl font-bold text-foreground mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              Find Your Perfect <span className="text-primary">Home</span> Today
-            </motion.h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Discover thousands of properties for rent and sale. Whether you're looking for an apartment, house, or commercial space, we've got you covered.
-            </p>
-            
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto flex flex-col sm:flex-row gap-2 mb-12">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Search by location, property type, or price..."
-                  className="pl-10 py-6 text-base"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <Button type="submit" size="lg" className="py-6 px-8">
-                Search
-              </Button>
-            </form>
-
-            <div className="flex flex-wrap justify-center gap-4 mt-8">
-              <Button variant="outline" onClick={() => navigate('/login/tenant')}>
-                I'm a Tenant
-              </Button>
-              <Button onClick={() => navigate('/login/landlord')}>
-                I'm a Landlord
-              </Button>
-            </div>
+    <div className="min-h-screen flex flex-col bg-white">
+      {/* Header with Logo */}
+      <header className="border-b border-gray-200">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center">
+            <Camera className="h-8 w-8 text-black mr-3" />
+            <span className="text-2xl font-light tracking-widest text-black">Homely</span>
+          </div>
+          <div className="flex gap-4">
+            <Button variant="ghost" onClick={() => navigate('/login')}>
+              Log in
+            </Button>
+            <Button className="bg-blue-500 hover:bg-blue-600 text-white" onClick={() => navigate('/register')}>
+              Sign up
+            </Button>
           </div>
         </div>
       </header>
 
+      {/* Hero Section - Instagram Style */}
+      <section className="flex-1 flex items-center">
+        <div className="container mx-auto px-4 py-16 md:py-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
+            {/* Left side - Text */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1 className="text-5xl md:text-6xl font-bold text-black mb-4 leading-tight">
+                Capture Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-500">Space</span>
+              </h1>
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Share amazing properties, connect with your community, and find your perfect home or next tenant.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                  size="lg"
+                  className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-8"
+                  onClick={() => navigate('/register')}
+                >
+                  Create Account
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="py-3 px-8 border-2 border-gray-300 hover:border-gray-400"
+                  onClick={() => navigate('/login')}
+                >
+                  Sign In
+                </Button>
+              </div>
+
+              <p className="text-gray-500 text-sm mt-6">
+                Join thousands of agents, landlords, and renters sharing their stories.
+              </p>
+            </motion.div>
+
+            {/* Right side - Illustration/Visual */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="relative h-96 md:h-full hidden md:flex items-center justify-center"
+            >
+              <div className="w-full aspect-square max-w-sm">
+                <div className="relative w-full h-full rounded-3xl bg-gradient-to-br from-rose-100 via-pink-50 to-blue-100 overflow-hidden shadow-2xl">
+                  {/* Instagram-like phone mockup */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <Camera className="h-16 w-16 text-rose-500 mx-auto mb-4" />
+                      <p className="text-xl font-semibold text-gray-800">Your Stories</p>
+                      <p className="text-gray-600 mt-2">Share moments that matter</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
-      <section className="py-16 bg-background">
+      <section className="py-20 bg-white border-t border-gray-200">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Why Choose Homely?</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Our platform is designed to make property management and finding your next home simple and efficient.
+            <h2 className="text-4xl font-bold text-black mb-4">How Homely Works</h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Simple tools built for property sharing and community connection.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <motion.div
@@ -104,16 +134,12 @@ const LandingPage = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <div className="h-full hover:shadow-lg transition-shadow bg-card border border-border rounded-lg p-6">
-                  <div className="mb-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      {feature.icon}
-                    </div>
-                    <h3 className="text-xl font-semibold">{feature.title}</h3>
+                <div className="text-center group">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg transition-shadow">
+                    {feature.icon}
                   </div>
-                  <div>
-                    <p className="text-muted-foreground">{feature.description}</p>
-                  </div>
+                  <h3 className="text-lg font-semibold text-black mb-2">{feature.title}</h3>
+                  <p className="text-gray-600">{feature.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -121,63 +147,144 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Community Highlight Section */}
+      <section className="py-20 bg-white border-t border-gray-200">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* Left Side - Image/Visual */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative h-96"
+            >
+              <div className="w-full h-full rounded-2xl bg-gradient-to-br from-rose-100 via-pink-50 to-blue-100 flex items-center justify-center overflow-hidden shadow-xl">
+                <div className="text-center">
+                  <Users className="h-20 w-20 text-rose-500 mx-auto mb-4" />
+                  <p className="text-2xl font-bold text-gray-800">Community Hub</p>
+                  <p className="text-gray-600 mt-2">Connect with thousands of agents and renters</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right Side - Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-4xl font-bold text-black mb-4">Join Our Community</h2>
+              <p className="text-gray-600 text-lg mb-6">
+                Share your stories, connect with neighbors, and build relationships with agents and renters. Our social platform makes it easy to showcase properties and discover opportunities.
+              </p>
+
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center flex-shrink-0 mt-1">
+                    <Check size={16} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-black">Share Your Story</h3>
+                    <p className="text-gray-600">Post beautiful property photos and updates</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center flex-shrink-0 mt-1">
+                    <Check size={16} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-black">Connect & Engage</h3>
+                    <p className="text-gray-600">Like, comment, and follow other community members</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center flex-shrink-0 mt-1">
+                    <Check size={16} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-black">Direct Messaging</h3>
+                    <p className="text-gray-600">Chat privately with agents and renters</p>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                className="bg-rose-500 hover:bg-rose-600 text-white"
+                onClick={() => navigate('/feed')}
+              >
+                Explore Community
+              </Button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
-      <section className="py-16 bg-primary/5">
+      <section className="py-20 bg-gradient-to-r from-rose-50 to-pink-50 border-t border-gray-200">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-foreground mb-6">Ready to Get Started?</h2>
-          <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-            Join thousands of happy users who found their perfect home or tenant through Homely.
+          <h2 className="text-4xl font-bold text-black mb-4">Join Our Community Today</h2>
+          <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+            Share your property listings, discover amazing spaces, and connect with agents and renters.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" onClick={() => navigate('/register')}>
-              Create Free Account
+            <Button
+              size="lg"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3"
+              onClick={() => navigate('/register')}
+            >
+              Get Started
             </Button>
-            <Button variant="outline" size="lg" onClick={() => navigate('/property-search')}>
-              Browse Properties
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-2 border-gray-400 hover:border-gray-600 px-8 py-3"
+              onClick={() => navigate('/login')}
+            >
+              Sign In
             </Button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-background border-t py-12">
+      <footer className="bg-black text-white py-12">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-6 md:mb-0">
-              <div className="flex items-center">
-                <Home className="h-8 w-8 text-primary mr-2" />
-                <span className="text-xl font-bold">Homely</span>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+            <div>
+              <div className="flex items-center mb-4">
+                <Camera className="h-6 w-6 mr-2" />
+                <span className="text-lg font-light tracking-widest">Homely</span>
               </div>
-              <p className="text-muted-foreground mt-2">Making property management simple.</p>
+              <p className="text-gray-400 text-sm">Your social platform for property sharing and community connection.</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-              <div>
-                <h3 className="font-semibold mb-4">For Tenants</h3>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li><Link to="/property-search" className="hover:underline">Find a Home</Link></li>
-                  <li><Link to="/register" className="hover:underline">Create Account</Link></li>
-                  <li><Link to="/login/tenant" className="hover:underline">Tenant Login</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-4">For Landlords</h3>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li><Link to="/login/landlord" className="hover:underline">Landlord Login</Link></li>
-                  <li><Link to="/register" className="hover:underline">List Property</Link></li>
-                  <li><Link to="/help" className="hover:underline">Help Center</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-4">Company</h3>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li><Link to="/about" className="hover:underline">About Us</Link></li>
-                  <li><Link to="/contact" className="hover:underline">Contact</Link></li>
-                  <li><Link to="/privacy" className="hover:underline">Privacy Policy</Link></li>
-                </ul>
-              </div>
+            <div>
+              <h3 className="font-semibold mb-4">For You</h3>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li><Link to="/login" className="hover:text-white transition">Log in</Link></li>
+                <li><Link to="/register" className="hover:text-white transition">Sign up</Link></li>
+                <li><Link to="/" className="hover:text-white transition">Explore</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">About</h3>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li><Link to="/" className="hover:text-white transition">About Homely</Link></li>
+                <li><Link to="/" className="hover:text-white transition">Blog</Link></li>
+                <li><Link to="/" className="hover:text-white transition">Help Center</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Legal</h3>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li><Link to="/" className="hover:text-white transition">Privacy</Link></li>
+                <li><Link to="/" className="hover:text-white transition">Terms</Link></li>
+                <li><Link to="/" className="hover:text-white transition">Cookies</Link></li>
+              </ul>
             </div>
           </div>
-          <div className="border-t mt-12 pt-8 text-center text-muted-foreground text-sm">
+          <div className="border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
             &copy; {new Date().getFullYear()} Homely. All rights reserved.
           </div>
         </div>

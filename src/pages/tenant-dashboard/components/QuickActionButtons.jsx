@@ -18,15 +18,24 @@ const QuickActionButtons = () => {
     },
     {
       id: 2,
+      title: 'Community',
+      description: 'Join the social platform',
+      icon: 'Share2',
+      color: 'bg-gradient-to-r from-rose-500 to-pink-500 text-white',
+      action: () => navigate('/feed'),
+      primary: true,
+      badge: 'NEW'
+    },
+    {
+      id: 3,
       title: 'View Applications',
       description: 'Track your applications',
       icon: 'FileText',
       color: 'bg-secondary text-secondary-foreground',
-      action: () => navigate('/applications'),
-      primary: true
+      action: () => navigate('/applications')
     },
     {
-      id: 3,
+      id: 4,
       title: 'Messages',
       description: 'Chat with landlords',
       icon: 'MessageSquare',
@@ -35,7 +44,7 @@ const QuickActionButtons = () => {
       badge: 3
     },
     {
-      id: 4,
+      id: 5,
       title: 'Favorites',
       description: 'Saved properties',
       icon: 'Heart',
@@ -44,7 +53,7 @@ const QuickActionButtons = () => {
       badge: 4
     },
     {
-      id: 5,
+      id: 6,
       title: 'Profile',
       description: 'Manage your profile',
       icon: 'User',
@@ -52,7 +61,7 @@ const QuickActionButtons = () => {
       action: () => navigate('/profile')
     },
     {
-      id: 6,
+      id: 7,
       title: 'Settings',
       description: 'Account settings',
       icon: 'Settings',
