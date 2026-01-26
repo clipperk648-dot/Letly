@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import RoleBasedNavBar from '../../components/ui/RoleBasedNavBar';
 import UserProfileDropdown from '../../components/ui/UserProfileDropdown';
 import NotificationIndicator from '../../components/ui/NotificationIndicator';
@@ -11,6 +12,8 @@ import ApplicationTracker from './components/ApplicationTracker';
 import SlideshowBanner from './components/SlideshowBanner';
 import MessageNotifications from './components/MessageNotifications';
 import MobileAppFooter from '../../components/ui/MobileAppFooter';
+import Button from '../../components/ui/Button';
+import Icon from '../../components/AppIcon';
 import { getProfile } from '../../services/authServices';
 
 const TenantDashboard = () => {
