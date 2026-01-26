@@ -211,11 +211,10 @@ const LandingPage = () => {
               </div>
 
               <Button
-                className="bg-rose-500 hover:bg-rose-600 text-white flex items-center gap-2"
+                className="bg-rose-500 hover:bg-rose-600 text-white"
                 onClick={() => navigate('/feed')}
               >
                 Explore Community
-                <ArrowRight size={18} />
               </Button>
             </motion.div>
           </div>
