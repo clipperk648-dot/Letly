@@ -29,7 +29,8 @@ const RoleBasedNavBar = ({ userRole = 'tenant', isAuthenticated = true }) => {
   const moreMenuItems = [
     { label: 'Settings', path: '/settings', icon: 'Settings' },
     { label: 'Help', path: '/help', icon: 'HelpCircle' },
-    { label: 'Support', path: '/support', icon: 'LifeBuoy' }
+    { label: 'Support', path: '/support', icon: 'LifeBuoy' },
+    { label: 'Community', path: '/feed', icon: 'Share2', badge: 'Social', divider: true }
   ];
 
   const currentNavItems = userRole === 'landlord' ? landlordNavItems : tenantNavItems;
