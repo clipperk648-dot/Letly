@@ -17,6 +17,7 @@ import Icon from '../../components/AppIcon';
 import { getProfile } from '../../services/authServices';
 
 const TenantDashboard = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({ name: '', email: '', role: 'tenant', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face' });
 
   useEffect(() => {
