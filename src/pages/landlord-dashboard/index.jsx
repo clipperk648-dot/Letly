@@ -111,7 +111,7 @@ const LandlordDashboard = () => {
                   Explore Community
                 </Button>
               </div>
-              <div className="hidden sm:block text-5xl opacity-20">📸</div>
+              <div className="hidden sm:block text-5xl opacity-20">*</div>
             </div>
           </div>
 
