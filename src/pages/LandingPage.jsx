@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import { Heart, MessageCircle, Share2, Compass, Users, Camera, ArrowRight, Check } from 'lucide-react';
+import { Heart, MessageCircle, Share2, Compass, Users, Camera, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const features = [
