@@ -13,7 +13,6 @@ import SlideshowBanner from './components/SlideshowBanner';
 import MessageNotifications from './components/MessageNotifications';
 import MobileAppFooter from '../../components/ui/MobileAppFooter';
 import Button from '../../components/ui/Button';
-import Icon from '../../components/AppIcon';
 import { getProfile } from '../../services/authServices';
 
 const TenantDashboard = () => {
