@@ -84,6 +84,27 @@ const TenantDashboard = () => {
           <QuickActionButtons />
         </div>
 
+        {/* Community Promotion Card */}
+        <div className="mb-8 bg-gradient-to-r from-rose-50 to-pink-50 rounded-lg border border-rose-200 p-6">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <Icon name="Share2" size={20} className="text-rose-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Discover Our Community</h3>
+              </div>
+              <p className="text-gray-700 mb-4">Connect with agents, share your rental journey, and discover opportunities in our new social platform.</p>
+              <Button
+                variant="default"
+                className="bg-rose-600 hover:bg-rose-700 text-white"
+                onClick={() => navigate('/feed')}
+              >
+                Join Community Now
+              </Button>
+            </div>
+            <div className="hidden sm:flex text-5xl">📱</div>
+          </div>
+        </div>
+
         {/* Main Dashboard Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Primary Content */}
