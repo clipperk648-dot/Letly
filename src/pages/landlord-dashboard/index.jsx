@@ -97,6 +97,24 @@ const LandlordDashboard = () => {
             ]} interval={3000} />
           </div>
 
+          {/* Community Promotion Banner */}
+          <div className="mb-6 bg-gradient-to-r from-rose-500 to-pink-500 rounded-lg p-6 text-white">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex-1">
+                <h3 className="text-xl font-bold mb-2">Join Our Community Platform</h3>
+                <p className="text-rose-100 mb-4">Share your listings, connect with tenants, and build your brand in our social community.</p>
+                <Button
+                  variant="default"
+                  className="bg-white text-rose-600 hover:bg-gray-100"
+                  onClick={() => navigate('/feed')}
+                >
+                  Explore Community
+                </Button>
+              </div>
+              <div className="hidden sm:block text-5xl opacity-20">📸</div>
+            </div>
+          </div>
+
           {/* Metrics Grid (mobile-first) */}
           <div className="grid grid-cols-2 gap-3 mb-6">
             <div className="bg-card border border-border rounded-lg p-4">
