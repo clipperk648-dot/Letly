@@ -328,27 +328,38 @@ const FeedPage = () => {
 
                   {/* Comments Section */}
                   {post.commentCount > 0 && post.comments && post.comments.length > 0 && (
-                    <div className="px-4 py-3 border-b border-gray-100">
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="px-4 py-3 border-b border-gray-50 bg-gray-50/50"
+                    >
                       {!expandedComments[post._id] && post.comments.length > 2 && (
-                        <button
+                        <motion.button
+                          whileHover={{ x: 2 }}
                           onClick={() =>
                             setExpandedComments(prev => ({
                               ...prev,
                               [post._id]: true
                             }))
                           }
-                          className="text-sm text-gray-500 hover:text-gray-700 mb-3 font-medium"
+                          className="text-sm text-gray-500 hover:text-gray-700 mb-3 font-medium transition"
                         >
                           View all {post.commentCount} comments
-                        </button>
+                        </motion.button>
                       )}
 
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         {(expandedComments[post._id]
                           ? post.comments
                           : post.comments.slice(-2)
-                        ).map((comment) => (
-                          <div key={comment?._id || Math.random()} className="text-sm">
+                        ).map((comment, idx) => (
+                          <motion.div
+                            key={comment?._id || idx}
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.05 }}
+                            className="text-sm"
+                          >
                             <div className="flex gap-2">
                               <span className="font-semibold text-gray-900 flex-shrink-0">
                                 {comment?.author?.fullName || 'Unknown'}
@@ -360,10 +371,10 @@ const FeedPage = () => {
                                 {new Date(comment.createdAt).toLocaleDateString()}
                               </p>
                             )}
-                          </div>
+                          </motion.div>
                         ))}
                       </div>
-                    </div>
+                    </motion.div>
                   )}
 
                   {/* Add Comment */}
