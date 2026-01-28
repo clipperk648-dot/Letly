@@ -378,16 +378,19 @@ const FeedPage = () => {
                   )}
 
                   {/* Add Comment */}
-                  <div className="px-4 py-3 border-t border-gray-100">
+                  <div className="px-4 py-3 border-t border-gray-50 bg-white">
                     <div className="flex items-end gap-2">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold shadow-sm"
+                      >
                         {currentUser?.fullName?.charAt(0) || 'U'}
-                      </div>
+                      </motion.div>
                       <div className="flex-1 flex gap-2">
                         <Input
                           type="text"
                           placeholder="Add a comment..."
-                          className="text-sm border border-gray-200 bg-gray-50 px-3 py-2 rounded-full placeholder-gray-500"
+                          className="text-sm border border-gray-200 bg-gray-50 px-3 py-2 rounded-full placeholder-gray-400 focus:bg-white focus:ring-1 focus:ring-blue-400 transition"
                           value={newComments[post._id] || ''}
                           onChange={(e) =>
                             setNewComments(prev => ({
@@ -402,13 +405,15 @@ const FeedPage = () => {
                           }}
                           disabled={commenting[post._id]}
                         />
-                        <button
+                        <motion.button
                           onClick={() => handleAddComment(post._id)}
                           disabled={commenting[post._id] || !newComments[post._id]?.trim()}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           className="text-blue-500 hover:text-blue-600 font-semibold text-sm px-3 py-2 disabled:opacity-50 transition"
                         >
                           {commenting[post._id] ? '...' : 'Post'}
-                        </button>
+                        </motion.button>
                       </div>
                     </div>
                   </div>
