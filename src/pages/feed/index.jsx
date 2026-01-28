@@ -128,13 +128,13 @@ const FeedPage = () => {
                 <div className="p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-1">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold">
-                      {post.author.fullName.charAt(0)}
+                      {post?.author?.fullName?.charAt(0) || 'U'}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <p className="font-semibold text-sm">{post.author.fullName}</p>
+                        <p className="font-semibold text-sm">{post?.author?.fullName || 'Unknown'}</p>
                         <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                          {getRoleLabel(post.author.role)}
+                          {getRoleLabel(post?.author?.role)}
                         </span>
                       </div>
                       <p className="text-xs text-gray-500">
