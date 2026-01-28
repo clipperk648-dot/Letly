@@ -117,9 +117,13 @@ module.exports = async function handler(req, res) {
         post: {
           ...newPost,
           _id: result.insertedId.toString(),
+          comments: [],
+          likeCount: 0,
+          commentCount: 0,
+          isLiked: false,
           author: {
-            id: user._id.toString(),
-            fullName: user.fullName,
+            id: user._id?.toString ? user._id.toString() : String(user._id),
+            fullName: user.fullName || 'Unknown',
             username: user.username || user.email.split('@')[0],
             profilePicture: user.profilePicture,
             role: user.role,
