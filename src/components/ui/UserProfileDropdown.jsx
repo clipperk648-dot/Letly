@@ -17,10 +17,10 @@ const UserProfileDropdown = ({
   const navigate = useNavigate();
 
   const profileMenuItems = [
-    { label: 'My Profile', path: '/profile', icon: 'User' },
+    { label: 'My Profile', path: '/account-profile', icon: 'User' },
     { label: 'Account Settings', path: '/settings', icon: 'Settings' },
     { label: 'Billing', path: '/billing', icon: 'CreditCard' },
-    { label: 'Notifications', path: '/notifications', icon: 'Bell' }
+    { label: 'Notifications', path: '/account-notifications', icon: 'Bell' }
   ];
 
   useEffect(() => {

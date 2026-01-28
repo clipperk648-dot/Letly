@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Heart, MessageCircle, UserPlus, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Button from '../../components/ui/Button';
+import SocialNavBar from '../../components/ui/SocialNavBar';
 
 const SocialNotificationsPage = () => {
   const [notifications, setNotifications] = useState([]);
@@ -115,8 +116,9 @@ const SocialNotificationsPage = () => {
   const filteredNotifications = getFilteredNotifications();
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-white pb-16 md:pb-0">
+      <SocialNavBar />
+      <div className="max-w-2xl mx-auto md:ml-72">
         {/* Header */}
         <div className="border-b border-gray-200 p-4 sticky top-0 bg-white/80 backdrop-blur-sm z-40">
           <h1 className="text-2xl font-light">Notifications</h1>

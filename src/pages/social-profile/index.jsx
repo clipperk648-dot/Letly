@@ -5,6 +5,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { getUserProfile, followUser, unfollowUser, getPosts } from '../../services/socialService';
 import { getProfile } from '../../services/authServices';
 import Button from '../../components/ui/Button';
+import SocialNavBar from '../../components/ui/SocialNavBar';
 import { toast } from 'react-toastify';
 
 const SocialProfilePage = () => {
@@ -81,8 +82,9 @@ const SocialProfilePage = () => {
   const isOwnProfile = profile.isOwnProfile;
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-white pb-16 md:pb-0">
+      <SocialNavBar />
+      <div className="max-w-2xl mx-auto md:ml-72">
         {/* Profile Header */}
         <div className="border-b border-gray-200">
           <div className="p-6 md:p-8">
@@ -91,7 +93,7 @@ const SocialProfilePage = () => {
               <div className="flex gap-6 md:gap-8 mb-6 md:mb-0">
                 {/* Profile Picture */}
                 <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-5xl font-bold flex-shrink-0">
-                  {profile.fullName.charAt(0)}
+                  {profile?.fullName?.charAt(0) || 'U'}
                 </div>
 
                 {/* Profile Stats - Mobile */}

@@ -5,6 +5,7 @@ import { getPosts, likePost, unlikePost, addComment } from '../../services/socia
 import { getProfile } from '../../services/authServices';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
+import SocialNavBar from '../../components/ui/SocialNavBar';
 import { toast } from 'react-toastify';
 
 const FeedPage = () => {
@@ -95,8 +96,9 @@ const FeedPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-white pb-16 md:pb-0">
+      <SocialNavBar />
+      <div className="max-w-2xl mx-auto md:ml-72">
         {/* Feed Header */}
         <div className="border-b border-gray-200 p-4 sticky top-0 bg-white/80 backdrop-blur-sm z-40">
           <h1 className="text-2xl font-light">Homely Feed</h1>
@@ -126,13 +128,13 @@ const FeedPage = () => {
                 <div className="p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-1">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold">
-                      {post.author.fullName.charAt(0)}
+                      {post?.author?.fullName?.charAt(0) || 'U'}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <p className="font-semibold text-sm">{post.author.fullName}</p>
+                        <p className="font-semibold text-sm">{post?.author?.fullName || 'Unknown'}</p>
                         <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                          {getRoleLabel(post.author.role)}
+                          {getRoleLabel(post?.author?.role)}
                         </span>
                       </div>
                       <p className="text-xs text-gray-500">
@@ -167,7 +169,7 @@ const FeedPage = () => {
                 <div className="p-4">
                   {post.caption && (
                     <p className="text-sm mb-2">
-                      <span className="font-semibold">{post.author.fullName}</span> {post.caption}
+                      <span className="font-semibold">{post?.author?.fullName || 'Unknown'}</span> {post.caption}
                     </p>
                   )}
                   {post.location && (
@@ -209,7 +211,7 @@ const FeedPage = () => {
                       <div className="mt-3 space-y-2">
                         {comments[post._id]?.map(comment => (
                           <div key={comment._id} className="text-xs">
-                            <span className="font-semibold">{comment.author.fullName}</span> {comment.text}
+                            <span className="font-semibold">{comment?.author?.fullName || 'Unknown'}</span> {comment.text}
                             <p className="text-gray-500 mt-1">{new Date(comment.createdAt).toLocaleDateString()}</p>
                           </div>
                         ))}
@@ -221,7 +223,7 @@ const FeedPage = () => {
                 {/* Add Comment */}
                 <div className="px-4 py-3 border-t border-gray-100 flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
-                    {currentUser?.fullName.charAt(0)}
+                    {currentUser?.fullName?.charAt(0) || 'U'}
                   </div>
                   <div className="flex-1 flex gap-2">
                     <Input

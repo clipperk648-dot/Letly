@@ -176,7 +176,7 @@ const NotificationIndicator = ({
             <div className="px-4 py-3 border-t border-border">
               <button
                 onClick={() => {
-                  navigate('/notifications');
+                  navigate('/account-notifications');
                   setIsOpen(false);
                 }}
                 className="w-full text-center text-sm text-primary hover:text-primary/80 transition-colors"

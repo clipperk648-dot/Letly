@@ -4,6 +4,7 @@ import { Image as ImageIcon, X, Loader } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
+import SocialNavBar from '../../components/ui/SocialNavBar';
 import { createPost } from '../../services/socialService';
 import { toast } from 'react-toastify';
 
@@ -73,8 +74,9 @@ const CreatePostPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-2xl mx-auto p-4">
+    <div className="min-h-screen bg-white pb-16 md:pb-0">
+      <SocialNavBar />
+      <div className="max-w-2xl mx-auto p-4 md:ml-64">
         {/* Header */}
         <div className="border-b border-gray-200 pb-4 mb-6">
           <div className="flex items-center justify-between">

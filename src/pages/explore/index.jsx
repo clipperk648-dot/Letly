@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Heart, MessageCircle, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getPosts } from '../../services/socialService';
+import SocialNavBar from '../../components/ui/SocialNavBar';
 import { toast } from 'react-toastify';
 
 const ExplorePage = () => {
@@ -63,12 +64,12 @@ const ExplorePage = () => {
               <div className="pb-4 border-b border-gray-200">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold">
-                    {post.author.fullName.charAt(0)}
+                    {post?.author?.fullName?.charAt(0) || 'U'}
                   </div>
                   <div>
-                    <p className="font-semibold text-sm">{post.author.fullName}</p>
+                    <p className="font-semibold text-sm">{post?.author?.fullName || 'Unknown'}</p>
                     <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                      {post.author.role === 'landlord' ? 'Agent' : 'Customer'}
+                      {post?.author?.role === 'landlord' ? 'Agent' : 'Customer'}
                     </span>
                   </div>
                 </div>
@@ -137,15 +138,16 @@ const ExplorePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-16 md:pb-0">
+      <SocialNavBar />
       {/* Header */}
-      <div className="border-b border-gray-200 p-4 sticky top-0 bg-white/80 backdrop-blur-sm z-40">
+      <div className="border-b border-gray-200 p-4 sticky top-0 bg-white/80 backdrop-blur-sm z-40 md:ml-64">
         <h1 className="text-2xl font-light">Explore</h1>
         <p className="text-sm text-gray-600">Discover trending posts from our community</p>
       </div>
 
       {/* Posts Grid */}
-      <div className="max-w-6xl mx-auto p-2 md:p-4">
+      <div className="max-w-6xl mx-auto p-2 md:p-4 md:ml-64">
         {posts.length === 0 ? (
           <div className="flex items-center justify-center py-20">
             <div className="text-center">

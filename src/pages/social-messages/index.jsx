@@ -3,6 +3,7 @@ import { Phone, Video, Info, Send, Search, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
+import SocialNavBar from '../../components/ui/SocialNavBar';
 
 const SocialMessagesPage = () => {
   const [conversations, setConversations] = useState([]);
@@ -142,9 +143,10 @@ const SocialMessagesPage = () => {
   };
 
   return (
-    <div className="h-screen bg-white flex flex-col md:flex-row">
+    <div className="h-screen bg-white flex flex-col md:flex-row pb-16 md:pb-0">
+      <SocialNavBar />
       {/* Conversations Sidebar */}
-      <div className="w-full md:w-80 border-r border-gray-200 flex flex-col bg-white">
+      <div className="w-full md:w-80 border-r border-gray-200 flex flex-col bg-white md:ml-64">
         {/* Header */}
         <div className="p-4 border-b border-gray-200">
           <h1 className="text-2xl font-bold mb-4">Messages</h1>
