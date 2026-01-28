@@ -4,6 +4,7 @@ import { Image as ImageIcon, X, Loader } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
+import SocialNavBar from '../../components/ui/SocialNavBar';
 import { createPost } from '../../services/socialService';
 import { toast } from 'react-toastify';
 
