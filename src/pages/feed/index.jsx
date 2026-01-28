@@ -214,9 +214,7 @@ const FeedPage = () => {
                           <p className="font-semibold text-sm text-gray-900 truncate">
                             {post?.author?.fullName || 'Unknown User'}
                           </p>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${getRoleColor(post?.author?.role)}`}>
-                            {getRoleLabel(post?.author?.role)}
-                          </span>
+                          <RoleBadge role={post?.author?.role} />
                         </div>
                         <p className="text-xs text-gray-500">
                           {post?.createdAt
