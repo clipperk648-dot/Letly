@@ -6,6 +6,7 @@ import { getProfile } from '../../services/authServices';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import SocialNavBar from '../../components/ui/SocialNavBar';
+import { RoleBadge } from '../../components/ui/Badge';
 import { toast } from 'react-toastify';
 
 const FeedPage = () => {
