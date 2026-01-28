@@ -12,7 +12,6 @@ const FeedPage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
-  const [comments, setComments] = useState({});
   const [newComments, setNewComments] = useState({});
 
   useEffect(() => {
