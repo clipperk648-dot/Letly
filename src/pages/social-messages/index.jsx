@@ -3,6 +3,7 @@ import { Phone, Video, Info, Send, Search, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
+import SocialNavBar from '../../components/ui/SocialNavBar';
 
 const SocialMessagesPage = () => {
   const [conversations, setConversations] = useState([]);

@@ -83,7 +83,8 @@ const SocialProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-2xl mx-auto">
+      <SocialNavBar />
+      <div className="max-w-2xl mx-auto md:ml-72">
         {/* Profile Header */}
         <div className="border-b border-gray-200">
           <div className="p-6 md:p-8">
