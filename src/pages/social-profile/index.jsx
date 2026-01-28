@@ -5,6 +5,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { getUserProfile, followUser, unfollowUser, getPosts } from '../../services/socialService';
 import { getProfile } from '../../services/authServices';
 import Button from '../../components/ui/Button';
+import SocialNavBar from '../../components/ui/SocialNavBar';
 import { toast } from 'react-toastify';
 
 const SocialProfilePage = () => {
