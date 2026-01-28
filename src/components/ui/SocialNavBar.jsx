@@ -25,10 +25,21 @@ const SocialNavBar = () => {
   };
 
   const handleLogout = () => {
+    const userRole = localStorage.getItem('userRole');
     localStorage.removeItem('authToken');
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userRole');
-    navigate('/login');
+    localStorage.removeItem('userEmail');
+
+    // Redirect to appropriate dashboard if user was logged in
+    // Otherwise go to login
+    if (userRole === 'landlord') {
+      navigate('/landlord-dashboard');
+    } else if (userRole === 'tenant') {
+      navigate('/tenant-dashboard');
+    } else {
+      navigate('/login');
+    }
   };
 
   const isActive = (path) => location.pathname === path;

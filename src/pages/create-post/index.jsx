@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Image as ImageIcon, X, Loader2, AlertCircle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import SocialNavBar from '../../components/ui/SocialNavBar';
@@ -101,77 +101,110 @@ const CreatePostPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <SocialNavBar />
       <div className="max-w-2xl mx-auto p-4 md:ml-72 pb-20">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6 flex items-center justify-between">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-2xl shadow-sm p-6 mb-6 flex items-center justify-between border border-gray-100"
+        >
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Create Post</h1>
-            <p className="text-gray-600 text-sm mt-1">Share something with the community</p>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+              Create Post
+            </h1>
+            <p className="text-gray-500 text-sm mt-2">Share something with the community</p>
           </div>
-          <button
+          <motion.button
             onClick={() => navigate('/feed')}
+            whileHover={{ rotate: 90, backgroundColor: '#f3f4f6' }}
+            whileTap={{ scale: 0.95 }}
             className="p-2 hover:bg-gray-100 rounded-full transition"
             title="Close"
           >
             <X size={24} className="text-gray-600" />
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
 
         {/* Error Alert */}
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex gap-3"
-          >
-            <AlertCircle size={20} className="text-red-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-semibold text-red-900 text-sm">Error</h3>
-              <p className="text-red-700 text-sm">{error}</p>
-            </div>
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              className="bg-gradient-to-r from-red-50 to-red-50/50 border border-red-200 rounded-xl p-4 mb-6 flex gap-3 shadow-sm"
+            >
+              <AlertCircle size={20} className="text-red-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-semibold text-red-900 text-sm">Error</h3>
+                <p className="text-red-700 text-sm">{error}</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Main Content */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Image Upload Section */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100"
+          >
             <label className="block text-sm font-semibold mb-4 text-gray-900">
               Post Image
             </label>
-            
-            {imageUrl || imagePreview ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="relative w-full bg-gray-100 rounded-lg overflow-hidden"
-              >
-                <img
-                  src={imagePreview || imageUrl}
-                  alt="Post preview"
-                  className="w-full h-96 object-cover"
-                  onError={() => setError('Failed to load image')}
-                />
-                <button
-                  type="button"
-                  onClick={handleRemoveImage}
-                  className="absolute top-3 right-3 bg-black/70 hover:bg-black text-white p-2 rounded-full transition"
+
+            <AnimatePresence mode="wait">
+              {imageUrl || imagePreview ? (
+                <motion.div
+                  key="image-preview"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="relative w-full bg-gray-100 rounded-xl overflow-hidden group"
                 >
-                  <X size={20} />
-                </button>
-              </motion.div>
-            ) : (
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full border-2 border-dashed border-gray-300 rounded-lg p-12 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition"
-              >
-                <ImageIcon size={48} className="mx-auto text-gray-400 mb-4" />
-                <p className="text-gray-700 font-semibold mb-2">Click to upload an image</p>
-                <p className="text-sm text-gray-500">PNG, JPG, GIF up to 10MB</p>
-              </div>
-            )}
+                  <img
+                    src={imagePreview || imageUrl}
+                    alt="Post preview"
+                    className="w-full h-96 object-cover group-hover:brightness-95 transition-all duration-300"
+                    onError={() => setError('Failed to load image')}
+                  />
+                  <motion.button
+                    whileHover={{ scale: 1.1, rotate: 90 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="absolute top-3 right-3 bg-black/70 hover:bg-black text-white p-2 rounded-full transition shadow-lg"
+                  >
+                    <X size={20} />
+                  </motion.button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="upload-area"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  onClick={() => fileInputRef.current?.click()}
+                  whileHover={{ backgroundColor: '#eff6ff', borderColor: '#3b82f6' }}
+                  className="w-full border-2 border-dashed border-gray-300 rounded-xl p-12 text-center cursor-pointer transition-all duration-300"
+                >
+                  <motion.div
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="mb-4"
+                  >
+                    <ImageIcon size={48} className="mx-auto text-gray-400" />
+                  </motion.div>
+                  <p className="text-gray-700 font-semibold mb-2">Click to upload an image</p>
+                  <p className="text-sm text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <input
               ref={fileInputRef}
               type="file"
@@ -180,10 +213,15 @@ const CreatePostPage = () => {
               onChange={handleImageSelect}
               disabled={loading}
             />
-          </div>
+          </motion.div>
 
           {/* Caption Section */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100"
+          >
             <label className="block text-sm font-semibold mb-3 text-gray-900">
               Caption
             </label>
@@ -191,7 +229,7 @@ const CreatePostPage = () => {
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               placeholder="Write a caption... Share what's on your mind, ask questions, or inspire others!"
-              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 placeholder-gray-500"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 placeholder-gray-400 transition-all"
               rows={5}
               maxLength={2200}
               disabled={loading}
@@ -202,10 +240,15 @@ const CreatePostPage = () => {
               </p>
               <p className="text-xs text-gray-400">{caption.length}/2200</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Location Section */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100"
+          >
             <label className="block text-sm font-semibold mb-3 text-gray-900">
               Location <span className="text-gray-500 font-normal">(Optional)</span>
             </label>
@@ -216,58 +259,81 @@ const CreatePostPage = () => {
               onChange={(e) => setLocation(e.target.value)}
               maxLength={100}
               disabled={loading}
-              className="border-gray-300"
+              className="border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all"
             />
             <p className="text-xs text-gray-500 mt-2">{location.length}/100</p>
-          </div>
+          </motion.div>
 
           {/* Tips Section */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-5">
-            <h3 className="font-semibold text-sm text-blue-900 mb-3">💡 Tips for a great post:</h3>
-            <ul className="text-sm text-blue-800 space-y-2">
-              <li className="flex items-center gap-2">
-                <span>✓</span>
-                <span>Use high-quality, clear images</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span>✓</span>
-                <span>Write engaging, descriptive captions</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span>✓</span>
-                <span>Add location for better discoverability</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span>✓</span>
-                <span>Be authentic and helpful to the community</span>
-              </li>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-gradient-to-r from-blue-50 to-blue-50/50 border border-blue-200 rounded-2xl p-6 shadow-sm"
+          >
+            <h3 className="font-semibold text-sm text-blue-900 mb-4 flex items-center gap-2">
+              <span>💡</span> Tips for a great post:
+            </h3>
+            <ul className="text-sm text-blue-800 space-y-3">
+              {[
+                'Use high-quality, clear images',
+                'Write engaging, descriptive captions',
+                'Add location for better discoverability',
+                'Be authentic and helpful to the community'
+              ].map((tip, idx) => (
+                <motion.li
+                  key={idx}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + idx * 0.05 }}
+                  className="flex items-center gap-2"
+                >
+                  <motion.span
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                    className="text-base"
+                  >
+                    ✓
+                  </motion.span>
+                  <span>{tip}</span>
+                </motion.li>
+              ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Action Buttons */}
-          <div className="bg-white rounded-lg shadow-sm p-6 flex gap-4">
-            <Button
-              type="button"
-              onClick={() => navigate('/feed')}
-              disabled={loading}
-              className="flex-1 bg-gray-200 text-gray-900 hover:bg-gray-300"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={loading || (!caption.trim() && !imageUrl)}
-              className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold"
-            >
-              {loading ? (
-                <>
-                  <Loader2 size={18} className="mr-2 animate-spin" /> Creating...
-                </>
-              ) : (
-                'Share Post'
-              )}
-            </Button>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-white rounded-2xl shadow-sm p-6 flex gap-4 border border-gray-100"
+          >
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+              <Button
+                type="button"
+                onClick={() => navigate('/feed')}
+                disabled={loading}
+                className="w-full bg-gray-100 text-gray-900 hover:bg-gray-200 font-semibold transition-all"
+              >
+                Cancel
+              </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+              <Button
+                type="submit"
+                disabled={loading || (!caption.trim() && !imageUrl)}
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-md transition-all disabled:opacity-50"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 size={18} className="mr-2 animate-spin inline" /> Creating...
+                  </>
+                ) : (
+                  'Share Post'
+                )}
+              </Button>
+            </motion.div>
+          </motion.div>
         </form>
       </div>
     </div>

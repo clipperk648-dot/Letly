@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Send, Heart, Image as ImageIcon, Video as VideoIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../../../components/ui/Button';
 import Icon from '../../../components/AppIcon';
 import MessageBubble from './MessageBubble';
+import Input from '../../../components/ui/Input';
 
 const ChatWindow = ({ conversation, onSend }) => {
   const [text, setText] = useState('');
@@ -80,59 +83,119 @@ const ChatWindow = ({ conversation, onSend }) => {
   }
 
   return (
-    <div className="flex flex-col h-[70vh] md:h-[75vh] bg-card border border-border rounded-lg overflow-hidden">
-      {/* Header */}
-      <div className="p-4 border-b border-border flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-full overflow-hidden">
-            <img src={conversation.avatar} alt={conversation.name} className="w-full h-full object-cover" />
-          </div>
-          <div>
-            <div className="font-semibold">{conversation.name}</div>
-            <div className="text-xs text-muted-foreground">{conversation?.status || 'Online'}</div>
-          </div>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button variant="ghost" size="sm" onClick={() => alert('Start video call (mock)')}>Video</Button>
-          <Button variant="ghost" size="sm" onClick={() => alert('More options (mock)')}>More</Button>
-        </div>
-      </div>
-
+    <div className="flex flex-col h-[calc(100vh-300px)] md:h-[calc(100vh-180px)] bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
       {/* Messages list */}
-      <div className="flex-1 overflow-auto p-4 space-y-4">
-        {conversation.messages?.map(msg => (
-          <MessageBubble key={msg.id} message={{...msg, avatar: conversation.avatar}} isOwn={msg.sender === 'You'} />
-        ))}
+      <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-white to-gray-50">
+        <AnimatePresence>
+          {conversation.messages && conversation.messages.length > 0 ? (
+            conversation.messages.map((msg, idx) => (
+              <motion.div
+                key={msg.id || idx}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: idx * 0.05 }}
+              >
+                <MessageBubble message={{...msg, avatar: conversation.avatar}} isOwn={msg.sender === 'You'} />
+              </motion.div>
+            ))
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex items-center justify-center h-full text-gray-500"
+            >
+              <div className="text-center">
+                <div className="mb-3 text-4xl">💬</div>
+                <p className="font-medium">Start a conversation</p>
+                <p className="text-sm mt-1">Say hello to begin messaging</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Composer */}
-      <form onSubmit={handleSend} className="p-4 border-t border-border bg-white">
-        { (imagePreviews.length > 0 || videoPreviews.length > 0) && (
-          <div className="mb-2 flex gap-2 overflow-x-auto">
-            {imagePreviews.map((src, i) => <img key={src + i} src={src} className="w-24 h-16 object-cover rounded" alt={`preview-${i}`} />)}
-            {videoPreviews.map((src, i) => <video key={src + i} src={src} className="w-36 h-20 object-cover rounded" controls />)}
-          </div>
+      {/* Attachment Previews */}
+      <AnimatePresence>
+        {(imagePreviews.length > 0 || videoPreviews.length > 0) && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="px-6 pb-2 flex gap-2 overflow-x-auto border-t border-gray-100"
+          >
+            {imagePreviews.map((src, i) => (
+              <motion.div key={src + i} layoutId={`preview-${i}`} className="relative flex-shrink-0">
+                <img src={src} className="w-20 h-20 object-cover rounded-lg" alt={`preview-${i}`} />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImagePreviews(prev => prev.filter((_, idx) => idx !== i));
+                    setImageFiles(prev => prev.filter((_, idx) => idx !== i));
+                  }}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold hover:bg-red-600 transition"
+                >
+                  ×
+                </button>
+              </motion.div>
+            ))}
+            {videoPreviews.map((src, i) => (
+              <motion.div key={src + i} layoutId={`video-${i}`} className="relative flex-shrink-0">
+                <video src={src} className="w-20 h-20 object-cover rounded-lg" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setVideoPreviews(prev => prev.filter((_, idx) => idx !== i));
+                    setVideoFiles(prev => prev.filter((_, idx) => idx !== i));
+                  }}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold hover:bg-red-600 transition"
+                >
+                  ×
+                </button>
+              </motion.div>
+            ))}
+          </motion.div>
         )}
+      </AnimatePresence>
 
-        <div className="flex items-center gap-2">
-          <label className="p-2 rounded-md bg-muted cursor-pointer">
+      {/* Composer */}
+      <form onSubmit={handleSend} className="p-4 border-t border-gray-100 bg-white">
+        <div className="flex items-end gap-3">
+          <label className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer text-gray-600 hover:text-gray-900">
             <input type="file" accept="image/*" multiple onChange={handleImageChange} className="hidden" />
-            <Icon name="Image" size={18} />
+            <ImageIcon size={20} />
           </label>
-          <label className="p-2 rounded-md bg-muted cursor-pointer">
+          <label className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer text-gray-600 hover:text-gray-900">
             <input type="file" accept="video/*" multiple onChange={handleVideoChange} className="hidden" />
-            <Icon name="Camera" size={18} />
+            <VideoIcon size={20} />
           </label>
 
           <input
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Type a message..."
-            className="flex-1 rounded-md border border-border px-3 py-2"
+            placeholder="Aa"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 placeholder-gray-400"
           />
 
-          <Button type="submit" variant="default">Send</Button>
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="p-2 hover:bg-gray-100 rounded-full transition text-gray-600 hover:text-gray-900"
+          >
+            <Heart size={20} />
+          </motion.button>
+
+          <motion.button
+            type="submit"
+            disabled={!text.trim() && imageFiles.length === 0 && videoFiles.length === 0}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="p-2 hover:bg-blue-100 rounded-full transition text-blue-500 disabled:text-gray-300 disabled:cursor-not-allowed"
+          >
+            <Send size={20} />
+          </motion.button>
         </div>
       </form>
     </div>

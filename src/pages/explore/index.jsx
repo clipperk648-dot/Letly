@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getPosts } from '../../services/socialService';
 import SocialNavBar from '../../components/ui/SocialNavBar';
 import Button from '../../components/ui/Button';
+import { RoleBadge } from '../../components/ui/Badge';
 import { toast } from 'react-toastify';
 
 const ExplorePage = () => {
@@ -42,28 +43,20 @@ const ExplorePage = () => {
   const PostModal = ({ post, onClose }) => {
     if (!post) return null;
 
-    const getRoleLabel = (role) => {
-      return role === 'landlord' ? 'Agent' : 'Customer';
-    };
-
-    const getRoleColor = (role) => {
-      return role === 'landlord' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800';
-    };
-
     return (
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         onClick={onClose}
       >
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.8, opacity: 0 }}
+          initial={{ scale: 0.85, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.85, opacity: 0, y: 20 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto shadow-xl"
+          className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-auto shadow-2xl"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
             {/* Image */}
@@ -73,6 +66,7 @@ const ExplorePage = () => {
                   src={post.imageUrl}
                   alt="Post content"
                   className="w-full h-full object-cover"
+                  loading="lazy"
                   onError={(e) => {
                     e.target.style.display = 'none';
                   }}
@@ -83,67 +77,87 @@ const ExplorePage = () => {
             {/* Post Details */}
             <div className="p-6 flex flex-col">
               {/* Header */}
-              <div className="pb-4 border-b border-gray-200 mb-4">
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="pb-4 border-b border-gray-100 mb-4"
+              >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    className="w-11 h-11 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm"
+                  >
                     {post?.author?.fullName?.charAt(0) || 'U'}
-                  </div>
+                  </motion.div>
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm text-gray-900 truncate">
                       {post?.author?.fullName || 'Unknown'}
                     </p>
-                    <span className={`text-xs px-2 py-1 rounded-full font-medium inline-block ${getRoleColor(post?.author?.role)}`}>
-                      {getRoleLabel(post?.author?.role)}
-                    </span>
+                    <RoleBadge role={post?.author?.role} />
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Caption & Location */}
-              <div className="py-4 flex-1 overflow-auto">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="py-4 flex-1 overflow-auto"
+              >
                 {post.caption && (
                   <div className="mb-4">
                     <p className="text-sm text-gray-900 leading-relaxed">{post.caption}</p>
                   </div>
                 )}
                 {post.location && (
-                  <div className="text-xs text-gray-600 font-medium">
-                    📍 {post.location}
+                  <div className="text-sm text-gray-600 font-medium flex items-center gap-2">
+                    <span>📍</span>
+                    {post.location}
                   </div>
                 )}
-              </div>
+              </motion.div>
 
               {/* Stats */}
-              <div className="border-t border-gray-200 pt-4 mb-4">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="border-t border-gray-100 pt-4 mb-4 bg-gray-50/50 -mx-6 px-6 py-4"
+              >
                 <div className="grid grid-cols-3 gap-4 text-center">
-                  <div className="py-2">
-                    <p className="text-2xl font-bold text-gray-900">{post.likeCount || 0}</p>
-                    <p className="text-xs text-gray-600 flex items-center justify-center gap-1 mt-1">
-                      <Heart size={14} /> Likes
+                  <motion.div whileHover={{ scale: 1.05 }} className="py-2">
+                    <p className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
+                      {post.likeCount || 0}
                     </p>
-                  </div>
-                  <div className="py-2 border-l border-r border-gray-200">
-                    <p className="text-2xl font-bold text-gray-900">{post.commentCount || 0}</p>
                     <p className="text-xs text-gray-600 flex items-center justify-center gap-1 mt-1">
-                      <MessageCircle size={14} /> Comments
+                      <Heart size={14} className="text-rose-500" /> Likes
                     </p>
-                  </div>
-                  <div className="py-2">
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.05 }} className="py-2 border-l border-r border-gray-200">
+                    <p className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                      {post.commentCount || 0}
+                    </p>
+                    <p className="text-xs text-gray-600 flex items-center justify-center gap-1 mt-1">
+                      <MessageCircle size={14} className="text-blue-500" /> Comments
+                    </p>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.05 }} className="py-2">
                     <p className="text-2xl font-bold text-gray-900">∞</p>
                     <p className="text-xs text-gray-600 flex items-center justify-center gap-1 mt-1">
-                      <Eye size={14} /> Views
+                      <Eye size={14} className="text-gray-500" /> Views
                     </p>
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Close Button */}
-              <button
+              <motion.button
+                whileHover={{ backgroundColor: '#f3f4f6' }}
+                whileTap={{ scale: 0.98 }}
                 onClick={onClose}
                 className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 py-2 rounded-lg font-semibold transition"
               >
                 Close
-              </button>
+              </motion.button>
             </div>
           </div>
         </motion.div>
@@ -182,14 +196,20 @@ const ExplorePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <SocialNavBar />
-      
+
       {/* Header */}
-      <div className="sticky top-0 bg-white border-b border-gray-200 p-4 z-40 md:ml-72">
-        <h1 className="text-2xl font-bold text-gray-900">Explore</h1>
-        <p className="text-sm text-gray-600">Discover trending posts from the community</p>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="sticky top-0 bg-white/95 backdrop-blur-sm border-b border-gray-100 p-4 z-40 md:ml-72 shadow-sm"
+      >
+        <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+          Explore
+        </h1>
+        <p className="text-sm text-gray-500 mt-1">Discover trending posts from the community</p>
+      </motion.div>
 
       {/* Posts Grid */}
       <div className="max-w-7xl mx-auto p-4 md:ml-72">
@@ -214,15 +234,18 @@ const ExplorePage = () => {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ delay: index * 0.05 }}
+                  transition={{ delay: index * 0.03, type: 'spring', stiffness: 200 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => setSelectedPost(post)}
-                  className="aspect-square bg-gray-100 cursor-pointer group relative overflow-hidden rounded-lg transition hover:shadow-lg"
+                  className="aspect-square bg-gray-100 cursor-pointer group relative overflow-hidden rounded-xl transition-all hover:shadow-xl border border-gray-100"
                 >
                   {post.imageUrl && (
                     <img
                       src={post.imageUrl}
                       alt="Post thumbnail"
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                      loading="lazy"
                       onError={(e) => {
                         e.target.style.display = 'none';
                       }}
@@ -230,23 +253,34 @@ const ExplorePage = () => {
                   )}
 
                   {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center gap-4">
-                    <div className="text-white text-center">
-                      <Heart size={20} className="fill-white mx-auto mb-1" />
-                      <p className="text-xs font-semibold">{post.likeCount || 0}</p>
-                    </div>
-                    <div className="text-white text-center">
-                      <MessageCircle size={20} className="mx-auto mb-1" />
-                      <p className="text-xs font-semibold">{post.commentCount || 0}</p>
-                    </div>
-                  </div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-center justify-center gap-6"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      className="text-white text-center"
+                    >
+                      <Heart size={24} className="fill-white mx-auto mb-2" />
+                      <p className="text-sm font-semibold">{post.likeCount || 0}</p>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      className="text-white text-center"
+                    >
+                      <MessageCircle size={24} className="mx-auto mb-2" />
+                      <p className="text-sm font-semibold">{post.commentCount || 0}</p>
+                    </motion.div>
+                  </motion.div>
 
                   {/* No Image Fallback */}
                   {!post.imageUrl && (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-100 to-pink-100 p-2">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-100 via-pink-100 to-orange-100 p-4">
                       <div className="text-center">
-                        <p className="text-xs font-semibold text-gray-700 line-clamp-2">
-                          {post.caption?.substring(0, 40)}...
+                        <p className="text-sm font-semibold text-gray-800 line-clamp-3">
+                          {post.caption?.substring(0, 50)}...
                         </p>
                       </div>
                     </div>

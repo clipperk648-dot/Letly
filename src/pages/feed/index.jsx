@@ -6,6 +6,7 @@ import { getProfile } from '../../services/authServices';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import SocialNavBar from '../../components/ui/SocialNavBar';
+import { RoleBadge } from '../../components/ui/Badge';
 import { toast } from 'react-toastify';
 
 const FeedPage = () => {
@@ -133,14 +134,6 @@ const FeedPage = () => {
     toast.info('Sharing functionality coming soon');
   };
 
-  const getRoleLabel = (role) => {
-    return role === 'landlord' ? 'Agent' : 'Customer';
-  };
-
-  const getRoleColor = (role) => {
-    return role === 'landlord' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800';
-  };
-
   if (error && posts.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -172,15 +165,33 @@ const FeedPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <SocialNavBar />
-      
+
       <div className="max-w-2xl mx-auto md:ml-72">
         {/* Feed Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 z-40">
-          <h1 className="text-2xl font-bold text-gray-900">Community Feed</h1>
-          <p className="text-sm text-gray-500">Connect with landlords and tenants</p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="sticky top-0 bg-white/95 backdrop-blur-sm border-b border-gray-100 p-4 z-40 shadow-sm"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Community Feed
+              </h1>
+              <p className="text-sm text-gray-500 mt-1">Connect with landlords and tenants</p>
+            </div>
+            <motion.button
+              onClick={() => navigate('/create-post')}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full font-semibold shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+            >
+              <span>+</span> Create
+            </motion.button>
+          </div>
+        </motion.div>
 
         {/* Posts Feed */}
         <div className="space-y-6 p-4 md:p-0">
@@ -207,25 +218,27 @@ const FeedPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="bg-white rounded-lg shadow-sm overflow-hidden"
+                  transition={{ delay: index * 0.05, type: 'spring', stiffness: 200 }}
+                  whileHover={{ y: -2 }}
+                  className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-shadow duration-300"
                 >
                   {/* Post Header */}
-                  <div className="px-4 py-3 flex items-center justify-between border-b border-gray-100">
+                  <div className="px-4 py-3 flex items-center justify-between border-b border-gray-50">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm">
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        className="flex-shrink-0 w-11 h-11 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-sm"
+                      >
                         {post?.author?.fullName?.charAt(0) || 'U'}
-                      </div>
+                      </motion.div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <p className="font-semibold text-sm text-gray-900 truncate">
                             {post?.author?.fullName || 'Unknown User'}
                           </p>
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${getRoleColor(post?.author?.role)}`}>
-                            {getRoleLabel(post?.author?.role)}
-                          </span>
+                          <RoleBadge role={post?.author?.role} />
                         </div>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-400">
                           {post?.createdAt
                             ? new Date(post.createdAt).toLocaleDateString('en-US', {
                                 year: 'numeric',
@@ -236,9 +249,12 @@ const FeedPage = () => {
                         </p>
                       </div>
                     </div>
-                    <button className="p-2 hover:bg-gray-100 rounded-full transition">
+                    <motion.button
+                      whileHover={{ rotate: 90 }}
+                      className="p-2 hover:bg-gray-100 rounded-full transition"
+                    >
                       <MoreVertical size={18} className="text-gray-600" />
-                    </button>
+                    </motion.button>
                   </div>
 
                   {/* Post Image */}
@@ -248,6 +264,7 @@ const FeedPage = () => {
                         src={post.imageUrl}
                         alt="Post content"
                         className="w-full h-full object-cover"
+                        loading="lazy"
                         onError={(e) => {
                           e.target.style.display = 'none';
                         }}
@@ -256,39 +273,54 @@ const FeedPage = () => {
                   )}
 
                   {/* Action Buttons */}
-                  <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-                    <button
+                  <div className="px-4 py-3 border-b border-gray-50 flex items-center justify-between">
+                    <motion.button
                       onClick={() => handleLike(post._id, post.isLiked)}
                       disabled={liking[post._id]}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       className="flex items-center gap-2 text-gray-600 hover:text-rose-600 transition disabled:opacity-50"
                     >
-                      <Heart
-                        size={22}
-                        className={`transition ${
-                          post.isLiked ? 'fill-rose-600 text-rose-600' : ''
-                        }`}
-                      />
+                      <motion.div
+                        animate={post.isLiked ? { scale: [1, 1.3, 1] } : {}}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <Heart
+                          size={22}
+                          className={`transition ${
+                            post.isLiked ? 'fill-rose-600 text-rose-600' : ''
+                          }`}
+                        />
+                      </motion.div>
                       <span className="text-sm font-medium">{post.likeCount || 0}</span>
-                    </button>
+                    </motion.button>
 
-                    <button className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition"
+                    >
                       <MessageCircle size={22} />
                       <span className="text-sm font-medium">{post.commentCount || 0}</span>
-                    </button>
+                    </motion.button>
 
-                    <button
+                    <motion.button
                       onClick={() => handleSharePost(post._id)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition"
                     >
                       <Share2 size={22} />
-                    </button>
+                    </motion.button>
 
-                    <button
+                    <motion.button
                       onClick={() => handleSavePost(post._id)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       className="flex items-center gap-2 text-gray-600 hover:text-yellow-500 transition"
                     >
                       <Bookmark size={22} />
-                    </button>
+                    </motion.button>
                   </div>
 
                   {/* Post Caption */}
@@ -308,27 +340,38 @@ const FeedPage = () => {
 
                   {/* Comments Section */}
                   {post.commentCount > 0 && post.comments && post.comments.length > 0 && (
-                    <div className="px-4 py-3 border-b border-gray-100">
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="px-4 py-3 border-b border-gray-50 bg-gray-50/50"
+                    >
                       {!expandedComments[post._id] && post.comments.length > 2 && (
-                        <button
+                        <motion.button
+                          whileHover={{ x: 2 }}
                           onClick={() =>
                             setExpandedComments(prev => ({
                               ...prev,
                               [post._id]: true
                             }))
                           }
-                          className="text-sm text-gray-500 hover:text-gray-700 mb-3 font-medium"
+                          className="text-sm text-gray-500 hover:text-gray-700 mb-3 font-medium transition"
                         >
                           View all {post.commentCount} comments
-                        </button>
+                        </motion.button>
                       )}
 
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         {(expandedComments[post._id]
                           ? post.comments
                           : post.comments.slice(-2)
-                        ).map((comment) => (
-                          <div key={comment?._id || Math.random()} className="text-sm">
+                        ).map((comment, idx) => (
+                          <motion.div
+                            key={comment?._id || idx}
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.05 }}
+                            className="text-sm"
+                          >
                             <div className="flex gap-2">
                               <span className="font-semibold text-gray-900 flex-shrink-0">
                                 {comment?.author?.fullName || 'Unknown'}
@@ -340,23 +383,26 @@ const FeedPage = () => {
                                 {new Date(comment.createdAt).toLocaleDateString()}
                               </p>
                             )}
-                          </div>
+                          </motion.div>
                         ))}
                       </div>
-                    </div>
+                    </motion.div>
                   )}
 
                   {/* Add Comment */}
-                  <div className="px-4 py-3 border-t border-gray-100">
+                  <div className="px-4 py-3 border-t border-gray-50 bg-white">
                     <div className="flex items-end gap-2">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold shadow-sm"
+                      >
                         {currentUser?.fullName?.charAt(0) || 'U'}
-                      </div>
+                      </motion.div>
                       <div className="flex-1 flex gap-2">
                         <Input
                           type="text"
                           placeholder="Add a comment..."
-                          className="text-sm border border-gray-200 bg-gray-50 px-3 py-2 rounded-full placeholder-gray-500"
+                          className="text-sm border border-gray-200 bg-gray-50 px-3 py-2 rounded-full placeholder-gray-400 focus:bg-white focus:ring-1 focus:ring-blue-400 transition"
                           value={newComments[post._id] || ''}
                           onChange={(e) =>
                             setNewComments(prev => ({
@@ -371,13 +417,15 @@ const FeedPage = () => {
                           }}
                           disabled={commenting[post._id]}
                         />
-                        <button
+                        <motion.button
                           onClick={() => handleAddComment(post._id)}
                           disabled={commenting[post._id] || !newComments[post._id]?.trim()}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           className="text-blue-500 hover:text-blue-600 font-semibold text-sm px-3 py-2 disabled:opacity-50 transition"
                         >
                           {commenting[post._id] ? '...' : 'Post'}
-                        </button>
+                        </motion.button>
                       </div>
                     </div>
                   </div>

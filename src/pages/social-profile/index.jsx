@@ -8,6 +8,53 @@ import Button from '../../components/ui/Button';
 import SocialNavBar from '../../components/ui/SocialNavBar';
 import { toast } from 'react-toastify';
 
+const PostGridItem = ({ post, index }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ delay: index * 0.05 }}
+    className="aspect-square bg-gray-100 cursor-pointer group relative overflow-hidden rounded-xl border border-gray-100 hover:shadow-lg transition-all"
+  >
+    {post?.imageUrl && (
+      <img
+        src={post.imageUrl}
+        alt="Post thumbnail"
+        className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+        loading="lazy"
+        onError={(e) => {
+          e.target.style.display = 'none';
+        }}
+      />
+    )}
+
+    {/* Hover Overlay */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileHover={{ opacity: 1 }}
+      className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-center justify-center gap-6"
+    >
+      <motion.div whileHover={{ scale: 1.1 }} className="text-white text-center">
+        <Heart size={24} className="fill-white mx-auto mb-2" />
+        <p className="text-sm font-semibold">{post?.likeCount || 0}</p>
+      </motion.div>
+      <motion.div whileHover={{ scale: 1.1 }} className="text-white text-center">
+        <MessageCircle size={24} className="mx-auto mb-2" />
+        <p className="text-sm font-semibold">{post?.commentCount || 0}</p>
+      </motion.div>
+    </motion.div>
+
+    {/* No Image Fallback */}
+    {!post?.imageUrl && (
+      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-100 via-pink-100 to-orange-100 p-2">
+        <p className="text-xs font-semibold text-gray-800 text-center line-clamp-3">
+          {post?.caption?.substring(0, 40)}...
+        </p>
+      </div>
+    )}
+  </motion.div>
+);
+
 const SocialProfilePage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -20,6 +67,9 @@ const SocialProfilePage = () => {
   const [error, setError] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const [following, setFollowing] = useState(false);
+  const [activeTab, setActiveTab] = useState('posts');
+  const [savedPosts, setSavedPosts] = useState([]);
+  const [repostedPosts, setRepostedPosts] = useState([]);
 
   useEffect(() => {
     loadProfile();
@@ -48,6 +98,14 @@ const SocialProfilePage = () => {
           p => p?.author?.email === (userEmail || currentUserRes?.data?.user?.email)
         );
         setUserPosts(filtered);
+
+        // Simulate saved posts (in real app, would come from API)
+        const saved = filtered.slice(0, Math.ceil(filtered.length / 2));
+        setSavedPosts(saved);
+
+        // Simulate reposted posts (in real app, would come from API)
+        const reposts = filtered.slice(Math.ceil(filtered.length / 2));
+        setRepostedPosts(reposts);
       }
     } catch (error) {
       console.error('Error loading profile:', error);
@@ -266,78 +324,121 @@ const SocialProfilePage = () => {
           </div>
         </div>
 
-        {/* Posts Section */}
-        <div className="p-6 md:p-8">
-          {userPosts.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-16"
-            >
-              <div className="mb-4 text-5xl">📸</div>
-              <p className="text-gray-600 mb-4">
-                {isOwnProfile ? "You haven't posted yet" : 'No posts yet'}
-              </p>
-              {isOwnProfile && (
-                <Button
-                  className="bg-blue-500 hover:bg-blue-600 text-white"
-                  onClick={() => navigate('/create-post')}
+        {/* Posts Section with Tabs */}
+        <div className="border-t border-gray-200">
+          {/* Tab Navigation */}
+          <div className="flex border-b border-gray-200 bg-white sticky top-14 md:top-0 z-20">
+            {[
+              { id: 'posts', label: 'Posts', count: userPosts.length },
+              { id: 'saved', label: 'Saved', count: savedPosts.length },
+              { id: 'reposts', label: 'Reposts', count: repostedPosts.length }
+            ].map((tab) => (
+              <motion.button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                whileHover={{ backgroundColor: 'rgba(0,0,0,0.02)' }}
+                className={`flex-1 py-4 px-6 font-semibold border-b-2 transition-all text-center ${
+                  activeTab === tab.id
+                    ? 'border-gray-900 text-gray-900'
+                    : 'border-transparent text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <span>{tab.label}</span>
+                <span className="ml-2 text-sm font-normal text-gray-500">({tab.count})</span>
+              </motion.button>
+            ))}
+          </div>
+
+          {/* Tab Content */}
+          <div className="p-6 md:p-8">
+            <AnimatePresence mode="wait">
+              {activeTab === 'posts' && (
+                <motion.div
+                  key="posts"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                 >
-                  Create your first post
-                </Button>
+                  {userPosts.length === 0 ? (
+                    <div className="text-center py-16">
+                      <div className="mb-4 text-5xl">📸</div>
+                      <p className="text-gray-600 mb-4">
+                        {isOwnProfile ? "You haven't posted yet" : 'No posts yet'}
+                      </p>
+                      {isOwnProfile && (
+                        <Button
+                          className="bg-blue-500 hover:bg-blue-600 text-white"
+                          onClick={() => navigate('/create-post')}
+                        >
+                          Create your first post
+                        </Button>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
+                      <AnimatePresence>
+                        {userPosts.map((post, index) => (
+                          <PostGridItem key={post?._id || index} post={post} index={index} />
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  )}
+                </motion.div>
               )}
-            </motion.div>
-          ) : (
-            <>
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Posts</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
-                <AnimatePresence>
-                  {userPosts.map((post, index) => (
-                    <motion.div
-                      key={post?._id || index}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="aspect-square bg-gray-100 cursor-pointer group relative overflow-hidden rounded-lg transition hover:shadow-lg"
-                    >
-                      {post?.imageUrl && (
-                        <img
-                          src={post.imageUrl}
-                          alt="Post thumbnail"
-                          className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                          }}
-                        />
-                      )}
 
-                      {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center gap-4">
-                        <div className="text-white text-center">
-                          <Heart size={20} className="fill-white mx-auto mb-1" />
-                          <p className="text-xs font-semibold">{post?.likeCount || 0}</p>
-                        </div>
-                        <div className="text-white text-center">
-                          <MessageCircle size={20} className="mx-auto mb-1" />
-                          <p className="text-xs font-semibold">{post?.commentCount || 0}</p>
-                        </div>
-                      </div>
+              {activeTab === 'saved' && (
+                <motion.div
+                  key="saved"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {savedPosts.length === 0 ? (
+                    <div className="text-center py-16">
+                      <div className="mb-4 text-5xl">💾</div>
+                      <p className="text-gray-600 mb-4">
+                        {isOwnProfile ? "You haven't saved any posts yet" : 'No saved posts'}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
+                      <AnimatePresence>
+                        {savedPosts.map((post, index) => (
+                          <PostGridItem key={post?._id || index} post={post} index={index} />
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  )}
+                </motion.div>
+              )}
 
-                      {/* No Image Fallback */}
-                      {!post?.imageUrl && (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-100 to-pink-100 p-2">
-                          <p className="text-xs font-semibold text-gray-700 text-center line-clamp-2">
-                            {post?.caption?.substring(0, 30)}...
-                          </p>
-                        </div>
-                      )}
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </>
-          )}
+              {activeTab === 'reposts' && (
+                <motion.div
+                  key="reposts"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {repostedPosts.length === 0 ? (
+                    <div className="text-center py-16">
+                      <div className="mb-4 text-5xl">🔄</div>
+                      <p className="text-gray-600 mb-4">
+                        {isOwnProfile ? "You haven't reposted yet" : 'No reposts'}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
+                      <AnimatePresence>
+                        {repostedPosts.map((post, index) => (
+                          <PostGridItem key={post?._id || index} post={post} index={index} />
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Bottom Padding */}
