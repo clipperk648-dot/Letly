@@ -66,6 +66,7 @@ const ExplorePage = () => {
                   src={post.imageUrl}
                   alt="Post content"
                   className="w-full h-full object-cover"
+                  loading="lazy"
                   onError={(e) => {
                     e.target.style.display = 'none';
                   }}
