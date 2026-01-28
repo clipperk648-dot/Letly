@@ -64,12 +64,12 @@ const ExplorePage = () => {
               <div className="pb-4 border-b border-gray-200">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold">
-                    {post.author.fullName.charAt(0)}
+                    {post?.author?.fullName?.charAt(0) || 'U'}
                   </div>
                   <div>
-                    <p className="font-semibold text-sm">{post.author.fullName}</p>
+                    <p className="font-semibold text-sm">{post?.author?.fullName || 'Unknown'}</p>
                     <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                      {post.author.role === 'landlord' ? 'Agent' : 'Customer'}
+                      {post?.author?.role === 'landlord' ? 'Agent' : 'Customer'}
                     </span>
                   </div>
                 </div>
