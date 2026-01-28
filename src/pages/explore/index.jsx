@@ -215,6 +215,7 @@ const ExplorePage = () => {
                       src={post.imageUrl}
                       alt="Post thumbnail"
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      loading="lazy"
                       onError={(e) => {
                         e.target.style.display = 'none';
                       }}
