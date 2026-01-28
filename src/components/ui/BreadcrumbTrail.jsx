@@ -18,15 +18,20 @@ const BreadcrumbTrail = ({ customBreadcrumbs = null, userRole = 'tenant' }) => {
     '/properties': { label: 'My Properties', icon: 'Building' },
     '/messages': { label: 'Messages', icon: 'MessageSquare' },
     '/favorites': { label: 'Favorites', icon: 'Heart' },
-    '/profile': { label: 'Profile', icon: 'User' },
+    '/account-profile': { label: 'Profile', icon: 'User' },
+    '/social-profile': { label: 'Social Profile', icon: 'User' },
     '/settings': { label: 'Settings', icon: 'Settings' },
-    '/notifications': { label: 'Notifications', icon: 'Bell' },
+    '/account-notifications': { label: 'Notifications', icon: 'Bell' },
+    '/social-notifications': { label: 'Notifications', icon: 'Bell' },
     '/help': { label: 'Help', icon: 'HelpCircle' },
     '/support': { label: 'Support', icon: 'LifeBuoy' },
     '/analytics': { label: 'Analytics', icon: 'BarChart3' },
     '/billing': { label: 'Billing', icon: 'CreditCard' },
     '/applications': { label: 'Applications', icon: 'FileText' },
-    '/payments': { label: 'Payments', icon: 'CreditCard' }
+    '/payments': { label: 'Payments', icon: 'CreditCard' },
+    '/feed': { label: 'Community Feed', icon: 'Share2' },
+    '/explore': { label: 'Explore', icon: 'Compass' },
+    '/create-post': { label: 'Create Post', icon: 'Plus' }
   };
 
   const generateBreadcrumbs = () => {
