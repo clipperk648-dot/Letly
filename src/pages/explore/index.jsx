@@ -77,11 +77,18 @@ const ExplorePage = () => {
             {/* Post Details */}
             <div className="p-6 flex flex-col">
               {/* Header */}
-              <div className="pb-4 border-b border-gray-200 mb-4">
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="pb-4 border-b border-gray-100 mb-4"
+              >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    className="w-11 h-11 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm"
+                  >
                     {post?.author?.fullName?.charAt(0) || 'U'}
-                  </div>
+                  </motion.div>
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm text-gray-900 truncate">
                       {post?.author?.fullName || 'Unknown'}
@@ -89,53 +96,68 @@ const ExplorePage = () => {
                     <RoleBadge role={post?.author?.role} />
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Caption & Location */}
-              <div className="py-4 flex-1 overflow-auto">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="py-4 flex-1 overflow-auto"
+              >
                 {post.caption && (
                   <div className="mb-4">
                     <p className="text-sm text-gray-900 leading-relaxed">{post.caption}</p>
                   </div>
                 )}
                 {post.location && (
-                  <div className="text-xs text-gray-600 font-medium">
-                    📍 {post.location}
+                  <div className="text-sm text-gray-600 font-medium flex items-center gap-2">
+                    <span>📍</span>
+                    {post.location}
                   </div>
                 )}
-              </div>
+              </motion.div>
 
               {/* Stats */}
-              <div className="border-t border-gray-200 pt-4 mb-4">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="border-t border-gray-100 pt-4 mb-4 bg-gray-50/50 -mx-6 px-6 py-4"
+              >
                 <div className="grid grid-cols-3 gap-4 text-center">
-                  <div className="py-2">
-                    <p className="text-2xl font-bold text-gray-900">{post.likeCount || 0}</p>
-                    <p className="text-xs text-gray-600 flex items-center justify-center gap-1 mt-1">
-                      <Heart size={14} /> Likes
+                  <motion.div whileHover={{ scale: 1.05 }} className="py-2">
+                    <p className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
+                      {post.likeCount || 0}
                     </p>
-                  </div>
-                  <div className="py-2 border-l border-r border-gray-200">
-                    <p className="text-2xl font-bold text-gray-900">{post.commentCount || 0}</p>
                     <p className="text-xs text-gray-600 flex items-center justify-center gap-1 mt-1">
-                      <MessageCircle size={14} /> Comments
+                      <Heart size={14} className="text-rose-500" /> Likes
                     </p>
-                  </div>
-                  <div className="py-2">
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.05 }} className="py-2 border-l border-r border-gray-200">
+                    <p className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                      {post.commentCount || 0}
+                    </p>
+                    <p className="text-xs text-gray-600 flex items-center justify-center gap-1 mt-1">
+                      <MessageCircle size={14} className="text-blue-500" /> Comments
+                    </p>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.05 }} className="py-2">
                     <p className="text-2xl font-bold text-gray-900">∞</p>
                     <p className="text-xs text-gray-600 flex items-center justify-center gap-1 mt-1">
-                      <Eye size={14} /> Views
+                      <Eye size={14} className="text-gray-500" /> Views
                     </p>
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Close Button */}
-              <button
+              <motion.button
+                whileHover={{ backgroundColor: '#f3f4f6' }}
+                whileTap={{ scale: 0.98 }}
                 onClick={onClose}
                 className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 py-2 rounded-lg font-semibold transition"
               >
                 Close
-              </button>
+              </motion.button>
             </div>
           </div>
         </motion.div>
