@@ -93,7 +93,7 @@ const SocialProfilePage = () => {
               <div className="flex gap-6 md:gap-8 mb-6 md:mb-0">
                 {/* Profile Picture */}
                 <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-5xl font-bold flex-shrink-0">
-                  {profile.fullName.charAt(0)}
+                  {profile?.fullName?.charAt(0) || 'U'}
                 </div>
 
                 {/* Profile Stats - Mobile */}
