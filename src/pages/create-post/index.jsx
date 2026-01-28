@@ -148,41 +148,63 @@ const CreatePostPage = () => {
         {/* Main Content */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Image Upload Section */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100"
+          >
             <label className="block text-sm font-semibold mb-4 text-gray-900">
               Post Image
             </label>
-            
-            {imageUrl || imagePreview ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="relative w-full bg-gray-100 rounded-lg overflow-hidden"
-              >
-                <img
-                  src={imagePreview || imageUrl}
-                  alt="Post preview"
-                  className="w-full h-96 object-cover"
-                  onError={() => setError('Failed to load image')}
-                />
-                <button
-                  type="button"
-                  onClick={handleRemoveImage}
-                  className="absolute top-3 right-3 bg-black/70 hover:bg-black text-white p-2 rounded-full transition"
+
+            <AnimatePresence mode="wait">
+              {imageUrl || imagePreview ? (
+                <motion.div
+                  key="image-preview"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="relative w-full bg-gray-100 rounded-xl overflow-hidden group"
                 >
-                  <X size={20} />
-                </button>
-              </motion.div>
-            ) : (
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full border-2 border-dashed border-gray-300 rounded-lg p-12 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition"
-              >
-                <ImageIcon size={48} className="mx-auto text-gray-400 mb-4" />
-                <p className="text-gray-700 font-semibold mb-2">Click to upload an image</p>
-                <p className="text-sm text-gray-500">PNG, JPG, GIF up to 10MB</p>
-              </div>
-            )}
+                  <img
+                    src={imagePreview || imageUrl}
+                    alt="Post preview"
+                    className="w-full h-96 object-cover group-hover:brightness-95 transition-all duration-300"
+                    onError={() => setError('Failed to load image')}
+                  />
+                  <motion.button
+                    whileHover={{ scale: 1.1, rotate: 90 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="absolute top-3 right-3 bg-black/70 hover:bg-black text-white p-2 rounded-full transition shadow-lg"
+                  >
+                    <X size={20} />
+                  </motion.button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="upload-area"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  onClick={() => fileInputRef.current?.click()}
+                  whileHover={{ backgroundColor: '#eff6ff', borderColor: '#3b82f6' }}
+                  className="w-full border-2 border-dashed border-gray-300 rounded-xl p-12 text-center cursor-pointer transition-all duration-300"
+                >
+                  <motion.div
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="mb-4"
+                  >
+                    <ImageIcon size={48} className="mx-auto text-gray-400" />
+                  </motion.div>
+                  <p className="text-gray-700 font-semibold mb-2">Click to upload an image</p>
+                  <p className="text-sm text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <input
               ref={fileInputRef}
               type="file"
@@ -191,7 +213,7 @@ const CreatePostPage = () => {
               onChange={handleImageSelect}
               disabled={loading}
             />
-          </div>
+          </motion.div>
 
           {/* Caption Section */}
           <div className="bg-white rounded-lg shadow-sm p-6">
