@@ -225,11 +225,10 @@ const CreatePostPage = () => {
             <label className="block text-sm font-semibold mb-3 text-gray-900">
               Caption
             </label>
-            <motion.textarea
+            <textarea
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               placeholder="Write a caption... Share what's on your mind, ask questions, or inspire others!"
-              whileFocus={{ scale: 1.01 }}
               className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 placeholder-gray-400 transition-all"
               rows={5}
               maxLength={2200}
