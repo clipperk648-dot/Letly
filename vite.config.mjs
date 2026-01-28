@@ -44,32 +44,50 @@ function netlifyFunctionsMiddleware() {
             const mod = imported?.default || imported;
             const handler = mod?.handler || mod;
 
+            // Parse query string from URL
+            const urlObj = new URL(req.url, 'http://localhost');
+            const query = Object.fromEntries(urlObj.searchParams);
+
             // For direct API files (not netlify functions)
             if (!mod?.handler && typeof mod === 'function') {
-              // This is a direct API handler
-              await handler({
+              // This is a direct API handler - wrap it to capture res methods
+              let statusCode = 200;
+              let responseBody = '';
+              const responseHeaders = {};
+
+              const mockRes = {
+                setHeader: (key, value) => {
+                  responseHeaders[key] = value;
+                },
+                status: (code) => mockRes,
+                json: (data) => {
+                  statusCode = 200;
+                  responseHeaders['Content-Type'] = 'application/json';
+                  responseBody = JSON.stringify(data);
+                  res.statusCode = statusCode;
+                  for (const [k, v] of Object.entries(responseHeaders)) {
+                    res.setHeader(k, v);
+                  }
+                  res.end(responseBody);
+                },
+                end: (body) => {
+                  if (body) responseBody = body;
+                  res.statusCode = statusCode;
+                  for (const [k, v] of Object.entries(responseHeaders)) {
+                    res.setHeader(k, v);
+                  }
+                  res.end(responseBody);
+                },
+              };
+
+              const mockReq = {
                 method: req.method || "GET",
                 headers: req.headers || {},
-                body: body,
-                query: req.query || {},
-              }, {
-                statusCode: 200,
-                setHeader: (key, value) => {
-                  res.setHeader(key, value);
-                },
-                status: (code) => ({
-                  statusCode: code,
-                  json: (data) => {
-                    res.statusCode = code;
-                    res.setHeader('Content-Type', 'application/json');
-                    res.end(JSON.stringify(data));
-                  },
-                  end: () => {
-                    res.statusCode = code;
-                    res.end();
-                  }
-                }),
-              });
+                body: body && body.length > 0 ? JSON.parse(body) : {},
+                query: query,
+              };
+
+              await handler(mockReq, mockRes);
             } else {
               // This is a netlify function
               const result = await handler({
