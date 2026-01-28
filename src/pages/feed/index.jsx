@@ -211,7 +211,7 @@ const FeedPage = () => {
                       <div className="mt-3 space-y-2">
                         {comments[post._id]?.map(comment => (
                           <div key={comment._id} className="text-xs">
-                            <span className="font-semibold">{comment.author.fullName}</span> {comment.text}
+                            <span className="font-semibold">{comment?.author?.fullName || 'Unknown'}</span> {comment.text}
                             <p className="text-gray-500 mt-1">{new Date(comment.createdAt).toLocaleDateString()}</p>
                           </div>
                         ))}
