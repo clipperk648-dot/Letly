@@ -101,23 +101,31 @@ const CreatePostPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <SocialNavBar />
       <div className="max-w-2xl mx-auto p-4 md:ml-72 pb-20">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6 flex items-center justify-between">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-2xl shadow-sm p-6 mb-6 flex items-center justify-between border border-gray-100"
+        >
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Create Post</h1>
-            <p className="text-gray-600 text-sm mt-1">Share something with the community</p>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+              Create Post
+            </h1>
+            <p className="text-gray-500 text-sm mt-2">Share something with the community</p>
           </div>
-          <button
+          <motion.button
             onClick={() => navigate('/feed')}
+            whileHover={{ rotate: 90, backgroundColor: '#f3f4f6' }}
+            whileTap={{ scale: 0.95 }}
             className="p-2 hover:bg-gray-100 rounded-full transition"
             title="Close"
           >
             <X size={24} className="text-gray-600" />
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
 
         {/* Error Alert */}
         {error && (
