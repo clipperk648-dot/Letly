@@ -223,7 +223,7 @@ const FeedPage = () => {
                 {/* Add Comment */}
                 <div className="px-4 py-3 border-t border-gray-100 flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
-                    {currentUser?.fullName.charAt(0)}
+                    {currentUser?.fullName?.charAt(0) || 'U'}
                   </div>
                   <div className="flex-1 flex gap-2">
                     <Input
