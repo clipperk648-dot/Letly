@@ -43,14 +43,6 @@ const ExplorePage = () => {
   const PostModal = ({ post, onClose }) => {
     if (!post) return null;
 
-    const getRoleLabel = (role) => {
-      return role === 'landlord' ? 'Agent' : 'Customer';
-    };
-
-    const getRoleColor = (role) => {
-      return role === 'landlord' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800';
-    };
-
     return (
       <motion.div
         initial={{ opacity: 0 }}
