@@ -206,15 +206,19 @@ const FeedPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="bg-white rounded-lg shadow-sm overflow-hidden"
+                  transition={{ delay: index * 0.05, type: 'spring', stiffness: 200 }}
+                  whileHover={{ y: -2 }}
+                  className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-shadow duration-300"
                 >
                   {/* Post Header */}
-                  <div className="px-4 py-3 flex items-center justify-between border-b border-gray-100">
+                  <div className="px-4 py-3 flex items-center justify-between border-b border-gray-50">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm">
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        className="flex-shrink-0 w-11 h-11 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-sm"
+                      >
                         {post?.author?.fullName?.charAt(0) || 'U'}
-                      </div>
+                      </motion.div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <p className="font-semibold text-sm text-gray-900 truncate">
@@ -222,7 +226,7 @@ const FeedPage = () => {
                           </p>
                           <RoleBadge role={post?.author?.role} />
                         </div>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-400">
                           {post?.createdAt
                             ? new Date(post.createdAt).toLocaleDateString('en-US', {
                                 year: 'numeric',
@@ -233,9 +237,12 @@ const FeedPage = () => {
                         </p>
                       </div>
                     </div>
-                    <button className="p-2 hover:bg-gray-100 rounded-full transition">
+                    <motion.button
+                      whileHover={{ rotate: 90 }}
+                      className="p-2 hover:bg-gray-100 rounded-full transition"
+                    >
                       <MoreVertical size={18} className="text-gray-600" />
-                    </button>
+                    </motion.button>
                   </div>
 
                   {/* Post Image */}
