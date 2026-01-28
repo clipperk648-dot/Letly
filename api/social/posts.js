@@ -47,10 +47,28 @@ module.exports = async function handler(req, res) {
         .limit(parseInt(limit))
         .toArray();
 
-      // Enrich posts with author info
+      // Enrich posts with author info and comments
       const enrichedPosts = await Promise.all(
         postList.map(async (post) => {
           const author = await users.findOne({ email: post.authorEmail });
+
+          // Enrich comments with author info
+          const enrichedComments = await Promise.all(
+            (post.comments || []).map(async (comment) => {
+              const commentAuthor = await users.findOne({ email: comment.authorEmail });
+              return {
+                ...comment,
+                _id: comment._id.toString(),
+                author: {
+                  fullName: commentAuthor?.fullName || 'Unknown',
+                  username: commentAuthor?.username || comment.authorEmail.split('@')[0],
+                  profilePicture: commentAuthor?.profilePicture,
+                  role: commentAuthor?.role,
+                },
+              };
+            })
+          );
+
           return {
             ...post,
             _id: post._id.toString(),
@@ -61,6 +79,7 @@ module.exports = async function handler(req, res) {
               profilePicture: author.profilePicture,
               role: author.role,
             },
+            comments: enrichedComments,
             likeCount: post.likes ? post.likes.length : 0,
             commentCount: post.comments ? post.comments.length : 0,
             isLiked: post.likes ? post.likes.includes(payload.email) : false,
