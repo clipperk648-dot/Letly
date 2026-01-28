@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Send, Heart, Image as ImageIcon, Video as VideoIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../../../components/ui/Button';
 import Icon from '../../../components/AppIcon';
 import MessageBubble from './MessageBubble';
+import Input from '../../../components/ui/Input';
 
 const ChatWindow = ({ conversation, onSend }) => {
   const [text, setText] = useState('');
