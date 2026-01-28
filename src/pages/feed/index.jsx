@@ -206,17 +206,17 @@ const FeedPage = () => {
                 </div>
 
                 {/* Comments Section */}
-                {post.commentCount > 0 && (
+                {post.commentCount > 0 && post.comments && post.comments.length > 0 && (
                   <div className="px-4 py-2 bg-gray-50 border-t border-gray-100">
                     <details className="cursor-pointer">
                       <summary className="text-xs text-gray-500 font-semibold hover:text-gray-700">
                         View all {post.commentCount} comments
                       </summary>
                       <div className="mt-3 space-y-2">
-                        {post.comments?.map(comment => (
-                          <div key={comment._id} className="text-xs">
-                            <span className="font-semibold">{comment?.author?.fullName || 'Unknown'}</span> {comment.text}
-                            <p className="text-gray-500 mt-1">{new Date(comment.createdAt).toLocaleDateString()}</p>
+                        {post.comments.map((comment) => (
+                          <div key={comment?._id || Math.random()} className="text-xs">
+                            <span className="font-semibold">{comment?.author?.fullName || 'Unknown'}</span> {comment?.text || ''}
+                            {comment?.createdAt && <p className="text-gray-500 mt-1">{new Date(comment.createdAt).toLocaleDateString()}</p>}
                           </div>
                         ))}
                       </div>
