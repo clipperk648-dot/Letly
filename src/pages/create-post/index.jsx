@@ -266,52 +266,75 @@ const CreatePostPage = () => {
           </motion.div>
 
           {/* Tips Section */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-5">
-            <h3 className="font-semibold text-sm text-blue-900 mb-3">💡 Tips for a great post:</h3>
-            <ul className="text-sm text-blue-800 space-y-2">
-              <li className="flex items-center gap-2">
-                <span>✓</span>
-                <span>Use high-quality, clear images</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span>✓</span>
-                <span>Write engaging, descriptive captions</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span>✓</span>
-                <span>Add location for better discoverability</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span>✓</span>
-                <span>Be authentic and helpful to the community</span>
-              </li>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-gradient-to-r from-blue-50 to-blue-50/50 border border-blue-200 rounded-2xl p-6 shadow-sm"
+          >
+            <h3 className="font-semibold text-sm text-blue-900 mb-4 flex items-center gap-2">
+              <span>💡</span> Tips for a great post:
+            </h3>
+            <ul className="text-sm text-blue-800 space-y-3">
+              {[
+                'Use high-quality, clear images',
+                'Write engaging, descriptive captions',
+                'Add location for better discoverability',
+                'Be authentic and helpful to the community'
+              ].map((tip, idx) => (
+                <motion.li
+                  key={idx}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + idx * 0.05 }}
+                  className="flex items-center gap-2"
+                >
+                  <motion.span
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                    className="text-base"
+                  >
+                    ✓
+                  </motion.span>
+                  <span>{tip}</span>
+                </motion.li>
+              ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Action Buttons */}
-          <div className="bg-white rounded-lg shadow-sm p-6 flex gap-4">
-            <Button
-              type="button"
-              onClick={() => navigate('/feed')}
-              disabled={loading}
-              className="flex-1 bg-gray-200 text-gray-900 hover:bg-gray-300"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={loading || (!caption.trim() && !imageUrl)}
-              className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold"
-            >
-              {loading ? (
-                <>
-                  <Loader2 size={18} className="mr-2 animate-spin" /> Creating...
-                </>
-              ) : (
-                'Share Post'
-              )}
-            </Button>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-white rounded-2xl shadow-sm p-6 flex gap-4 border border-gray-100"
+          >
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+              <Button
+                type="button"
+                onClick={() => navigate('/feed')}
+                disabled={loading}
+                className="w-full bg-gray-100 text-gray-900 hover:bg-gray-200 font-semibold transition-all"
+              >
+                Cancel
+              </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+              <Button
+                type="submit"
+                disabled={loading || (!caption.trim() && !imageUrl)}
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-md transition-all disabled:opacity-50"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 size={18} className="mr-2 animate-spin inline" /> Creating...
+                  </>
+                ) : (
+                  'Share Post'
+                )}
+              </Button>
+            </motion.div>
+          </motion.div>
         </form>
       </div>
     </div>
