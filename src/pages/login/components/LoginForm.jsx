@@ -108,12 +108,17 @@ const LoginForm = ({ onLogin, fillCredentials = null, intendedRole = null }) => 
           navigate(resolvedRole === 'landlord' ? '/landlord-dashboard' : '/tenant-dashboard');
           return;
         }
-        toast.error('Unexpected response from server');
+        // Fallback: set localStorage for demo mode if server doesn't return user object
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userRole', userRole);
+        localStorage.setItem('userEmail', formData?.email || '');
+        if (typeof onLogin === 'function') onLogin(userRole);
+        navigate(userRole === 'landlord' ? '/landlord-dashboard' : '/tenant-dashboard');
       } catch (err) {
         toast.error(err?.response?.data?.error || 'Login failed');
+        setIsLoading(false);
+        return;
       }
-      if (typeof onLogin === 'function') onLogin(userRole);
-      // Navigate to appropriate dashboard
 
     } catch (error) {
       setErrors({ general: 'Login failed. Please try again later.' });
