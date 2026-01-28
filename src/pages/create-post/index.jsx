@@ -216,15 +216,21 @@ const CreatePostPage = () => {
           </motion.div>
 
           {/* Caption Section */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100"
+          >
             <label className="block text-sm font-semibold mb-3 text-gray-900">
               Caption
             </label>
-            <textarea
+            <motion.textarea
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               placeholder="Write a caption... Share what's on your mind, ask questions, or inspire others!"
-              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 placeholder-gray-500"
+              whileFocus={{ scale: 1.01 }}
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 placeholder-gray-400 transition-all"
               rows={5}
               maxLength={2200}
               disabled={loading}
@@ -235,10 +241,15 @@ const CreatePostPage = () => {
               </p>
               <p className="text-xs text-gray-400">{caption.length}/2200</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Location Section */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100"
+          >
             <label className="block text-sm font-semibold mb-3 text-gray-900">
               Location <span className="text-gray-500 font-normal">(Optional)</span>
             </label>
@@ -249,10 +260,10 @@ const CreatePostPage = () => {
               onChange={(e) => setLocation(e.target.value)}
               maxLength={100}
               disabled={loading}
-              className="border-gray-300"
+              className="border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all"
             />
             <p className="text-xs text-gray-500 mt-2">{location.length}/100</p>
-          </div>
+          </motion.div>
 
           {/* Tips Section */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-5">
