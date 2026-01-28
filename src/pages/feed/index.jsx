@@ -169,7 +169,7 @@ const FeedPage = () => {
                 <div className="p-4">
                   {post.caption && (
                     <p className="text-sm mb-2">
-                      <span className="font-semibold">{post.author.fullName}</span> {post.caption}
+                      <span className="font-semibold">{post?.author?.fullName || 'Unknown'}</span> {post.caption}
                     </p>
                   )}
                   {post.location && (
