@@ -58,9 +58,9 @@ const Routes = () => {
             <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
             <Route path="/explore" element={<ProtectedRoute><Explore /></ProtectedRoute>} />
             <Route path="/create-post" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
-            <Route path="/notifications" element={<ProtectedRoute><SocialNotifications /></ProtectedRoute>} />
+            <Route path="/social-notifications" element={<ProtectedRoute><SocialNotifications /></ProtectedRoute>} />
             <Route path="/social-messages" element={<ProtectedRoute><SocialMessages /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><SocialProfile /></ProtectedRoute>} />
+            <Route path="/social-profile" element={<ProtectedRoute><SocialProfile /></ProtectedRoute>} />
 
             {/* Protected: Landlord only */}
             <Route path="/landlord-dashboard" element={<ProtectedRoute allowedRole="landlord"><LandlordDashboard /></ProtectedRoute>} />
@@ -77,10 +77,10 @@ const Routes = () => {
             <Route path="/messages/:id" element={<ProtectedRoute><MessageThread /></ProtectedRoute>} />
             <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
             <Route path="/favorites" element={<ProtectedRoute><Favorites /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/account-profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
             <Route path="/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />
-            <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+            <Route path="/account-notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
             <Route path="/help" element={<ProtectedRoute><Help /></ProtectedRoute>} />
             <Route path="/support" element={<ProtectedRoute><Support /></ProtectedRoute>} />
             <Route path="/export" element={<ProtectedRoute><ExportPage /></ProtectedRoute>} />
