@@ -4,7 +4,7 @@ import ScrollToTop from "components/ScrollToTop";
 import ErrorBoundary from "components/ErrorBoundary";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-const NotFound = lazy(() => import("pages/NotFound"));
+const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 const PropertyDetails = lazy(() => import("./pages/property-details"));
 const LoginPage = lazy(() => import("./pages/login"));
 const PropertySearch = lazy(() => import("./pages/property-search"));
@@ -29,7 +29,7 @@ const Support = lazy(() => import("./pages/support"));
 const BulkEdit = lazy(() => import("./pages/bulk-edit"));
 const ExportPage = lazy(() => import("./pages/export"));
 const Reports = lazy(() => import("./pages/reports"));
-const LandingPage = lazy(() => import("./pages/LandingPage"));
+const LandingPage = lazy(() => import("./pages/LandingPage.jsx"));
 const Feed = lazy(() => import("./pages/feed"));
 const Explore = lazy(() => import("./pages/explore"));
 const SocialProfile = lazy(() => import("./pages/social-profile"));
