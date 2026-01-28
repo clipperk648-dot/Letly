@@ -19,6 +19,11 @@ function netlifyFunctionsMiddleware() {
           "/api/health": "./netlify/functions/health.js",
           "/api/properties": "./netlify/functions/properties.js",
           "/api/messages": "./netlify/functions/messages.js",
+          "/api/social/posts": "./api/social/posts.js",
+          "/api/social/comments": "./api/social/comments.js",
+          "/api/social/likes": "./api/social/likes.js",
+          "/api/social/follows": "./api/social/follows.js",
+          "/api/social/profile": "./api/social/profile.js",
         };
         const fnRel = map[url];
         if (!fnRel) return next();
