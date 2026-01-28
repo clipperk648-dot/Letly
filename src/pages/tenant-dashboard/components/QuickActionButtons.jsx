@@ -58,7 +58,7 @@ const QuickActionButtons = () => {
       description: 'Manage your profile',
       icon: 'User',
       color: 'bg-muted text-muted-foreground',
-      action: () => navigate('/profile')
+      action: () => navigate('/account-profile')
     },
     {
       id: 7,

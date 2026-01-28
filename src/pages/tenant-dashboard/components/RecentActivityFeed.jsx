@@ -56,7 +56,7 @@ const RecentActivityFeed = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate('/notifications')}
+          onClick={() => navigate('/account-notifications')}
           iconName="Bell"
           iconPosition="left"
         >

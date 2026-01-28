@@ -48,7 +48,7 @@ const MobileAppFooter = ({ userRole = 'tenant', showOnDesktop = false }) => {
           id: 'profile',
           label: 'Profile',
           icon: 'User',
-          path: '/profile',
+          path: '/account-profile',
           activeColor: 'text-indigo-600',
           inactiveColor: 'text-gray-500'
         }
@@ -67,7 +67,7 @@ const MobileAppFooter = ({ userRole = 'tenant', showOnDesktop = false }) => {
           id: 'profile',
           label: 'Profile',
           icon: 'User',
-          path: '/profile',
+          path: '/account-profile',
           activeColor: 'text-indigo-600',
           inactiveColor: 'text-gray-500'
         }
