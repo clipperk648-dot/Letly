@@ -147,7 +147,7 @@ const ExplorePage = () => {
       </div>
 
       {/* Posts Grid */}
-      <div className="max-w-6xl mx-auto p-2 md:p-4">
+      <div className="max-w-6xl mx-auto p-2 md:p-4 md:ml-64">
         {posts.length === 0 ? (
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
