@@ -20,6 +20,9 @@ const SocialProfilePage = () => {
   const [error, setError] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const [following, setFollowing] = useState(false);
+  const [activeTab, setActiveTab] = useState('posts');
+  const [savedPosts, setSavedPosts] = useState([]);
+  const [repostedPosts, setRepostedPosts] = useState([]);
 
   useEffect(() => {
     loadProfile();
