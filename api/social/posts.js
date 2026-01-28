@@ -54,11 +54,13 @@ module.exports = async function handler(req, res) {
 
           // Enrich comments with author info
           const enrichedComments = await Promise.all(
-            (post.comments || []).map(async (comment) => {
+            (post.comments || []).filter(c => c && c.authorEmail).map(async (comment) => {
               const commentAuthor = await users.findOne({ email: comment.authorEmail });
               return {
-                ...comment,
-                _id: comment._id ? comment._id.toString() : new ObjectId().toString(),
+                _id: comment._id ? (typeof comment._id === 'string' ? comment._id : comment._id.toString()) : new ObjectId().toString(),
+                text: comment.text || '',
+                authorEmail: comment.authorEmail,
+                createdAt: comment.createdAt,
                 author: {
                   fullName: commentAuthor?.fullName || 'Unknown',
                   username: commentAuthor?.username || (comment.authorEmail || '').split('@')[0],
@@ -70,14 +72,24 @@ module.exports = async function handler(req, res) {
           );
 
           return {
-            ...post,
             _id: post._id.toString(),
-            author: {
-              id: author._id.toString(),
-              fullName: author.fullName,
-              username: author.username || author.email.split('@')[0],
+            caption: post.caption || '',
+            imageUrl: post.imageUrl || '',
+            location: post.location || '',
+            createdAt: post.createdAt,
+            updatedAt: post.updatedAt,
+            author: author ? {
+              id: author._id ? (typeof author._id === 'string' ? author._id : author._id.toString()) : 'unknown',
+              fullName: author.fullName || 'Unknown',
+              username: author.username || (author.email || '').split('@')[0],
               profilePicture: author.profilePicture,
               role: author.role,
+            } : {
+              id: 'unknown',
+              fullName: 'Unknown',
+              username: (post.authorEmail || '').split('@')[0],
+              profilePicture: null,
+              role: 'unknown',
             },
             comments: enrichedComments,
             likeCount: post.likes ? post.likes.length : 0,
