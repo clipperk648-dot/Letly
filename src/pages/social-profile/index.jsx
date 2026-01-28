@@ -8,6 +8,53 @@ import Button from '../../components/ui/Button';
 import SocialNavBar from '../../components/ui/SocialNavBar';
 import { toast } from 'react-toastify';
 
+const PostGridItem = ({ post, index }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ delay: index * 0.05 }}
+    className="aspect-square bg-gray-100 cursor-pointer group relative overflow-hidden rounded-xl border border-gray-100 hover:shadow-lg transition-all"
+  >
+    {post?.imageUrl && (
+      <img
+        src={post.imageUrl}
+        alt="Post thumbnail"
+        className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+        loading="lazy"
+        onError={(e) => {
+          e.target.style.display = 'none';
+        }}
+      />
+    )}
+
+    {/* Hover Overlay */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileHover={{ opacity: 1 }}
+      className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-center justify-center gap-6"
+    >
+      <motion.div whileHover={{ scale: 1.1 }} className="text-white text-center">
+        <Heart size={24} className="fill-white mx-auto mb-2" />
+        <p className="text-sm font-semibold">{post?.likeCount || 0}</p>
+      </motion.div>
+      <motion.div whileHover={{ scale: 1.1 }} className="text-white text-center">
+        <MessageCircle size={24} className="mx-auto mb-2" />
+        <p className="text-sm font-semibold">{post?.commentCount || 0}</p>
+      </motion.div>
+    </motion.div>
+
+    {/* No Image Fallback */}
+    {!post?.imageUrl && (
+      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-100 via-pink-100 to-orange-100 p-2">
+        <p className="text-xs font-semibold text-gray-800 text-center line-clamp-3">
+          {post?.caption?.substring(0, 40)}...
+        </p>
+      </div>
+    )}
+  </motion.div>
+);
+
 const SocialProfilePage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
