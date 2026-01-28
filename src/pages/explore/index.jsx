@@ -85,9 +85,7 @@ const ExplorePage = () => {
                     <p className="font-semibold text-sm text-gray-900 truncate">
                       {post?.author?.fullName || 'Unknown'}
                     </p>
-                    <span className={`text-xs px-2 py-1 rounded-full font-medium inline-block ${getRoleColor(post?.author?.role)}`}>
-                      {getRoleLabel(post?.author?.role)}
-                    </span>
+                    <RoleBadge role={post?.author?.role} />
                   </div>
                 </div>
               </div>
