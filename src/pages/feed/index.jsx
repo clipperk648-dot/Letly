@@ -134,14 +134,6 @@ const FeedPage = () => {
     toast.info('Sharing functionality coming soon');
   };
 
-  const getRoleLabel = (role) => {
-    return role === 'landlord' ? 'Agent' : 'Customer';
-  };
-
-  const getRoleColor = (role) => {
-    return role === 'landlord' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800';
-  };
-
   if (error && posts.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50">
