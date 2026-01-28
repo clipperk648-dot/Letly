@@ -144,8 +144,9 @@ const SocialMessagesPage = () => {
 
   return (
     <div className="h-screen bg-white flex flex-col md:flex-row">
+      <SocialNavBar />
       {/* Conversations Sidebar */}
-      <div className="w-full md:w-80 border-r border-gray-200 flex flex-col bg-white">
+      <div className="w-full md:w-80 border-r border-gray-200 flex flex-col bg-white md:ml-64">
         {/* Header */}
         <div className="p-4 border-b border-gray-200">
           <h1 className="text-2xl font-bold mb-4">Messages</h1>

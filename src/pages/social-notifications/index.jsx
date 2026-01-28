@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Heart, MessageCircle, UserPlus, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Button from '../../components/ui/Button';
+import SocialNavBar from '../../components/ui/SocialNavBar';
 
 const SocialNotificationsPage = () => {
   const [notifications, setNotifications] = useState([]);
