@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Heart, MessageCircle, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getPosts } from '../../services/socialService';
+import SocialNavBar from '../../components/ui/SocialNavBar';
 import { toast } from 'react-toastify';
 
 const ExplorePage = () => {
@@ -138,8 +139,9 @@ const ExplorePage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SocialNavBar />
       {/* Header */}
-      <div className="border-b border-gray-200 p-4 sticky top-0 bg-white/80 backdrop-blur-sm z-40">
+      <div className="border-b border-gray-200 p-4 sticky top-0 bg-white/80 backdrop-blur-sm z-40 md:ml-64">
         <h1 className="text-2xl font-light">Explore</h1>
         <p className="text-sm text-gray-600">Discover trending posts from our community</p>
       </div>
