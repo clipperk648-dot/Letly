@@ -138,7 +138,7 @@ const ExplorePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-16 md:pb-0">
       <SocialNavBar />
       {/* Header */}
       <div className="border-b border-gray-200 p-4 sticky top-0 bg-white/80 backdrop-blur-sm z-40 md:ml-64">

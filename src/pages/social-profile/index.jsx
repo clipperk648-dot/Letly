@@ -82,7 +82,7 @@ const SocialProfilePage = () => {
   const isOwnProfile = profile.isOwnProfile;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-16 md:pb-0">
       <SocialNavBar />
       <div className="max-w-2xl mx-auto md:ml-72">
         {/* Profile Header */}

@@ -143,7 +143,7 @@ const SocialMessagesPage = () => {
   };
 
   return (
-    <div className="h-screen bg-white flex flex-col md:flex-row">
+    <div className="h-screen bg-white flex flex-col md:flex-row pb-16 md:pb-0">
       <SocialNavBar />
       {/* Conversations Sidebar */}
       <div className="w-full md:w-80 border-r border-gray-200 flex flex-col bg-white md:ml-64">
