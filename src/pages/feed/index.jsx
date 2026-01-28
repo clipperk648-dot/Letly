@@ -261,39 +261,54 @@ const FeedPage = () => {
                   )}
 
                   {/* Action Buttons */}
-                  <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-                    <button
+                  <div className="px-4 py-3 border-b border-gray-50 flex items-center justify-between">
+                    <motion.button
                       onClick={() => handleLike(post._id, post.isLiked)}
                       disabled={liking[post._id]}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       className="flex items-center gap-2 text-gray-600 hover:text-rose-600 transition disabled:opacity-50"
                     >
-                      <Heart
-                        size={22}
-                        className={`transition ${
-                          post.isLiked ? 'fill-rose-600 text-rose-600' : ''
-                        }`}
-                      />
+                      <motion.div
+                        animate={post.isLiked ? { scale: [1, 1.3, 1] } : {}}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <Heart
+                          size={22}
+                          className={`transition ${
+                            post.isLiked ? 'fill-rose-600 text-rose-600' : ''
+                          }`}
+                        />
+                      </motion.div>
                       <span className="text-sm font-medium">{post.likeCount || 0}</span>
-                    </button>
+                    </motion.button>
 
-                    <button className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition"
+                    >
                       <MessageCircle size={22} />
                       <span className="text-sm font-medium">{post.commentCount || 0}</span>
-                    </button>
+                    </motion.button>
 
-                    <button
+                    <motion.button
                       onClick={() => handleSharePost(post._id)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition"
                     >
                       <Share2 size={22} />
-                    </button>
+                    </motion.button>
 
-                    <button
+                    <motion.button
                       onClick={() => handleSavePost(post._id)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       className="flex items-center gap-2 text-gray-600 hover:text-yellow-500 transition"
                     >
                       <Bookmark size={22} />
-                    </button>
+                    </motion.button>
                   </div>
 
                   {/* Post Caption */}
