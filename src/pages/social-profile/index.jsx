@@ -51,6 +51,14 @@ const SocialProfilePage = () => {
           p => p?.author?.email === (userEmail || currentUserRes?.data?.user?.email)
         );
         setUserPosts(filtered);
+
+        // Simulate saved posts (in real app, would come from API)
+        const saved = filtered.slice(0, Math.ceil(filtered.length / 2));
+        setSavedPosts(saved);
+
+        // Simulate reposted posts (in real app, would come from API)
+        const reposts = filtered.slice(Math.ceil(filtered.length / 2));
+        setRepostedPosts(reposts);
       }
     } catch (error) {
       console.error('Error loading profile:', error);
