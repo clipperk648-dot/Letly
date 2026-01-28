@@ -58,10 +58,10 @@ module.exports = async function handler(req, res) {
               const commentAuthor = await users.findOne({ email: comment.authorEmail });
               return {
                 ...comment,
-                _id: comment._id.toString(),
+                _id: comment._id ? comment._id.toString() : new ObjectId().toString(),
                 author: {
                   fullName: commentAuthor?.fullName || 'Unknown',
-                  username: commentAuthor?.username || comment.authorEmail.split('@')[0],
+                  username: commentAuthor?.username || (comment.authorEmail || '').split('@')[0],
                   profilePicture: commentAuthor?.profilePicture,
                   role: commentAuthor?.role,
                 },
