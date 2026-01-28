@@ -65,10 +65,15 @@ const FeedPage = () => {
 
     try {
       const res = await addComment(postId, text);
-      setComments(prev => ({
-        ...prev,
-        [postId]: [...(prev[postId] || []), res.data.comment]
-      }));
+      setPosts(posts.map(post =>
+        post._id === postId
+          ? {
+              ...post,
+              comments: [...(post.comments || []), res.data.comment],
+              commentCount: post.commentCount + 1
+            }
+          : post
+      ));
       setNewComments(prev => ({
         ...prev,
         [postId]: ''
