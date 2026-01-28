@@ -47,20 +47,51 @@ module.exports = async function handler(req, res) {
         .limit(parseInt(limit))
         .toArray();
 
-      // Enrich posts with author info
+      // Enrich posts with author info and comments
       const enrichedPosts = await Promise.all(
         postList.map(async (post) => {
           const author = await users.findOne({ email: post.authorEmail });
+
+          // Enrich comments with author info
+          const enrichedComments = await Promise.all(
+            (post.comments || []).filter(c => c && c.authorEmail).map(async (comment) => {
+              const commentAuthor = await users.findOne({ email: comment.authorEmail });
+              return {
+                _id: comment._id ? (typeof comment._id === 'string' ? comment._id : comment._id.toString()) : new ObjectId().toString(),
+                text: comment.text || '',
+                authorEmail: comment.authorEmail,
+                createdAt: comment.createdAt,
+                author: {
+                  fullName: commentAuthor?.fullName || 'Unknown',
+                  username: commentAuthor?.username || (comment.authorEmail || '').split('@')[0],
+                  profilePicture: commentAuthor?.profilePicture,
+                  role: commentAuthor?.role,
+                },
+              };
+            })
+          );
+
           return {
-            ...post,
             _id: post._id.toString(),
-            author: {
-              id: author._id.toString(),
-              fullName: author.fullName,
-              username: author.username || author.email.split('@')[0],
+            caption: post.caption || '',
+            imageUrl: post.imageUrl || '',
+            location: post.location || '',
+            createdAt: post.createdAt,
+            updatedAt: post.updatedAt,
+            author: author ? {
+              id: author._id ? (typeof author._id === 'string' ? author._id : author._id.toString()) : 'unknown',
+              fullName: author.fullName || 'Unknown',
+              username: author.username || (author.email || '').split('@')[0],
               profilePicture: author.profilePicture,
               role: author.role,
+            } : {
+              id: 'unknown',
+              fullName: 'Unknown',
+              username: (post.authorEmail || '').split('@')[0],
+              profilePicture: null,
+              role: 'unknown',
             },
+            comments: enrichedComments,
             likeCount: post.likes ? post.likes.length : 0,
             commentCount: post.comments ? post.comments.length : 0,
             isLiked: post.likes ? post.likes.includes(payload.email) : false,
@@ -98,9 +129,13 @@ module.exports = async function handler(req, res) {
         post: {
           ...newPost,
           _id: result.insertedId.toString(),
+          comments: [],
+          likeCount: 0,
+          commentCount: 0,
+          isLiked: false,
           author: {
-            id: user._id.toString(),
-            fullName: user.fullName,
+            id: user._id?.toString ? user._id.toString() : String(user._id),
+            fullName: user.fullName || 'Unknown',
             username: user.username || user.email.split('@')[0],
             profilePicture: user.profilePicture,
             role: user.role,
