@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getPosts } from '../../services/socialService';
 import SocialNavBar from '../../components/ui/SocialNavBar';
 import Button from '../../components/ui/Button';
+import { RoleBadge } from '../../components/ui/Badge';
 import { toast } from 'react-toastify';
 
 const ExplorePage = () => {
