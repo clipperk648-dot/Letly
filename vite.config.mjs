@@ -43,17 +43,47 @@ function netlifyFunctionsMiddleware() {
             const imported = await import(fileUrl);
             const mod = imported?.default || imported;
             const handler = mod?.handler || mod;
-            const result = await handler({
-              httpMethod: req.method || "GET",
-              headers: req.headers || {},
-              body,
-            });
-            res.statusCode = result.statusCode || 200;
-            const headers = result.headers || {};
-            for (const k of Object.keys(headers)) {
-              try { res.setHeader(k, headers[k]); } catch {}
+
+            // For direct API files (not netlify functions)
+            if (!mod?.handler && typeof mod === 'function') {
+              // This is a direct API handler
+              await handler({
+                method: req.method || "GET",
+                headers: req.headers || {},
+                body: body,
+                query: req.query || {},
+              }, {
+                statusCode: 200,
+                setHeader: (key, value) => {
+                  res.setHeader(key, value);
+                },
+                status: (code) => ({
+                  statusCode: code,
+                  json: (data) => {
+                    res.statusCode = code;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(data));
+                  },
+                  end: () => {
+                    res.statusCode = code;
+                    res.end();
+                  }
+                }),
+              });
+            } else {
+              // This is a netlify function
+              const result = await handler({
+                httpMethod: req.method || "GET",
+                headers: req.headers || {},
+                body,
+              });
+              res.statusCode = result.statusCode || 200;
+              const headers = result.headers || {};
+              for (const k of Object.keys(headers)) {
+                try { res.setHeader(k, headers[k]); } catch {}
+              }
+              res.end(result.body || "");
             }
-            res.end(result.body || "");
           } catch (err) {
             res.statusCode = 500;
             res.setHeader("Content-Type", "application/json");
