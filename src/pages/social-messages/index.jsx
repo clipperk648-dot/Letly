@@ -151,24 +151,29 @@ const SocialMessagesPage = () => {
     <div className="h-screen bg-white flex flex-col md:flex-row pb-16 md:pb-0">
       <SocialNavBar />
       {/* Conversations Sidebar */}
-      <div className="w-full md:w-80 border-r border-gray-200 flex flex-col bg-white md:ml-64">
+      <div className="w-full md:w-80 border-r border-gray-200 flex flex-col bg-white md:ml-64 md:mt-20">
         {/* Header */}
-        <div className="p-4 border-b border-gray-200">
-          <h1 className="text-2xl font-bold mb-4">Messages</h1>
-          <Input
-            type="text"
-            placeholder="Search conversations..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full"
-          />
+        <div className="p-4 border-b border-gray-100 sticky top-0 z-20 bg-white">
+          <h1 className="text-2xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+            Messages
+          </h1>
+          <div className="relative">
+            <Search size={18} className="absolute left-3 top-3 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Search conversations..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 w-full rounded-full bg-gray-100 border-gray-200"
+            />
+          </div>
         </div>
 
         {/* Conversations List */}
-        <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
+        <div className="flex-1 overflow-y-auto">
           {filteredConversations.length === 0 ? (
-            <div className="flex items-center justify-center py-8 text-gray-500">
-              <p>No conversations found</p>
+            <div className="flex items-center justify-center py-12 text-gray-500">
+              <p className="text-sm">{searchQuery ? 'No conversations found' : 'No conversations yet'}</p>
             </div>
           ) : (
             filteredConversations.map((conv) => (
