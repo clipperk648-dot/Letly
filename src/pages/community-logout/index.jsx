@@ -6,6 +6,9 @@ const CommunityLogout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Get user role before clearing localStorage
+    const userRole = localStorage.getItem('userRole');
+
     // Clear all authentication data from localStorage
     try {
       localStorage.removeItem('authToken');
@@ -17,9 +20,15 @@ const CommunityLogout = () => {
       console.error('Error clearing session:', e);
     }
 
-    // Redirect to login after a short delay
+    // Redirect to appropriate dashboard based on user role
     const timer = setTimeout(() => {
-      navigate('/login');
+      if (userRole === 'landlord') {
+        navigate('/landlord-dashboard');
+      } else if (userRole === 'tenant') {
+        navigate('/tenant-dashboard');
+      } else {
+        navigate('/login');
+      }
     }, 500);
 
     return () => clearTimeout(timer);
@@ -30,7 +39,7 @@ const CommunityLogout = () => {
       <div className="text-center">
         <Loader2 className="h-12 w-12 text-blue-500 animate-spin mx-auto mb-4" />
         <h1 className="text-2xl font-semibold text-gray-900 mb-2">Logging out...</h1>
-        <p className="text-gray-600">You're being logged out from the community platform</p>
+        <p className="text-gray-600">Redirecting you to your dashboard</p>
       </div>
     </div>
   );
