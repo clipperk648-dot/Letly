@@ -176,15 +176,19 @@ const SocialMessagesPage = () => {
                 key={conv.id}
                 onClick={() => setSelectedConversation(conv)}
                 whileHover={{ backgroundColor: 'rgba(0,0,0,0.02)' }}
-                className={`w-full p-4 text-left transition ${
-                  selectedConversation?.id === conv.id ? 'bg-gray-100' : 'hover:bg-gray-50'
+                className={`w-full p-4 text-left transition border-b border-gray-50 last:border-b-0 ${
+                  selectedConversation?.id === conv.id ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-gray-50'
                 }`}
               >
                 <div className="flex items-start gap-3">
                   {/* Avatar */}
                   <div className="relative">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                      {conv.initials}
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 overflow-hidden shadow-sm">
+                      {conv.avatar ? (
+                        <img src={conv.avatar} alt={conv.name} className="w-full h-full object-cover" />
+                      ) : (
+                        conv.initials
+                      )}
                     </div>
                     {conv.online && (
                       <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
@@ -194,20 +198,18 @@ const SocialMessagesPage = () => {
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
-                      <p className="font-semibold text-sm">{conv.name}</p>
-                      <span className="text-xs text-gray-500">{formatTime(conv.timestamp)}</span>
+                      <p className="font-semibold text-sm text-gray-900">{conv.name}</p>
+                      <span className="text-xs text-gray-500 ml-2 flex-shrink-0">{formatTime(conv.timestamp)}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
-                        {conv.role === 'landlord' ? 'Agent' : 'Customer'}
-                      </span>
+                    <div className="flex items-center gap-2 mb-1">
+                      <RoleBadge role={conv.userRole} />
                       {conv.unread > 0 && (
                         <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
                           {conv.unread}
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-gray-600 truncate mt-1">{conv.lastMessage}</p>
+                    <p className="text-xs text-gray-600 truncate">{conv.lastMessage}</p>
                   </div>
                 </div>
               </motion.button>
