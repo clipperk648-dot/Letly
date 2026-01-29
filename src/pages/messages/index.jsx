@@ -25,7 +25,14 @@ const Messages = () => {
       setError(null);
       const res = await fetch('/api/messages');
       const json = await res.json();
-      const conversations = Array.isArray(json?.items) ? json.items : [];
+      let conversations = Array.isArray(json?.items) ? json.items : [];
+
+      // Enhance conversations with role data (simulate for now)
+      conversations = conversations.map(conv => ({
+        ...conv,
+        userRole: conv.sender === 'You' ? 'tenant' : (Math.random() > 0.5 ? 'landlord' : 'tenant')
+      }));
+
       setConversations(conversations);
     } catch (err) {
       console.error('Error loading conversations:', err);
