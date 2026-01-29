@@ -223,6 +223,18 @@ const SocialMessagesPage = () => {
         </div>
       </div>
 
+      {/* Mobile Back Button */}
+      {selectedConversation && (
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          onClick={() => setSelectedConversation(null)}
+          className="md:hidden absolute top-20 left-4 p-2 hover:bg-gray-100 rounded-full transition z-40"
+        >
+          <ArrowLeft size={20} className="text-gray-600" />
+        </motion.button>
+      )}
+
       {/* Chat Area */}
       {selectedConversation ? (
         <div className="hidden md:flex flex-1 flex-col bg-white">
