@@ -103,7 +103,7 @@ const SocialProfilePage = () => {
       }
 
       // Load user's posts
-      const postsRes = await getPosts(0, 30, true);
+      const postsRes = await getPosts(0, 50, true);
       if (postsRes?.data?.posts && Array.isArray(postsRes.data.posts)) {
         const filtered = postsRes.data.posts.filter(
           p => p?.author?.email === (userEmail || currentUserRes?.data?.user?.email)
@@ -111,11 +111,26 @@ const SocialProfilePage = () => {
         setUserPosts(filtered);
 
         // Simulate saved posts (in real app, would come from API)
-        const saved = filtered.slice(0, Math.ceil(filtered.length / 2));
+        // Ensure role information is preserved
+        const savedCount = Math.max(1, Math.ceil(filtered.length / 2));
+        const saved = filtered.slice(0, savedCount).map(post => ({
+          ...post,
+          author: {
+            ...post.author,
+            role: post.author?.role
+          }
+        }));
         setSavedPosts(saved);
 
         // Simulate reposted posts (in real app, would come from API)
-        const reposts = filtered.slice(Math.ceil(filtered.length / 2));
+        // Ensure role information is preserved
+        const reposts = filtered.slice(savedCount).map(post => ({
+          ...post,
+          author: {
+            ...post.author,
+            role: post.author?.role
+          }
+        }));
         setRepostedPosts(reposts);
       }
     } catch (error) {
