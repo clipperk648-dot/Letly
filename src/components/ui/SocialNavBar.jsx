@@ -37,7 +37,7 @@ const SocialNavBar = () => {
     { path: '/create-post', icon: Camera, label: 'Create' },
     { path: '/social-notifications', icon: Heart, label: 'Likes' },
     { path: '/social-messages', icon: MessageCircle, label: 'Messages' },
-    { path: '/social-profile', icon: User, label: 'Profile' },
+    { path: '/community-profile', icon: User, label: 'Profile' },
   ];
 
   return (
