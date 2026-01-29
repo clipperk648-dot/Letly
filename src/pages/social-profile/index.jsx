@@ -33,24 +33,34 @@ const PostGridItem = ({ post, index }) => (
     <motion.div
       initial={{ opacity: 0 }}
       whileHover={{ opacity: 1 }}
-      className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-center justify-center gap-6"
+      className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex flex-col items-center justify-center gap-4"
     >
       <motion.div whileHover={{ scale: 1.1 }} className="text-white text-center">
-        <Heart size={24} className="fill-white mx-auto mb-2" />
-        <p className="text-sm font-semibold">{post?.likeCount || 0}</p>
+        <div className="flex items-center gap-2 justify-center mb-2">
+          <Heart size={20} className="fill-white" />
+          <span className="text-sm font-semibold">{post?.likeCount || 0}</span>
+        </div>
+        <div className="flex items-center gap-2 justify-center">
+          <MessageCircle size={20} />
+          <span className="text-sm font-semibold">{post?.commentCount || 0}</span>
+        </div>
       </motion.div>
-      <motion.div whileHover={{ scale: 1.1 }} className="text-white text-center">
-        <MessageCircle size={24} className="mx-auto mb-2" />
-        <p className="text-sm font-semibold">{post?.commentCount || 0}</p>
-      </motion.div>
+      {post?.author?.role && (
+        <RoleBadge role={post.author.role} />
+      )}
     </motion.div>
 
     {/* No Image Fallback */}
     {!post?.imageUrl && (
-      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-100 via-pink-100 to-orange-100 p-2">
+      <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-rose-100 via-pink-100 to-orange-100 p-2">
         <p className="text-xs font-semibold text-gray-800 text-center line-clamp-3">
           {post?.caption?.substring(0, 40)}...
         </p>
+        {post?.author?.role && (
+          <div className="mt-2">
+            <RoleBadge role={post.author.role} />
+          </div>
+        )}
       </div>
     )}
   </motion.div>
