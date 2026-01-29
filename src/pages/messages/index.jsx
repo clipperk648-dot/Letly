@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import RoleBasedNavBar from '../../components/ui/RoleBasedNavBar';
 import MobileAppFooter from '../../components/ui/MobileAppFooter';
 import Input from '../../components/ui/Input';
+import { RoleBadge } from '../../components/ui/Badge';
 
 const Messages = () => {
   const navigate = useNavigate();
