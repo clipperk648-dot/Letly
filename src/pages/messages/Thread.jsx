@@ -4,6 +4,7 @@ import { ArrowLeft, Phone, Video, Info, Send, Loader2, AlertCircle } from 'lucid
 import { motion } from 'framer-motion';
 import RoleBasedNavBar from '../../components/ui/RoleBasedNavBar';
 import MobileAppFooter from '../../components/ui/MobileAppFooter';
+import { RoleBadge } from '../../components/ui/Badge';
 import ChatWindow from './components/ChatWindow';
 
 const Thread = () => {
