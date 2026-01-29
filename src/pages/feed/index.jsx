@@ -11,6 +11,7 @@ import { RoleBadge } from '../../components/ui/Badge';
 import { toast } from 'react-toastify';
 
 const FeedPage = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
