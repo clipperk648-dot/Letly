@@ -439,12 +439,17 @@ const Profile = () => {
                       <p className="text-gray-600">You haven't saved any posts yet</p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                      <AnimatePresence>
-                        {savedPosts.map((post, index) => (
-                          <PostGridItem key={post?._id || index} post={post} index={index} />
-                        ))}
-                      </AnimatePresence>
+                    <div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+                        <AnimatePresence>
+                          {savedPosts.map((post, index) => (
+                            <PostGridItem key={post?._id || index} post={post} index={index} />
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                      <div className="text-center text-xs text-gray-500 py-4 border-t border-gray-200">
+                        {savedPosts.length} {savedPosts.length === 1 ? 'post' : 'posts'} saved
+                      </div>
                     </div>
                   )}
                 </motion.div>
