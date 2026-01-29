@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, MessageCircle, Settings, UserPlus, UserCheck, Loader2, AlertCircle } from 'lucide-react';
+import { Heart, MessageCircle, Settings, UserPlus, UserCheck, Loader2, AlertCircle, Bookmark } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { getUserProfile, followUser, unfollowUser, getPosts } from '../../services/socialService';
