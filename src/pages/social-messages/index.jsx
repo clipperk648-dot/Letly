@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Video, Info, Send, Search, Heart } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Phone, Video, Info, Send, Search, Heart, Image as ImageIcon, Video as VideoIcon, ArrowLeft, Loader2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import SocialNavBar from '../../components/ui/SocialNavBar';
+import { RoleBadge } from '../../components/ui/Badge';
 
 const SocialMessagesPage = () => {
   const [conversations, setConversations] = useState([]);
