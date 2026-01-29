@@ -282,13 +282,7 @@ const SocialProfilePage = () => {
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile.fullName || 'Unknown'}</h1>
               <div className="flex items-center gap-2 mb-3">
-                <span className={`text-xs px-3 py-1 rounded-full font-semibold ${
-                  profile.role === 'landlord'
-                    ? 'bg-purple-100 text-purple-800'
-                    : 'bg-blue-100 text-blue-800'
-                }`}>
-                  {profile.role === 'landlord' ? 'Agent' : 'Customer'}
-                </span>
+                <RoleBadge role={profile.role} />
               </div>
 
               {profile.bio && (
