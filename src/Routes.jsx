@@ -76,6 +76,8 @@ const Routes = () => {
             <Route path="/properties" element={<ProtectedRoute><Properties /></ProtectedRoute>} />
             <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
             <Route path="/messages/:id" element={<ProtectedRoute><MessageThread /></ProtectedRoute>} />
+            <Route path="/community-messages" element={<ProtectedRoute><CommunityMessages /></ProtectedRoute>} />
+            <Route path="/community-messages/:channelId" element={<ProtectedRoute><CommunityMessages /></ProtectedRoute>} />
             <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
             <Route path="/favorites" element={<ProtectedRoute><Favorites /></ProtectedRoute>} />
             <Route path="/account-profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
