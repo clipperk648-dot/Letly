@@ -70,6 +70,11 @@ const Profile = () => {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userPosts, setUserPosts] = useState([]);
+  const [savedPosts, setSavedPosts] = useState([]);
+  const [repostedPosts, setRepostedPosts] = useState([]);
+  const [activeTab, setActiveTab] = useState('account');
+  const [loadingPosts, setLoadingPosts] = useState(false);
 
   useEffect(() => {
     let mounted = true;
