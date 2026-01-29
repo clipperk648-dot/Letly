@@ -150,8 +150,9 @@ const SocialMessagesPage = () => {
   return (
     <div className="h-screen bg-white flex flex-col md:flex-row pb-16 md:pb-0">
       <SocialNavBar />
-      {/* Conversations Sidebar */}
-      <div className="w-full md:w-80 border-r border-gray-200 flex flex-col bg-white md:ml-64 md:mt-20">
+      {/* Conversations Sidebar - Hidden on mobile when conversation selected */}
+      {!selectedConversation && (
+        <div className="w-full md:w-80 border-r border-gray-200 flex flex-col bg-white md:ml-64 md:mt-20">
         {/* Header */}
         <div className="p-4 border-b border-gray-100 sticky top-0 z-20 bg-white">
           <h1 className="text-2xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
@@ -222,22 +223,20 @@ const SocialMessagesPage = () => {
           )}
         </div>
       </div>
-
-      {/* Mobile Back Button */}
-      {selectedConversation && (
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          onClick={() => setSelectedConversation(null)}
-          className="md:hidden absolute top-20 left-4 p-2 hover:bg-gray-100 rounded-full transition z-40"
-        >
-          <ArrowLeft size={20} className="text-gray-600" />
-        </motion.button>
       )}
 
-      {/* Chat Area */}
-      {selectedConversation ? (
-        <div className="hidden md:flex flex-1 flex-col bg-white">
+      {/* Chat Area - Shown on mobile when conversation selected, always on desktop */}
+      {selectedConversation && (
+        <div className="w-full md:w-auto flex-1 flex flex-col bg-white relative">
+          {/* Mobile Back Button */}
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            onClick={() => setSelectedConversation(null)}
+            className="md:hidden absolute top-4 left-4 p-2 hover:bg-gray-100 rounded-full transition z-40 bg-white"
+          >
+            <ArrowLeft size={20} className="text-gray-600" />
+          </motion.button>
           {/* Chat Header */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -383,7 +382,10 @@ const SocialMessagesPage = () => {
             </motion.button>
           </form>
         </div>
-      ) : (
+      )}
+
+      {/* Empty state for desktop */}
+      {!selectedConversation && (
         <div className="hidden md:flex flex-1 items-center justify-center text-gray-500">
           <p>Select a conversation to start messaging</p>
         </div>
