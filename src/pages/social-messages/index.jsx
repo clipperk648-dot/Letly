@@ -222,35 +222,61 @@ const SocialMessagesPage = () => {
       {selectedConversation ? (
         <div className="hidden md:flex flex-1 flex-col bg-white">
           {/* Chat Header */}
-          <div className="border-b border-gray-200 p-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm">
-                  {selectedConversation.initials}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="border-b border-gray-100 p-4 flex items-center justify-between bg-white sticky top-20 z-30 shadow-sm"
+          >
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div className="relative flex-shrink-0">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm overflow-hidden shadow-sm">
+                  {selectedConversation.avatar ? (
+                    <img src={selectedConversation.avatar} alt={selectedConversation.name} className="w-full h-full object-cover" />
+                  ) : (
+                    selectedConversation.initials
+                  )}
                 </div>
                 {selectedConversation.online && (
-                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white" />
+                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
                 )}
               </div>
-              <div>
-                <p className="font-semibold">{selectedConversation.name}</p>
-                <p className="text-xs text-gray-500">
-                  {selectedConversation.online ? 'Active now' : 'Offline'}
-                </p>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-gray-900">{selectedConversation.name}</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <RoleBadge role={selectedConversation.userRole} />
+                  <p className="text-xs text-gray-500">
+                    {selectedConversation.online ? '• Active now' : '• Offline'}
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="flex gap-2">
-              <button className="p-2 hover:bg-gray-100 rounded-full transition">
-                <Phone size={20} className="text-gray-600" />
-              </button>
-              <button className="p-2 hover:bg-gray-100 rounded-full transition">
-                <Video size={20} className="text-gray-600" />
-              </button>
-              <button className="p-2 hover:bg-gray-100 rounded-full transition">
-                <Info size={20} className="text-gray-600" />
-              </button>
+            <div className="flex gap-2 flex-shrink-0">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 hover:bg-gray-100 rounded-full transition text-gray-600"
+                title="Start call"
+              >
+                <Phone size={20} />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 hover:bg-gray-100 rounded-full transition text-gray-600"
+                title="Start video call"
+              >
+                <Video size={20} />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 hover:bg-gray-100 rounded-full transition text-gray-600"
+                title="Conversation info"
+              >
+                <Info size={20} />
+              </motion.button>
             </div>
-          </div>
+          </motion.div>
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
