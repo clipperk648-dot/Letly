@@ -120,7 +120,10 @@ const Thread = () => {
               </div>
               
               <div>
-                <p className="font-semibold text-gray-900">{conversation.name || 'Unknown'}</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-semibold text-gray-900">{conversation.name || 'Unknown'}</p>
+                  {conversation.userRole && <RoleBadge role={conversation.userRole} />}
+                </div>
                 <p className="text-xs text-gray-500">
                   {conversation.status || 'Active now'}
                 </p>
