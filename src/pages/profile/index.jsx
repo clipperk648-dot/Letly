@@ -1,16 +1,62 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Loader2, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import RoleBasedNavBar from '../../components/ui/RoleBasedNavBar';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Image from '../../components/AppImage';
 import { getProfile } from '../../services/authServices';
+import { getPosts } from '../../services/socialService';
+import { RoleBadge } from '../../components/ui/Badge';
 
 const mockActivity = [
   { id: 1, text: 'Applied to Modern Downtown Apartment', time: '2 days ago' },
   { id: 2, text: 'Saved Garden View Complex', time: '1 week ago' },
   { id: 3, text: 'Message from Sarah Johnson', time: '2 weeks ago' }
 ];
+
+const PostGridItem = ({ post, index }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ delay: index * 0.05 }}
+    className="aspect-square bg-gray-100 cursor-pointer group relative overflow-hidden rounded-xl border border-gray-100 hover:shadow-lg transition-all"
+  >
+    {post?.imageUrl && (
+      <img
+        src={post.imageUrl}
+        alt="Post thumbnail"
+        className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+        loading="lazy"
+        onError={(e) => {
+          e.target.style.display = 'none';
+        }}
+      />
+    )}
+
+    {/* Hover Overlay */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileHover={{ opacity: 1 }}
+      className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-center justify-center gap-6"
+    >
+      <motion.div whileHover={{ scale: 1.1 }} className="text-white text-center">
+        <p className="text-sm font-semibold">View</p>
+      </motion.div>
+    </motion.div>
+
+    {/* No Image Fallback */}
+    {!post?.imageUrl && (
+      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-100 via-pink-100 to-orange-100 p-2">
+        <p className="text-xs font-semibold text-gray-800 text-center line-clamp-3">
+          {post?.caption?.substring(0, 40)}...
+        </p>
+      </div>
+    )}
+  </motion.div>
+);
 
 const Profile = () => {
   const navigate = useNavigate();
