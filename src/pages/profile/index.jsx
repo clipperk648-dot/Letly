@@ -89,6 +89,30 @@ const Profile = () => {
           email: u.email || '',
           role: u.role || 'tenant',
         }));
+
+        // Load user's posts
+        try {
+          setLoadingPosts(true);
+          const postsRes = await getPosts(0, 30, true);
+          if (postsRes?.data?.posts && Array.isArray(postsRes.data.posts)) {
+            const filtered = postsRes.data.posts.filter(
+              p => p?.author?.email === u.email
+            );
+            setUserPosts(filtered);
+
+            // Simulate saved posts (in real app, would come from API)
+            const saved = filtered.slice(0, Math.ceil(filtered.length / 2));
+            setSavedPosts(saved);
+
+            // Simulate reposted posts (in real app, would come from API)
+            const reposts = filtered.slice(Math.ceil(filtered.length / 2));
+            setRepostedPosts(reposts);
+          }
+        } catch (postError) {
+          console.error('Error loading posts:', postError);
+        } finally {
+          setLoadingPosts(false);
+        }
       } catch (e) {
         if (!mounted) return;
         setError('Unable to load profile');
