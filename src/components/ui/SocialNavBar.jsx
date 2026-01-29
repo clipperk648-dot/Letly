@@ -25,21 +25,8 @@ const SocialNavBar = () => {
   };
 
   const handleLogout = () => {
-    const userRole = localStorage.getItem('userRole');
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userEmail');
-
-    // Redirect to appropriate dashboard if user was logged in
-    // Otherwise go to login
-    if (userRole === 'landlord') {
-      navigate('/landlord-dashboard');
-    } else if (userRole === 'tenant') {
-      navigate('/tenant-dashboard');
-    } else {
-      navigate('/login');
-    }
+    // Navigate to community logout route which will handle cleanup and redirect
+    navigate('/community-logout');
   };
 
   const isActive = (path) => location.pathname === path;
