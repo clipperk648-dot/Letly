@@ -3,6 +3,7 @@ import { Heart, MessageCircle, UserPlus, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Button from '../../components/ui/Button';
 import SocialNavBar from '../../components/ui/SocialNavBar';
+import { RoleBadge } from '../../components/ui/Badge';
 
 const SocialNotificationsPage = () => {
   const [notifications, setNotifications] = useState([]);
