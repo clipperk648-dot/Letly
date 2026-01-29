@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Video, Info, Send, Search, Heart, Image as ImageIcon, Video as VideoIcon, ArrowLeft, Loader2 } from 'lucide-react';
+import { Phone, Video, Info, Send, Heart, Image as ImageIcon, Video as VideoIcon, ArrowLeft, Loader2, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
