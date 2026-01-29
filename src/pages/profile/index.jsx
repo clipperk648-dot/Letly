@@ -1,16 +1,62 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Loader2, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import RoleBasedNavBar from '../../components/ui/RoleBasedNavBar';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Image from '../../components/AppImage';
 import { getProfile } from '../../services/authServices';
+import { getPosts } from '../../services/socialService';
+import { RoleBadge } from '../../components/ui/Badge';
 
 const mockActivity = [
   { id: 1, text: 'Applied to Modern Downtown Apartment', time: '2 days ago' },
   { id: 2, text: 'Saved Garden View Complex', time: '1 week ago' },
   { id: 3, text: 'Message from Sarah Johnson', time: '2 weeks ago' }
 ];
+
+const PostGridItem = ({ post, index }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.8 }}
+    transition={{ delay: index * 0.05 }}
+    className="aspect-square bg-gray-100 cursor-pointer group relative overflow-hidden rounded-xl border border-gray-100 hover:shadow-lg transition-all"
+  >
+    {post?.imageUrl && (
+      <img
+        src={post.imageUrl}
+        alt="Post thumbnail"
+        className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+        loading="lazy"
+        onError={(e) => {
+          e.target.style.display = 'none';
+        }}
+      />
+    )}
+
+    {/* Hover Overlay */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileHover={{ opacity: 1 }}
+      className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-center justify-center gap-6"
+    >
+      <motion.div whileHover={{ scale: 1.1 }} className="text-white text-center">
+        <p className="text-sm font-semibold">View</p>
+      </motion.div>
+    </motion.div>
+
+    {/* No Image Fallback */}
+    {!post?.imageUrl && (
+      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-100 via-pink-100 to-orange-100 p-2">
+        <p className="text-xs font-semibold text-gray-800 text-center line-clamp-3">
+          {post?.caption?.substring(0, 40)}...
+        </p>
+      </div>
+    )}
+  </motion.div>
+);
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -24,6 +70,11 @@ const Profile = () => {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userPosts, setUserPosts] = useState([]);
+  const [savedPosts, setSavedPosts] = useState([]);
+  const [repostedPosts, setRepostedPosts] = useState([]);
+  const [activeTab, setActiveTab] = useState('account');
+  const [loadingPosts, setLoadingPosts] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -38,6 +89,30 @@ const Profile = () => {
           email: u.email || '',
           role: u.role || 'tenant',
         }));
+
+        // Load user's posts
+        try {
+          setLoadingPosts(true);
+          const postsRes = await getPosts(0, 30, true);
+          if (postsRes?.data?.posts && Array.isArray(postsRes.data.posts)) {
+            const filtered = postsRes.data.posts.filter(
+              p => p?.author?.email === u.email
+            );
+            setUserPosts(filtered);
+
+            // Simulate saved posts (in real app, would come from API)
+            const saved = filtered.slice(0, Math.ceil(filtered.length / 2));
+            setSavedPosts(saved);
+
+            // Simulate reposted posts (in real app, would come from API)
+            const reposts = filtered.slice(Math.ceil(filtered.length / 2));
+            setRepostedPosts(reposts);
+          }
+        } catch (postError) {
+          console.error('Error loading posts:', postError);
+        } finally {
+          setLoadingPosts(false);
+        }
       } catch (e) {
         if (!mounted) return;
         setError('Unable to load profile');
@@ -118,75 +193,260 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-50">
       <RoleBasedNavBar userRole={profile.role} isAuthenticated={true} />
 
-      <div className="max-w-4xl mx-auto p-6 mt-20 space-y-6">
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold">My Profile</h1>
-            <p className="text-muted-foreground">Manage your account, security, and preferences.</p>
-            {loading && <p className="text-sm text-muted-foreground mt-2">Loading profile…</p>}
-            {error && <p className="text-sm text-error mt-2">{error}</p>}
-          </div>
-          <div className="flex items-center space-x-3">
-            <Button variant="outline" onClick={() => navigate('/settings')}>Settings</Button>
-            <Button variant="danger" onClick={handleSignOut}>Sign out</Button>
-          </div>
-        </div>
+      <div className="mt-20 max-w-6xl mx-auto">
+        {/* Profile Header */}
+        <div className="bg-white border-b border-gray-200">
+          <div className="p-6 md:p-8">
+            {/* Profile Info Row */}
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
+              <div className="flex gap-6">
+                {/* Profile Picture */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-5xl md:text-6xl font-bold flex-shrink-0 overflow-hidden"
+                >
+                  {profile.avatar ? (
+                    <Image src={profile.avatar} alt={profile.name} className="w-full h-full object-cover" />
+                  ) : (
+                    profile.name?.charAt(0) || 'U'
+                  )}
+                </motion.div>
 
-        <div className="bg-card border border-border rounded-lg p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="flex flex-col items-center md:items-start md:col-span-1">
-            <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
-              <Image src={profile.avatar} alt={profile.name} className="w-full h-full object-cover" />
-            </div>
-            <div className="text-center md:text-left">
-              <div className="font-semibold text-foreground">{profile.name || '—'}</div>
-              <div className="text-sm text-muted-foreground">{profile.email || '—'}</div>
-              <div className="text-xs text-muted-foreground mt-2">Role: <span className="font-medium">{profile.role || '—'}</span></div>
-            </div>
-
-            <div className="mt-4 w-full">
-              <label className="text-sm font-medium mb-1 block">Change avatar</label>
-              <input type="file" accept="image/*" onChange={handleFile} />
-            </div>
-          </div>
-
-          <div className="md:col-span-2 space-y-4">
-            <div>
-              <h3 className="text-lg font-medium mb-2">Account details</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <Input label="Full name" value={profile.name} onChange={(e) => setProfile(prev => ({ ...prev, name: e.target.value }))} />
-                <Input label="Email" value={profile.email} onChange={(e) => setProfile(prev => ({ ...prev, email: e.target.value }))} />
+                {/* Profile Info */}
+                <div className="flex-1">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile.name || 'Unknown'}</h1>
+                  <p className="text-sm text-gray-600 mb-3">{profile.email || '—'}</p>
+                  <div className="flex items-center gap-2">
+                    <RoleBadge role={profile.role} />
+                  </div>
+                </div>
               </div>
-              <div className="flex justify-end mt-3">
-                <Button variant="default" onClick={handleSaveProfile} loading={saving}>Save profile</Button>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2 flex-col sm:flex-row">
+                <Button variant="outline" onClick={() => navigate('/settings')}>Settings</Button>
+                <Button variant="danger" onClick={handleSignOut}>Sign out</Button>
               </div>
             </div>
-
-            <div>
-              <h3 className="text-lg font-medium mb-2">Security</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <Input label="Current password" type="password" value={passwords.current} onChange={(e) => setPasswords(prev => ({ ...prev, current: e.target.value }))} />
-                <Input label="New password" type="password" value={passwords.newPassword} onChange={(e) => setPasswords(prev => ({ ...prev, newPassword: e.target.value }))} />
-                <Input label="Confirm password" type="password" value={passwords.confirm} onChange={(e) => setPasswords(prev => ({ ...prev, confirm: e.target.value }))} />
-              </div>
-              <div className="flex justify-end mt-3">
-                <Button variant="default" onClick={handleChangePassword}>Change password</Button>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-medium mb-2">Danger Zone</h3>
-              <div className="flex items-center space-x-3">
-                <Button variant="danger" onClick={handleDeleteAccount}>Delete account</Button>
-                <Button variant="ghost" onClick={() => alert('Export account data (mock)')}>Export data</Button>
-              </div>
-            </div>
-
           </div>
         </div>
 
+        {/* Tab Navigation */}
+        <div className="border-t border-gray-200">
+          <div className="flex border-b border-gray-200 bg-white sticky top-20 z-20">
+            {[
+              { id: 'account', label: 'Account', icon: '⚙️' },
+              { id: 'posts', label: 'Posts', count: userPosts.length, icon: '📸' },
+              { id: 'saved', label: 'Saved', count: savedPosts.length, icon: '💾' },
+              { id: 'reposts', label: 'Reposts', count: repostedPosts.length, icon: '🔄' }
+            ].map((tab) => (
+              <motion.button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                whileHover={{ backgroundColor: 'rgba(0,0,0,0.02)' }}
+                className={`flex-1 py-4 px-6 font-semibold border-b-2 transition-all text-center ${
+                  activeTab === tab.id
+                    ? 'border-gray-900 text-gray-900'
+                    : 'border-transparent text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <span className="mr-1">{tab.icon}</span>
+                <span>{tab.label}</span>
+                {tab.count !== undefined && (
+                  <span className="ml-2 text-sm font-normal text-gray-500">({tab.count})</span>
+                )}
+              </motion.button>
+            ))}
+          </div>
+
+          {/* Tab Content */}
+          <div className="p-6 md:p-8 bg-white">
+            <AnimatePresence mode="wait">
+              {/* Account Tab */}
+              {activeTab === 'account' && (
+                <motion.div
+                  key="account"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="max-w-4xl space-y-6"
+                >
+                  {loading && <p className="text-sm text-muted-foreground">Loading profile…</p>}
+                  {error && <p className="text-sm text-error">{error}</p>}
+
+                  <div>
+                    <h3 className="text-lg font-medium mb-4">Account details</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium mb-1 block">Full name</label>
+                        <Input
+                          value={profile.name}
+                          onChange={(e) => setProfile(prev => ({ ...prev, name: e.target.value }))}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-1 block">Email</label>
+                        <Input
+                          value={profile.email}
+                          onChange={(e) => setProfile(prev => ({ ...prev, email: e.target.value }))}
+                          disabled
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <label className="text-sm font-medium mb-2 block">Change avatar</label>
+                      <input type="file" accept="image/*" onChange={handleFile} className="block" />
+                    </div>
+                    <div className="flex justify-end mt-4">
+                      <Button onClick={handleSaveProfile} loading={saving}>Save profile</Button>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-gray-200 pt-6">
+                    <h3 className="text-lg font-medium mb-4">Security</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="text-sm font-medium mb-1 block">Current password</label>
+                        <Input
+                          type="password"
+                          value={passwords.current}
+                          onChange={(e) => setPasswords(prev => ({ ...prev, current: e.target.value }))}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-1 block">New password</label>
+                        <Input
+                          type="password"
+                          value={passwords.newPassword}
+                          onChange={(e) => setPasswords(prev => ({ ...prev, newPassword: e.target.value }))}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-1 block">Confirm password</label>
+                        <Input
+                          type="password"
+                          value={passwords.confirm}
+                          onChange={(e) => setPasswords(prev => ({ ...prev, confirm: e.target.value }))}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-end mt-4">
+                      <Button onClick={handleChangePassword}>Change password</Button>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-gray-200 pt-6">
+                    <h3 className="text-lg font-medium mb-4 text-red-600">Danger Zone</h3>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Button variant="danger" onClick={handleDeleteAccount}>Delete account</Button>
+                      <Button variant="ghost" onClick={() => alert('Export account data (mock)')}>Export data</Button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Posts Tab */}
+              {activeTab === 'posts' && (
+                <motion.div
+                  key="posts"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {loadingPosts ? (
+                    <div className="flex items-center justify-center py-12">
+                      <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+                    </div>
+                  ) : userPosts.length === 0 ? (
+                    <div className="text-center py-16">
+                      <div className="mb-4 text-5xl">📸</div>
+                      <p className="text-gray-600 mb-4">You haven't posted yet</p>
+                      <Button
+                        className="bg-blue-500 hover:bg-blue-600 text-white"
+                        onClick={() => navigate('/create-post')}
+                      >
+                        Create your first post
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                      <AnimatePresence>
+                        {userPosts.map((post, index) => (
+                          <PostGridItem key={post?._id || index} post={post} index={index} />
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
+              {/* Saved Tab */}
+              {activeTab === 'saved' && (
+                <motion.div
+                  key="saved"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {loadingPosts ? (
+                    <div className="flex items-center justify-center py-12">
+                      <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+                    </div>
+                  ) : savedPosts.length === 0 ? (
+                    <div className="text-center py-16">
+                      <div className="mb-4 text-5xl">💾</div>
+                      <p className="text-gray-600">You haven't saved any posts yet</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                      <AnimatePresence>
+                        {savedPosts.map((post, index) => (
+                          <PostGridItem key={post?._id || index} post={post} index={index} />
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
+              {/* Reposts Tab */}
+              {activeTab === 'reposts' && (
+                <motion.div
+                  key="reposts"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {loadingPosts ? (
+                    <div className="flex items-center justify-center py-12">
+                      <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+                    </div>
+                  ) : repostedPosts.length === 0 ? (
+                    <div className="text-center py-16">
+                      <div className="mb-4 text-5xl">🔄</div>
+                      <p className="text-gray-600">You haven't reposted yet</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                      <AnimatePresence>
+                        {repostedPosts.map((post, index) => (
+                          <PostGridItem key={post?._id || index} post={post} index={index} />
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Bottom Padding */}
+        <div className="pb-20 md:pb-8" />
       </div>
     </div>
   );

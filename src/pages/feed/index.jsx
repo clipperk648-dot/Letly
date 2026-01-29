@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Heart, MessageCircle, Share2, Bookmark, MoreVertical, Loader2, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getPosts, likePost, unlikePost, addComment } from '../../services/socialService';
@@ -10,6 +11,7 @@ import { RoleBadge } from '../../components/ui/Badge';
 import { toast } from 'react-toastify';
 
 const FeedPage = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

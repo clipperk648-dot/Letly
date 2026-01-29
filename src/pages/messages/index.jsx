@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import RoleBasedNavBar from '../../components/ui/RoleBasedNavBar';
 import MobileAppFooter from '../../components/ui/MobileAppFooter';
 import Input from '../../components/ui/Input';
+import { RoleBadge } from '../../components/ui/Badge';
 
 const Messages = () => {
   const navigate = useNavigate();
@@ -24,7 +25,14 @@ const Messages = () => {
       setError(null);
       const res = await fetch('/api/messages');
       const json = await res.json();
-      const conversations = Array.isArray(json?.items) ? json.items : [];
+      let conversations = Array.isArray(json?.items) ? json.items : [];
+
+      // Enhance conversations with role data (simulate for now)
+      conversations = conversations.map(conv => ({
+        ...conv,
+        userRole: conv.sender === 'You' ? 'tenant' : (Math.random() > 0.5 ? 'landlord' : 'tenant')
+      }));
+
       setConversations(conversations);
     } catch (err) {
       console.error('Error loading conversations:', err);
@@ -139,14 +147,15 @@ const Messages = () => {
                           <p className="font-semibold text-sm text-gray-900 truncate">{conv.name || 'Unknown'}</p>
                           <span className="text-xs text-gray-500 ml-2 flex-shrink-0">{formatTime(conv.time)}</span>
                         </div>
-                        <p className="text-xs text-gray-600 truncate mb-1">{conv.lastMessage || 'No messages yet'}</p>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 mb-1">
+                          {conv.userRole && <RoleBadge role={conv.userRole} />}
                           {conv.status && (
                             <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-medium">
                               {conv.status}
                             </span>
                           )}
                         </div>
+                        <p className="text-xs text-gray-600 truncate">{conv.lastMessage || 'No messages yet'}</p>
                       </div>
                     </div>
                   </motion.button>
