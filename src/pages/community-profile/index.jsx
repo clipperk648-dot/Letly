@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, MessageCircle, Settings, UserPlus, UserCheck, Loader2, AlertCircle, Bookmark } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Heart, MessageCircle, Settings, LogOut, Loader2, AlertCircle, Edit2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { getUserProfile, followUser, unfollowUser, getPosts } from '../../services/socialService';
 import { getProfile } from '../../services/authServices';
+import { getPosts } from '../../services/socialService';
 import Button from '../../components/ui/Button';
 import SocialNavBar from '../../components/ui/SocialNavBar';
 import { RoleBadge } from '../../components/ui/Badge';
@@ -66,52 +66,44 @@ const PostGridItem = ({ post, index }) => (
   </motion.div>
 );
 
-const SocialProfilePage = () => {
+const CommunityProfile = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const userEmail = searchParams.get('email');
-
   const [profile, setProfile] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [following, setFollowing] = useState(false);
-  const [activeTab, setActiveTab] = useState('posts');
   const [savedPosts, setSavedPosts] = useState([]);
   const [repostedPosts, setRepostedPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState('posts');
 
   useEffect(() => {
     loadProfile();
-  }, [userEmail]);
+  }, []);
 
   const loadProfile = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const currentUserRes = await getProfile();
-      if (currentUserRes?.data?.user) {
-        setCurrentUser(currentUserRes.data.user);
-      }
-
-      const profileRes = await getUserProfile(userEmail || currentUserRes?.data?.user?.email);
+      // Load user profile
+      const profileRes = await getProfile();
       if (profileRes?.data?.user) {
         setProfile(profileRes.data.user);
-        setIsFollowing(profileRes.data.user.isFollowing || false);
+      } else {
+        setError('Failed to load profile');
+        toast.error('Failed to load profile');
       }
 
       // Load user's posts
       const postsRes = await getPosts(0, 50, true);
       if (postsRes?.data?.posts && Array.isArray(postsRes.data.posts)) {
+        const userEmail = profileRes?.data?.user?.email;
         const filtered = postsRes.data.posts.filter(
-          p => p?.author?.email === (userEmail || currentUserRes?.data?.user?.email)
+          p => p?.author?.email === userEmail
         );
         setUserPosts(filtered);
 
-        // Simulate saved posts (in real app, would come from API)
-        // Ensure role information is preserved
+        // Simulate saved posts
         const savedCount = Math.max(1, Math.ceil(filtered.length / 2));
         const saved = filtered.slice(0, savedCount).map(post => ({
           ...post,
@@ -122,8 +114,7 @@ const SocialProfilePage = () => {
         }));
         setSavedPosts(saved);
 
-        // Simulate reposted posts (in real app, would come from API)
-        // Ensure role information is preserved
+        // Simulate reposted posts
         const reposts = filtered.slice(savedCount).map(post => ({
           ...post,
           author: {
@@ -142,34 +133,12 @@ const SocialProfilePage = () => {
     }
   };
 
-  const handleFollow = async () => {
-    if (!profile?.email) return;
+  const handleLogout = () => {
+    navigate('/community-logout');
+  };
 
-    try {
-      setFollowing(true);
-      if (isFollowing) {
-        await unfollowUser(profile.email);
-        setIsFollowing(false);
-        setProfile(prev => ({
-          ...prev,
-          followers: Math.max(0, (prev.followers || 1) - 1)
-        }));
-        toast.success('Unfollowed');
-      } else {
-        await followUser(profile.email);
-        setIsFollowing(true);
-        setProfile(prev => ({
-          ...prev,
-          followers: (prev.followers || 0) + 1
-        }));
-        toast.success('Followed');
-      }
-    } catch (error) {
-      console.error('Error toggling follow:', error);
-      toast.error('Failed to follow user');
-    } finally {
-      setFollowing(false);
-    }
+  const handleEditProfile = () => {
+    navigate('/account-profile');
   };
 
   if (error && !profile) {
@@ -195,7 +164,7 @@ const SocialProfilePage = () => {
         <div className="max-w-2xl mx-auto md:ml-72 flex items-center justify-center min-h-screen">
           <div className="text-center">
             <Loader2 className="h-12 w-12 text-blue-500 animate-spin mx-auto mb-4" />
-            <p className="text-gray-600">Loading profile...</p>
+            <p className="text-gray-600">Loading your profile...</p>
           </div>
         </div>
       </div>
@@ -209,14 +178,12 @@ const SocialProfilePage = () => {
         <div className="max-w-2xl mx-auto md:ml-72 flex items-center justify-center min-h-screen">
           <div className="text-center">
             <p className="text-gray-600 mb-4">Profile not found</p>
-            <Button onClick={() => navigate('/explore')}>Go to Explore</Button>
+            <Button onClick={() => navigate('/feed')}>Go to Feed</Button>
           </div>
         </div>
       </div>
     );
   }
-
-  const isOwnProfile = profile.isOwnProfile;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -245,61 +212,32 @@ const SocialProfilePage = () => {
                     <p className="text-xs text-gray-600 mt-1">Posts</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-gray-900">{profile?.followers || 0}</p>
+                    <p className="text-2xl font-bold text-gray-900">0</p>
                     <p className="text-xs text-gray-600 mt-1">Followers</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-gray-900">{profile?.following || 0}</p>
+                    <p className="text-2xl font-bold text-gray-900">0</p>
                     <p className="text-xs text-gray-600 mt-1">Following</p>
                   </div>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-2">
-                {isOwnProfile ? (
-                  <>
-                    <Button
-                      onClick={() => navigate('/account-profile')}
-                      className="flex-1 md:flex-none bg-blue-500 hover:bg-blue-600"
-                    >
-                      Edit Profile
-                    </Button>
-                    <button
-                      onClick={() => navigate('/settings')}
-                      className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition"
-                    >
-                      <Settings size={20} className="text-gray-600" />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      className={`flex-1 md:flex-none ${
-                        isFollowing
-                          ? 'bg-gray-200 text-gray-900 hover:bg-gray-300'
-                          : 'bg-blue-500 text-white hover:bg-blue-600'
-                      }`}
-                      onClick={handleFollow}
-                      disabled={following}
-                    >
-                      {following ? (
-                        <Loader2 size={16} className="animate-spin" />
-                      ) : isFollowing ? (
-                        <>
-                          <UserCheck size={16} className="mr-2" /> Following
-                        </>
-                      ) : (
-                        <>
-                          <UserPlus size={16} className="mr-2" /> Follow
-                        </>
-                      )}
-                    </Button>
-                    <button className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
-                      <MessageCircle size={20} className="text-gray-600" />
-                    </button>
-                  </>
-                )}
+              <div className="flex gap-2 flex-col sm:flex-row">
+                <Button
+                  onClick={handleEditProfile}
+                  className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600"
+                >
+                  <Edit2 size={18} />
+                  Edit Profile
+                </Button>
+                <button
+                  onClick={() => navigate('/settings')}
+                  className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition flex items-center justify-center"
+                  title="Settings"
+                >
+                  <Settings size={20} className="text-gray-600" />
+                </button>
               </div>
             </div>
 
@@ -308,6 +246,7 @@ const SocialProfilePage = () => {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile.fullName || 'Unknown'}</h1>
               <div className="flex items-center gap-2 mb-3">
                 <RoleBadge role={profile.role} />
+                <span className="text-sm text-gray-600">@{profile.username || profile.email?.split('@')[0]}</span>
               </div>
 
               {profile.bio && (
@@ -333,11 +272,11 @@ const SocialProfilePage = () => {
                 <p className="text-sm text-gray-600 mt-2">Posts</p>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-bold text-gray-900">{profile?.followers || 0}</p>
+                <p className="text-3xl font-bold text-gray-900">0</p>
                 <p className="text-sm text-gray-600 mt-2">Followers</p>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-bold text-gray-900">{profile?.following || 0}</p>
+                <p className="text-3xl font-bold text-gray-900">0</p>
                 <p className="text-sm text-gray-600 mt-2">Following</p>
               </div>
             </div>
@@ -372,6 +311,7 @@ const SocialProfilePage = () => {
           {/* Tab Content */}
           <div className="p-6 md:p-8">
             <AnimatePresence mode="wait">
+              {/* Posts Tab */}
               {activeTab === 'posts' && (
                 <motion.div
                   key="posts"
@@ -382,17 +322,13 @@ const SocialProfilePage = () => {
                   {userPosts.length === 0 ? (
                     <div className="text-center py-16">
                       <div className="mb-4 text-5xl">📸</div>
-                      <p className="text-gray-600 mb-4">
-                        {isOwnProfile ? "You haven't posted yet" : 'No posts yet'}
-                      </p>
-                      {isOwnProfile && (
-                        <Button
-                          className="bg-blue-500 hover:bg-blue-600 text-white"
-                          onClick={() => navigate('/create-post')}
-                        >
-                          Create your first post
-                        </Button>
-                      )}
+                      <p className="text-gray-600 mb-4">You haven't posted yet</p>
+                      <Button
+                        className="bg-blue-500 hover:bg-blue-600 text-white"
+                        onClick={() => navigate('/create-post')}
+                      >
+                        Create your first post
+                      </Button>
                     </div>
                   ) : (
                     <div>
@@ -405,17 +341,13 @@ const SocialProfilePage = () => {
                       </div>
                       <div className="text-center text-xs text-gray-500 py-4 border-t border-gray-200">
                         {userPosts.length} {userPosts.length === 1 ? 'post' : 'posts'}
-                        {profile.role && (
-                          <>
-                            {' '}• <RoleBadge role={profile.role} />
-                          </>
-                        )}
                       </div>
                     </div>
                   )}
                 </motion.div>
               )}
 
+              {/* Saved Tab */}
               {activeTab === 'saved' && (
                 <motion.div
                   key="saved"
@@ -426,9 +358,7 @@ const SocialProfilePage = () => {
                   {savedPosts.length === 0 ? (
                     <div className="text-center py-16">
                       <div className="mb-4 text-5xl">💾</div>
-                      <p className="text-gray-600 mb-4">
-                        {isOwnProfile ? "You haven't saved any posts yet" : 'No saved posts'}
-                      </p>
+                      <p className="text-gray-600">You haven't saved any posts yet</p>
                     </div>
                   ) : (
                     <div>
@@ -447,6 +377,7 @@ const SocialProfilePage = () => {
                 </motion.div>
               )}
 
+              {/* Reposts Tab */}
               {activeTab === 'reposts' && (
                 <motion.div
                   key="reposts"
@@ -457,9 +388,7 @@ const SocialProfilePage = () => {
                   {repostedPosts.length === 0 ? (
                     <div className="text-center py-16">
                       <div className="mb-4 text-5xl">🔄</div>
-                      <p className="text-gray-600 mb-4">
-                        {isOwnProfile ? "You haven't reposted yet" : 'No reposts'}
-                      </p>
+                      <p className="text-gray-600">You haven't reposted yet</p>
                     </div>
                   ) : (
                     <div>
@@ -481,6 +410,22 @@ const SocialProfilePage = () => {
           </div>
         </div>
 
+        {/* Exit Community Section */}
+        <div className="bg-white border-t border-gray-200 p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row gap-3 items-center">
+            <Button
+              onClick={handleLogout}
+              className="flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600"
+            >
+              <LogOut size={18} />
+              Exit Community
+            </Button>
+            <p className="text-xs text-gray-500 flex items-center">
+              Return to your dashboard (stay logged in)
+            </p>
+          </div>
+        </div>
+
         {/* Bottom Padding */}
         <div className="pb-20 md:pb-8" />
       </div>
@@ -488,4 +433,4 @@ const SocialProfilePage = () => {
   );
 };
 
-export default SocialProfilePage;
+export default CommunityProfile;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2, AlertCircle, Heart, MessageCircle, Share2, Bookmark } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import RoleBasedNavBar from '../../components/ui/RoleBasedNavBar';
 import Button from '../../components/ui/Button';
@@ -43,16 +43,28 @@ const PostGridItem = ({ post, index }) => (
       className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-center justify-center gap-6"
     >
       <motion.div whileHover={{ scale: 1.1 }} className="text-white text-center">
-        <p className="text-sm font-semibold">View</p>
+        <div className="flex items-center gap-2 justify-center mb-2">
+          <Heart size={18} />
+          <span className="text-sm font-semibold">{post?.likeCount || 0}</span>
+        </div>
+        <div className="flex items-center gap-2 justify-center">
+          <MessageCircle size={18} />
+          <span className="text-sm font-semibold">{post?.commentCount || 0}</span>
+        </div>
       </motion.div>
     </motion.div>
 
     {/* No Image Fallback */}
     {!post?.imageUrl && (
-      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-100 via-pink-100 to-orange-100 p-2">
+      <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-rose-100 via-pink-100 to-orange-100 p-2">
         <p className="text-xs font-semibold text-gray-800 text-center line-clamp-3">
           {post?.caption?.substring(0, 40)}...
         </p>
+        {post?.author?.role && (
+          <div className="mt-2">
+            <RoleBadge role={post.author.role} />
+          </div>
+        )}
       </div>
     )}
   </motion.div>
@@ -93,19 +105,34 @@ const Profile = () => {
         // Load user's posts
         try {
           setLoadingPosts(true);
-          const postsRes = await getPosts(0, 30, true);
+          const postsRes = await getPosts(0, 50, true);
           if (postsRes?.data?.posts && Array.isArray(postsRes.data.posts)) {
             const filtered = postsRes.data.posts.filter(
               p => p?.author?.email === u.email
             );
             setUserPosts(filtered);
 
-            // Simulate saved posts (in real app, would come from API)
-            const saved = filtered.slice(0, Math.ceil(filtered.length / 2));
+            // Simulate saved posts - use first half of posts as saved
+            // In a real app, this would come from a saved_posts collection or user.savedPosts array
+            const savedCount = Math.max(1, Math.ceil(filtered.length / 2));
+            const saved = filtered.slice(0, savedCount).map(post => ({
+              ...post,
+              author: {
+                ...post.author,
+                role: post.author?.role || u.role
+              }
+            }));
             setSavedPosts(saved);
 
-            // Simulate reposted posts (in real app, would come from API)
-            const reposts = filtered.slice(Math.ceil(filtered.length / 2));
+            // Simulate reposted posts - use second half of posts as reposts
+            // In a real app, this would come from a reposts collection
+            const reposts = filtered.slice(savedCount).map(post => ({
+              ...post,
+              author: {
+                ...post.author,
+                role: post.author?.role || u.role
+              }
+            }));
             setRepostedPosts(reposts);
           }
         } catch (postError) {
@@ -373,12 +400,22 @@ const Profile = () => {
                       </Button>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                      <AnimatePresence>
-                        {userPosts.map((post, index) => (
-                          <PostGridItem key={post?._id || index} post={post} index={index} />
-                        ))}
-                      </AnimatePresence>
+                    <div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+                        <AnimatePresence>
+                          {userPosts.map((post, index) => (
+                            <PostGridItem key={post?._id || index} post={post} index={index} />
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                      <div className="text-center text-xs text-gray-500 py-4 border-t border-gray-200">
+                        {userPosts.length} {userPosts.length === 1 ? 'post' : 'posts'}
+                        {profile.role && (
+                          <>
+                            {' '}• <RoleBadge role={profile.role} />
+                          </>
+                        )}
+                      </div>
                     </div>
                   )}
                 </motion.div>
@@ -402,12 +439,17 @@ const Profile = () => {
                       <p className="text-gray-600">You haven't saved any posts yet</p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                      <AnimatePresence>
-                        {savedPosts.map((post, index) => (
-                          <PostGridItem key={post?._id || index} post={post} index={index} />
-                        ))}
-                      </AnimatePresence>
+                    <div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+                        <AnimatePresence>
+                          {savedPosts.map((post, index) => (
+                            <PostGridItem key={post?._id || index} post={post} index={index} />
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                      <div className="text-center text-xs text-gray-500 py-4 border-t border-gray-200">
+                        {savedPosts.length} {savedPosts.length === 1 ? 'post' : 'posts'} saved
+                      </div>
                     </div>
                   )}
                 </motion.div>
@@ -431,12 +473,17 @@ const Profile = () => {
                       <p className="text-gray-600">You haven't reposted yet</p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                      <AnimatePresence>
-                        {repostedPosts.map((post, index) => (
-                          <PostGridItem key={post?._id || index} post={post} index={index} />
-                        ))}
-                      </AnimatePresence>
+                    <div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+                        <AnimatePresence>
+                          {repostedPosts.map((post, index) => (
+                            <PostGridItem key={post?._id || index} post={post} index={index} />
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                      <div className="text-center text-xs text-gray-500 py-4 border-t border-gray-200">
+                        {repostedPosts.length} {repostedPosts.length === 1 ? 'post' : 'posts'} reposted
+                      </div>
                     </div>
                   )}
                 </motion.div>

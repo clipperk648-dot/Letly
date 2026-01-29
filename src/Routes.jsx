@@ -18,6 +18,7 @@ const ApplicationTracking = lazy(() => import("./pages/application-tracking"));
 const Properties = lazy(() => import("./pages/properties"));
 const Messages = lazy(() => import("./pages/messages"));
 const MessageThread = lazy(() => import("./pages/messages/Thread"));
+const CommunityMessages = lazy(() => import("./pages/messages/CommunityMessages"));
 const Analytics = lazy(() => import("./pages/analytics"));
 const Favorites = lazy(() => import("./pages/favorites"));
 const Profile = lazy(() => import("./pages/profile"));
@@ -36,6 +37,8 @@ const SocialProfile = lazy(() => import("./pages/social-profile"));
 const CreatePost = lazy(() => import("./pages/create-post"));
 const SocialNotifications = lazy(() => import("./pages/social-notifications"));
 const SocialMessages = lazy(() => import("./pages/social-messages"));
+const CommunityLogout = lazy(() => import("./pages/community-logout"));
+const CommunityProfile = lazy(() => import("./pages/community-profile"));
 
 const Routes = () => {
   return (
@@ -61,6 +64,8 @@ const Routes = () => {
             <Route path="/social-notifications" element={<ProtectedRoute><SocialNotifications /></ProtectedRoute>} />
             <Route path="/social-messages" element={<ProtectedRoute><SocialMessages /></ProtectedRoute>} />
             <Route path="/social-profile" element={<ProtectedRoute><SocialProfile /></ProtectedRoute>} />
+            <Route path="/community-profile" element={<ProtectedRoute><CommunityProfile /></ProtectedRoute>} />
+            <Route path="/community-logout" element={<ProtectedRoute><CommunityLogout /></ProtectedRoute>} />
 
             {/* Protected: Landlord only */}
             <Route path="/landlord-dashboard" element={<ProtectedRoute allowedRole="landlord"><LandlordDashboard /></ProtectedRoute>} />
@@ -75,6 +80,8 @@ const Routes = () => {
             <Route path="/properties" element={<ProtectedRoute><Properties /></ProtectedRoute>} />
             <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
             <Route path="/messages/:id" element={<ProtectedRoute><MessageThread /></ProtectedRoute>} />
+            <Route path="/community-messages" element={<ProtectedRoute><CommunityMessages /></ProtectedRoute>} />
+            <Route path="/community-messages/:channelId" element={<ProtectedRoute><CommunityMessages /></ProtectedRoute>} />
             <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
             <Route path="/favorites" element={<ProtectedRoute><Favorites /></ProtectedRoute>} />
             <Route path="/account-profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />

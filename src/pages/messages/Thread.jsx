@@ -4,6 +4,7 @@ import { ArrowLeft, Phone, Video, Info, Send, Loader2, AlertCircle } from 'lucid
 import { motion } from 'framer-motion';
 import RoleBasedNavBar from '../../components/ui/RoleBasedNavBar';
 import MobileAppFooter from '../../components/ui/MobileAppFooter';
+import { RoleBadge } from '../../components/ui/Badge';
 import ChatWindow from './components/ChatWindow';
 
 const Thread = () => {
@@ -119,7 +120,10 @@ const Thread = () => {
               </div>
               
               <div>
-                <p className="font-semibold text-gray-900">{conversation.name || 'Unknown'}</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-semibold text-gray-900">{conversation.name || 'Unknown'}</p>
+                  {conversation.userRole && <RoleBadge role={conversation.userRole} />}
+                </div>
                 <p className="text-xs text-gray-500">
                   {conversation.status || 'Active now'}
                 </p>

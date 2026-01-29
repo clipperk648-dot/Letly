@@ -25,21 +25,8 @@ const SocialNavBar = () => {
   };
 
   const handleLogout = () => {
-    const userRole = localStorage.getItem('userRole');
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userEmail');
-
-    // Redirect to appropriate dashboard if user was logged in
-    // Otherwise go to login
-    if (userRole === 'landlord') {
-      navigate('/landlord-dashboard');
-    } else if (userRole === 'tenant') {
-      navigate('/tenant-dashboard');
-    } else {
-      navigate('/login');
-    }
+    // Navigate to community logout route which will handle cleanup and redirect
+    navigate('/community-logout');
   };
 
   const isActive = (path) => location.pathname === path;
@@ -50,7 +37,7 @@ const SocialNavBar = () => {
     { path: '/create-post', icon: Camera, label: 'Create' },
     { path: '/social-notifications', icon: Heart, label: 'Likes' },
     { path: '/social-messages', icon: MessageCircle, label: 'Messages' },
-    { path: '/social-profile', icon: User, label: 'Profile' },
+    { path: '/community-profile', icon: User, label: 'Profile' },
   ];
 
   return (
@@ -91,7 +78,7 @@ const SocialNavBar = () => {
           })}
         </nav>
 
-        {/* User Info & Logout */}
+        {/* User Info & Exit Community */}
         <div className="border-t border-gray-200 pt-6">
           <div className="mb-4 p-3 bg-gray-50 rounded-lg">
             <p className="text-xs text-gray-600">Logged in as</p>
@@ -102,10 +89,11 @@ const SocialNavBar = () => {
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-6 py-3 text-black hover:bg-gray-100 rounded-full transition-all"
+            className="w-full flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-200 rounded-full transition-all"
+            title="Exit Community and return to your dashboard"
           >
             <LogOut size={20} />
-            <span>Log Out</span>
+            <span>Exit Community</span>
           </button>
         </div>
       </aside>
