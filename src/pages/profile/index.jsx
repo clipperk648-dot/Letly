@@ -473,12 +473,17 @@ const Profile = () => {
                       <p className="text-gray-600">You haven't reposted yet</p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                      <AnimatePresence>
-                        {repostedPosts.map((post, index) => (
-                          <PostGridItem key={post?._id || index} post={post} index={index} />
-                        ))}
-                      </AnimatePresence>
+                    <div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+                        <AnimatePresence>
+                          {repostedPosts.map((post, index) => (
+                            <PostGridItem key={post?._id || index} post={post} index={index} />
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                      <div className="text-center text-xs text-gray-500 py-4 border-t border-gray-200">
+                        {repostedPosts.length} {repostedPosts.length === 1 ? 'post' : 'posts'} reposted
+                      </div>
                     </div>
                   )}
                 </motion.div>
