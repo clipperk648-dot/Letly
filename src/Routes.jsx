@@ -18,6 +18,7 @@ const ApplicationTracking = lazy(() => import("./pages/application-tracking"));
 const Properties = lazy(() => import("./pages/properties"));
 const Messages = lazy(() => import("./pages/messages"));
 const MessageThread = lazy(() => import("./pages/messages/Thread"));
+const CommunityMessages = lazy(() => import("./pages/messages/CommunityMessages"));
 const Analytics = lazy(() => import("./pages/analytics"));
 const Favorites = lazy(() => import("./pages/favorites"));
 const Profile = lazy(() => import("./pages/profile"));
