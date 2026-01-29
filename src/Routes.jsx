@@ -37,6 +37,7 @@ const SocialProfile = lazy(() => import("./pages/social-profile"));
 const CreatePost = lazy(() => import("./pages/create-post"));
 const SocialNotifications = lazy(() => import("./pages/social-notifications"));
 const SocialMessages = lazy(() => import("./pages/social-messages"));
+const CommunityLogout = lazy(() => import("./pages/community-logout"));
 
 const Routes = () => {
   return (
