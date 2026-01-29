@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Heart, MessageCircle, Share2, Bookmark, MoreVertical, Loader2, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getPosts, likePost, unlikePost, addComment } from '../../services/socialService';
