@@ -105,19 +105,34 @@ const Profile = () => {
         // Load user's posts
         try {
           setLoadingPosts(true);
-          const postsRes = await getPosts(0, 30, true);
+          const postsRes = await getPosts(0, 50, true);
           if (postsRes?.data?.posts && Array.isArray(postsRes.data.posts)) {
             const filtered = postsRes.data.posts.filter(
               p => p?.author?.email === u.email
             );
             setUserPosts(filtered);
 
-            // Simulate saved posts (in real app, would come from API)
-            const saved = filtered.slice(0, Math.ceil(filtered.length / 2));
+            // Simulate saved posts - use first half of posts as saved
+            // In a real app, this would come from a saved_posts collection or user.savedPosts array
+            const savedCount = Math.max(1, Math.ceil(filtered.length / 2));
+            const saved = filtered.slice(0, savedCount).map(post => ({
+              ...post,
+              author: {
+                ...post.author,
+                role: post.author?.role || u.role
+              }
+            }));
             setSavedPosts(saved);
 
-            // Simulate reposted posts (in real app, would come from API)
-            const reposts = filtered.slice(Math.ceil(filtered.length / 2));
+            // Simulate reposted posts - use second half of posts as reposts
+            // In a real app, this would come from a reposts collection
+            const reposts = filtered.slice(savedCount).map(post => ({
+              ...post,
+              author: {
+                ...post.author,
+                role: post.author?.role || u.role
+              }
+            }));
             setRepostedPosts(reposts);
           }
         } catch (postError) {
