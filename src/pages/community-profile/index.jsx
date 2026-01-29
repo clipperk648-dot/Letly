@@ -410,19 +410,18 @@ const CommunityProfile = () => {
           </div>
         </div>
 
-        {/* Logout Section */}
+        {/* Exit Community Section */}
         <div className="bg-white border-t border-gray-200 p-6 md:p-8">
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button 
-              variant="danger" 
+          <div className="flex flex-col sm:flex-row gap-3 items-center">
+            <Button
               onClick={handleLogout}
-              className="flex items-center justify-center gap-2"
+              className="flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600"
             >
               <LogOut size={18} />
-              Log Out from Community
+              Exit Community
             </Button>
             <p className="text-xs text-gray-500 flex items-center">
-              You'll be taken back to your dashboard
+              Return to your dashboard (stay logged in)
             </p>
           </div>
         </div>
