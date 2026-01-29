@@ -191,9 +191,7 @@ const SocialNotificationsPage = () => {
                   <div className="flex-1 pt-1">
                     <div className="flex items-center gap-2 flex-wrap">
                       <p className="font-semibold text-sm">{notification.user.name}</p>
-                      <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                        {notification.user.role === 'landlord' ? 'Agent' : 'Customer'}
-                      </span>
+                      <RoleBadge role={notification.user.role} />
                     </div>
                     <p className="text-sm text-gray-600 mt-1">
                       {getNotificationMessage(notification)}
