@@ -6,6 +6,7 @@ import { getUserProfile, followUser, unfollowUser, getPosts } from '../../servic
 import { getProfile } from '../../services/authServices';
 import Button from '../../components/ui/Button';
 import SocialNavBar from '../../components/ui/SocialNavBar';
+import { RoleBadge } from '../../components/ui/Badge';
 import { toast } from 'react-toastify';
 
 const PostGridItem = ({ post, index }) => (
