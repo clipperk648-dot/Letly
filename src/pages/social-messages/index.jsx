@@ -279,52 +279,91 @@ const SocialMessagesPage = () => {
           </motion.div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {messages.map((msg) => (
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-white to-gray-50">
+            {messages.length === 0 ? (
               <motion.div
-                key={msg.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`flex ${msg.isOwn ? 'justify-end' : 'justify-start'}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex items-center justify-center h-full text-gray-500"
               >
-                <div
-                  className={`max-w-xs px-4 py-2 rounded-2xl ${
-                    msg.isOwn
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 text-gray-900'
-                  }`}
-                >
-                  <p className="text-sm">{msg.text}</p>
-                  <p className={`text-xs mt-1 ${msg.isOwn ? 'text-blue-100' : 'text-gray-500'}`}>
-                    {msg.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                  </p>
+                <div className="text-center">
+                  <div className="mb-3 text-4xl">💬</div>
+                  <p className="font-medium">Start a conversation</p>
+                  <p className="text-sm mt-1">Say hello to begin messaging</p>
                 </div>
               </motion.div>
-            ))}
+            ) : (
+              <AnimatePresence>
+                {messages.map((msg, idx) => (
+                  <motion.div
+                    key={msg.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    className={`flex ${msg.isOwn ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div className={`flex gap-3 ${msg.isOwn ? 'flex-row-reverse' : ''} max-w-xs`}>
+                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-xs font-bold">
+                        {msg.senderInitials}
+                      </div>
+                      <div>
+                        {!msg.isOwn && (
+                          <p className="text-xs font-semibold text-gray-600 mb-1">{msg.sender}</p>
+                        )}
+                        <div
+                          className={`px-4 py-2 rounded-2xl ${
+                            msg.isOwn
+                              ? 'bg-blue-500 text-white'
+                              : 'bg-gray-100 text-gray-900'
+                          }`}
+                        >
+                          <p className="text-sm">{msg.text}</p>
+                          <p className={`text-xs mt-1 ${msg.isOwn ? 'text-blue-100' : 'text-gray-500'}`}>
+                            {msg.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            )}
           </div>
 
           {/* Message Input */}
-          <form onSubmit={handleSendMessage} className="border-t border-gray-200 p-4 flex gap-2">
+          <form onSubmit={handleSendMessage} className="border-t border-gray-200 p-4 bg-white flex items-end gap-3">
+            <label className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer text-gray-600 hover:text-gray-900">
+              <input type="file" accept="image/*" multiple className="hidden" />
+              <ImageIcon size={20} />
+            </label>
+            <label className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer text-gray-600 hover:text-gray-900">
+              <input type="file" accept="video/*" multiple className="hidden" />
+              <VideoIcon size={20} />
+            </label>
             <Input
               type="text"
               placeholder="Aa"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              className="flex-1"
+              className="flex-1 rounded-full bg-gray-50 border border-gray-200"
             />
-            <button
+            <motion.button
               type="button"
-              className="p-2 hover:bg-gray-100 rounded-full transition text-gray-600 hover:text-gray-800"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="p-2 hover:bg-gray-100 rounded-full transition text-gray-600 hover:text-gray-900"
             >
               <Heart size={20} />
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="submit"
               disabled={!newMessage.trim()}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               className="p-2 hover:bg-blue-100 rounded-full transition text-blue-500 disabled:text-gray-300 disabled:cursor-not-allowed"
             >
               <Send size={20} />
-            </button>
+            </motion.button>
           </form>
         </div>
       ) : (
