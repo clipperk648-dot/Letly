@@ -147,14 +147,15 @@ const Messages = () => {
                           <p className="font-semibold text-sm text-gray-900 truncate">{conv.name || 'Unknown'}</p>
                           <span className="text-xs text-gray-500 ml-2 flex-shrink-0">{formatTime(conv.time)}</span>
                         </div>
-                        <p className="text-xs text-gray-600 truncate mb-1">{conv.lastMessage || 'No messages yet'}</p>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 mb-1">
+                          {conv.userRole && <RoleBadge role={conv.userRole} />}
                           {conv.status && (
                             <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-medium">
                               {conv.status}
                             </span>
                           )}
                         </div>
+                        <p className="text-xs text-gray-600 truncate">{conv.lastMessage || 'No messages yet'}</p>
                       </div>
                     </div>
                   </motion.button>
