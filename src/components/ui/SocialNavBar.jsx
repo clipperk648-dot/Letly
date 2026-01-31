@@ -4,7 +4,7 @@ import { Home, Compass, Heart, MessageCircle, User, LogOut, Menu, X, Camera, Zap
 import { getProfile } from '../../services/authServices';
 import { motion } from 'framer-motion';
 
-const SocialNavBar = () => {
+const SocialNavBar = ({ hideBottomNav = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
