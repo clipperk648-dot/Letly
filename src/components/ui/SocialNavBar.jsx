@@ -166,6 +166,7 @@ const SocialNavBar = ({ hideBottomNav = false }) => {
       )}
 
       {/* Mobile Bottom Navigation Bar */}
+      {!hideBottomNav && (
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -193,6 +194,7 @@ const SocialNavBar = ({ hideBottomNav = false }) => {
           );
         })}
       </nav>
+      )}
 
     </>
   );
