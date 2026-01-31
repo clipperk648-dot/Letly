@@ -1,7 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-// TODO: Replace with API call to fetch slides
-const defaultSlides = [];
+// Static promotional slides for the banner
+const defaultSlides = [
+  {
+    id: 1,
+    title: 'Find your dream home',
+    subtitle: 'Search thousands of verified listings near you',
+    image: 'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=1600&h=600&fit=crop'
+  },
+  {
+    id: 2,
+    title: 'Trusted landlords',
+    subtitle: 'Verified listings with transparent pricing',
+    image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1600&h=600&fit=crop'
+  },
+  {
+    id: 3,
+    title: 'Schedule a viewing',
+    subtitle: 'Connect directly with property owners and book viewings',
+    image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1600&h=600&fit=crop'
+  }
+];
 
 const SlideshowBanner = ({ slides = defaultSlides, interval = 2000 }) => {
   const [index, setIndex] = useState(0);
