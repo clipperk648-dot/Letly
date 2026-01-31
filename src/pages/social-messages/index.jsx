@@ -32,42 +32,10 @@ const SocialMessagesPage = () => {
   };
 
   const loadMessages = async (conversationId) => {
-    // Demo messages
-    const demoMessages = [
-      {
-        id: 1,
-        sender: 'Sarah Johnson',
-        senderInitials: 'SJ',
-        text: 'Hi! I saw your interest in the apartment',
-        timestamp: new Date(Date.now() - 1000 * 60 * 30),
-        isOwn: false,
-      },
-      {
-        id: 2,
-        sender: 'You',
-        senderInitials: 'YOU',
-        text: 'Yes, I am very interested! Can you tell me more about it?',
-        timestamp: new Date(Date.now() - 1000 * 60 * 28),
-        isOwn: true,
-      },
-      {
-        id: 3,
-        sender: 'Sarah Johnson',
-        senderInitials: 'SJ',
-        text: 'Of course! It\'s a 2BR, 1BA apartment in downtown area',
-        timestamp: new Date(Date.now() - 1000 * 60 * 25),
-        isOwn: false,
-      },
-      {
-        id: 4,
-        sender: 'Sarah Johnson',
-        senderInitials: 'SJ',
-        text: 'The apartment is available next month!',
-        timestamp: new Date(Date.now() - 1000 * 60 * 5),
-        isOwn: false,
-      },
-    ];
-    setMessages(demoMessages);
+    // TODO: Replace with API call to fetch messages
+    // const response = await api.get(`/conversations/${conversationId}/messages`);
+    // setMessages(response.data);
+    setMessages([]);
   };
 
   const handleSendMessage = (e) => {
