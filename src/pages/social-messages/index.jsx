@@ -222,7 +222,6 @@ const SocialMessagesPage = () => {
           )}
         </div>
       </div>
-      )}
 
       {/* Chat Area - Shown on mobile when conversation selected, always on desktop */}
       {selectedConversation && (
