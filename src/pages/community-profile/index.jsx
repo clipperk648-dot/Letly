@@ -189,7 +189,7 @@ const CommunityProfile = () => {
     <div className="min-h-screen bg-gray-50">
       <SocialNavBar />
 
-      <div className="max-w-2xl mx-auto md:ml-72">
+      <div className="max-w-2xl mx-auto md:ml-72 pt-16 md:pt-0">
         {/* Profile Header */}
         <div className="bg-white border-b border-gray-200">
           <div className="p-6 md:p-8">
