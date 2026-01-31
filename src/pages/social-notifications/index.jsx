@@ -15,54 +15,8 @@ const SocialNotificationsPage = () => {
   }, []);
 
   const loadNotifications = () => {
-    // Demo notifications - in production, these would come from an API
-    const demoNotifications = [
-      {
-        id: 1,
-        type: 'like',
-        user: { name: 'Sarah Johnson', initials: 'SJ', role: 'landlord' },
-        post: 'Beautiful sunset at the beach house',
-        timestamp: new Date(Date.now() - 1000 * 60 * 5),
-      },
-      {
-        id: 2,
-        type: 'comment',
-        user: { name: 'Mike Chen', initials: 'MC', role: 'tenant' },
-        action: 'commented on your post',
-        comment: 'Love this place! Is it still available?',
-        timestamp: new Date(Date.now() - 1000 * 60 * 15),
-      },
-      {
-        id: 3,
-        type: 'follow',
-        user: { name: 'Emma Davis', initials: 'ED', role: 'landlord' },
-        action: 'started following you',
-        timestamp: new Date(Date.now() - 1000 * 60 * 30),
-      },
-      {
-        id: 4,
-        type: 'like',
-        user: { name: 'John Smith', initials: 'JS', role: 'tenant' },
-        post: 'Modern apartment in the city center',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60),
-      },
-      {
-        id: 5,
-        type: 'comment',
-        user: { name: 'Lisa Wang', initials: 'LW', role: 'landlord' },
-        action: 'commented on your post',
-        comment: 'Great location! Let me know if interested.',
-        timestamp: new Date(Date.now() - 1000 * 60 * 120),
-      },
-      {
-        id: 6,
-        type: 'follow',
-        user: { name: 'Alex Rodriguez', initials: 'AR', role: 'tenant' },
-        action: 'started following you',
-        timestamp: new Date(Date.now() - 1000 * 60 * 240),
-      },
-    ];
-    setNotifications(demoNotifications);
+    // TODO: Replace with API call to fetch notifications
+    setNotifications([]);
   };
 
   const getFilteredNotifications = () => {
