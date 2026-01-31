@@ -223,9 +223,9 @@ const SocialMessagesPage = () => {
         </div>
       </div>
 
-      {/* Chat Area - Shown on mobile when conversation selected, always on desktop */}
+      {/* Chat Area - Shown on mobile when conversation selected, shown on desktop when selected */}
       {selectedConversation && (
-        <div className="w-full md:w-auto flex-1 flex flex-col bg-white relative">
+        <div className="w-full flex-1 flex flex-col bg-white relative md:ml-64 md:mt-20">
           {/* Mobile Back Button */}
           <motion.button
             initial={{ opacity: 0 }}
