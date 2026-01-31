@@ -10,11 +10,8 @@ import { getProfile } from '../../services/authServices';
 import { getPosts } from '../../services/socialService';
 import { RoleBadge } from '../../components/ui/Badge';
 
-const mockActivity = [
-  { id: 1, text: 'Applied to Modern Downtown Apartment', time: '2 days ago' },
-  { id: 2, text: 'Saved Garden View Complex', time: '1 week ago' },
-  { id: 3, text: 'Message from Sarah Johnson', time: '2 weeks ago' }
-];
+// TODO: Replace with API call to fetch activity
+const mockActivity = [];
 
 const PostGridItem = ({ post, index }) => (
   <motion.div
