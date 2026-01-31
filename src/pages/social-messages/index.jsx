@@ -151,8 +151,7 @@ const SocialMessagesPage = () => {
     <div className="h-screen bg-white flex flex-col md:flex-row pb-16 md:pb-0">
       <SocialNavBar hideBottomNav={!!selectedConversation} />
       {/* Conversations Sidebar - Hidden on mobile when conversation selected, always visible on desktop */}
-      {(!selectedConversation || window.innerWidth >= 768) && (
-        <div className={`${!selectedConversation ? 'w-full' : 'w-full md:w-80'} border-r border-gray-200 flex flex-col bg-white ${selectedConversation ? 'hidden md:flex' : ''} md:ml-64 md:mt-20`}>
+      <div className={`${!selectedConversation ? 'w-full' : 'hidden md:flex md:w-80'} border-r border-gray-200 flex flex-col bg-white md:ml-64 md:mt-20`}>
         {/* Header */}
         <div className="p-4 border-b border-gray-100 sticky top-0 z-20 bg-white">
           <h1 className="text-2xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
