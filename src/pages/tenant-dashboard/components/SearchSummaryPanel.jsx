@@ -5,58 +5,11 @@ import Button from '../../../components/ui/Button';
 
 const SearchSummaryPanel = () => {
   const navigate = useNavigate();
-  const [savedSearches, setSavedSearches] = useState([
-    {
-      id: 1,
-      name: "Downtown Apartments",
-      criteria: {
-        location: "Downtown",
-        priceRange: "$2000-$3000",
-        bedrooms: "2+",
-        propertyType: "Apartment"
-      },
-      resultsCount: 12,
-      newMatches: 3,
-      lastUpdated: "2025-01-08",
-      isActive: true
-    },
-    {
-      id: 2,
-      name: "Suburban Houses",
-      criteria: {
-        location: "Suburbs",
-        priceRange: "$3000-$4500",
-        bedrooms: "3+",
-        propertyType: "House"
-      },
-      resultsCount: 8,
-      newMatches: 1,
-      lastUpdated: "2025-01-07",
-      isActive: true
-    },
-    {
-      id: 3,
-      name: "Budget Studios",
-      criteria: {
-        location: "Near University",
-        priceRange: "$1500-$2000",
-        bedrooms: "Studio-1",
-        propertyType: "Studio"
-      },
-      resultsCount: 15,
-      newMatches: 0,
-      lastUpdated: "2025-01-06",
-      isActive: false
-    }
-  ]);
+  // TODO: Replace with API call to fetch saved searches
+  const [savedSearches, setSavedSearches] = useState([]);
 
-  const [recentSearch, setRecentSearch] = useState({
-    location: "Downtown",
-    priceRange: "$2000-$3500",
-    bedrooms: "2+",
-    propertyType: "Any",
-    searchDate: "2025-01-09"
-  });
+  // TODO: Replace with API call to fetch recent search
+  const [recentSearch, setRecentSearch] = useState(null);
 
   const handleReapplySearch = () => {
     const searchParams = new URLSearchParams({
