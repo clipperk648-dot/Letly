@@ -25,54 +25,10 @@ const SocialMessagesPage = () => {
   }, [selectedConversation]);
 
   const loadConversations = async () => {
-    // Demo conversations with role information
-    const demoConversations = [
-      {
-        id: 1,
-        name: 'Sarah Johnson',
-        userRole: 'landlord',
-        initials: 'SJ',
-        lastMessage: 'The apartment is available next month!',
-        timestamp: new Date(Date.now() - 1000 * 60 * 5),
-        online: true,
-        unread: 2,
-        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop'
-      },
-      {
-        id: 2,
-        name: 'Mike Chen',
-        userRole: 'tenant',
-        initials: 'MC',
-        lastMessage: 'Thanks for the details, will let you know soon',
-        timestamp: new Date(Date.now() - 1000 * 60 * 30),
-        online: true,
-        unread: 0,
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop'
-      },
-      {
-        id: 3,
-        name: 'Emma Davis',
-        userRole: 'landlord',
-        initials: 'ED',
-        lastMessage: 'When would you like to schedule a viewing?',
-        timestamp: new Date(Date.now() - 1000 * 60 * 120),
-        online: false,
-        unread: 1,
-        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop'
-      },
-      {
-        id: 4,
-        name: 'John Smith',
-        userRole: 'tenant',
-        initials: 'JS',
-        lastMessage: 'Looking forward to the meeting',
-        timestamp: new Date(Date.now() - 1000 * 60 * 240),
-        online: true,
-        unread: 0,
-        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop'
-      },
-    ];
-    setConversations(demoConversations);
+    // TODO: Replace with API call to fetch conversations
+    // const response = await api.get('/conversations');
+    // setConversations(response.data);
+    setConversations([]);
   };
 
   const loadMessages = async (conversationId) => {
