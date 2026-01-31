@@ -241,7 +241,7 @@ const SocialMessagesPage = () => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="border-b border-gray-100 p-4 flex items-center justify-between bg-white sticky top-20 z-30 shadow-sm"
+            className="border-b border-gray-100 p-4 flex items-center justify-between bg-white sticky top-0 md:top-0 z-30 shadow-sm"
           >
             <div className="flex items-center gap-3 flex-1 min-w-0">
               <div className="relative flex-shrink-0">
