@@ -8,45 +8,8 @@ import Input from '../../components/ui/Input';
 import { RoleBadge } from '../../components/ui/Badge';
 import ChatWindow from './components/ChatWindow';
 
-// Mock community channels data
-const mockCommunityChannels = [
-  {
-    id: '1',
-    name: 'General Discussion',
-    description: 'General community discussions',
-    participants: 45,
-    lastMessage: 'Great place to live!',
-    avatar: '💬',
-    messages: [
-      { id: 1, sender: 'John', role: 'landlord', text: 'Welcome to our community!', time: '2 days ago', avatar: '👨' },
-      { id: 2, sender: 'Jane', role: 'tenant', text: 'Thanks for the invitation!', time: '2 days ago', avatar: '👩' },
-      { id: 3, sender: 'You', text: 'Looking forward to connecting', time: 'now', avatar: '' }
-    ]
-  },
-  {
-    id: '2',
-    name: 'Maintenance Requests',
-    description: 'Report and discuss maintenance issues',
-    participants: 32,
-    lastMessage: 'Fixed the leak in unit 5B',
-    avatar: '🔧',
-    messages: [
-      { id: 1, sender: 'Mike', role: 'landlord', text: 'Maintenance team here', time: '1 day ago', avatar: '👨' },
-      { id: 2, sender: 'You', text: 'Plumbing issue in kitchen', time: 'now', avatar: '' }
-    ]
-  },
-  {
-    id: '3',
-    name: 'Events & Announcements',
-    description: 'Community events and important announcements',
-    participants: 58,
-    lastMessage: 'Pool party this Saturday!',
-    avatar: '🎉',
-    messages: [
-      { id: 1, sender: 'Sarah', role: 'landlord', text: 'Welcome to our events channel!', time: '3 days ago', avatar: '👩' }
-    ]
-  }
-];
+// TODO: Replace with API call to fetch community channels
+const mockCommunityChannels = [];
 
 const MessageBubbleWithRole = ({ message, isOwn }) => {
   const roleColor = message.role === 'landlord' ? 'bg-amber-50 border-amber-200' : 'bg-blue-50 border-blue-200';
