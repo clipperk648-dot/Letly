@@ -18,9 +18,22 @@ const SocialNavBar = ({ hideBottomNav = false }) => {
   const loadUser = async () => {
     try {
       const res = await getProfile();
-      setUser(res.data.user);
+      if (res?.data?.user) {
+        setUser(res.data.user);
+      } else {
+        // Fallback to localStorage if API fails or returns no user
+        setUser({
+          fullName: localStorage.getItem('fullName') || localStorage.getItem('username'),
+          role: localStorage.getItem('userRole')
+        });
+      }
     } catch (error) {
       console.error('Error loading user:', error);
+      // Fallback
+      setUser({
+        fullName: localStorage.getItem('fullName') || localStorage.getItem('username'),
+        role: localStorage.getItem('userRole')
+      });
     }
   };
 
@@ -82,7 +95,7 @@ const SocialNavBar = ({ hideBottomNav = false }) => {
         <div className="border-t border-gray-200 pt-6">
           <div className="mb-4 p-3 bg-gray-50 rounded-lg">
             <p className="text-xs text-gray-600">Logged in as</p>
-            <p className="font-semibold text-sm truncate">{user?.fullName}</p>
+            <p className="font-semibold text-sm truncate">{user?.fullName || user?.username || 'User'}</p>
             <p className="text-xs text-gray-600">
               {user?.role === 'landlord' ? 'Agent' : 'Customer'}
             </p>

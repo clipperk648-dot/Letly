@@ -104,6 +104,7 @@ const LoginForm = ({ onLogin, fillCredentials = null, intendedRole = null }) => 
         if (token) try { localStorage.setItem('authToken', token); } catch {}
         if (userId) try { localStorage.setItem('userId', userId); } catch {}
         if (username) try { localStorage.setItem('username', username); } catch {}
+
         if (googleDriveConnected !== undefined) {
           localStorage.setItem('googleDriveConnected', String(googleDriveConnected));
         }
@@ -111,9 +112,11 @@ const LoginForm = ({ onLogin, fillCredentials = null, intendedRole = null }) => 
         if (res?.data?.success) {
           localStorage.setItem('isAuthenticated', 'true');
           // For now, keep the role logic as is or use a default
-          const resolvedRole = res?.data?.user?.role || userRole || 'tenant';
+          const user = res?.data?.user;
+          const resolvedRole = user?.role || userRole || 'tenant';
           localStorage.setItem('userRole', resolvedRole);
-          localStorage.setItem('userEmail', res?.data?.user?.email || formData?.email || '');
+          localStorage.setItem('userEmail', user?.email || formData?.email || '');
+          if (user?.fullName) try { localStorage.setItem('fullName', user.fullName); } catch {}
           if (typeof onLogin === 'function') onLogin(resolvedRole);
           navigate(resolvedRole === 'landlord' ? '/landlord-dashboard' : '/tenant-dashboard');
           return;

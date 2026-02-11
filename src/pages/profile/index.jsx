@@ -92,21 +92,24 @@ const Profile = () => {
         const res = await getProfile();
         const u = res?.data?.user || {};
         if (!mounted) return;
+
+        const fallbackName = localStorage.getItem('fullName') || localStorage.getItem('username') || 'User';
+        const fallbackEmail = localStorage.getItem('userEmail') || '';
+
         setProfile(prev => ({
           ...prev,
-          name: u.fullName || u.name || '',
-          email: u.email || '',
-          role: u.role || 'tenant',
+          name: u.fullName || u.name || fallbackName,
+          email: u.email || fallbackEmail,
+          role: u.role || localStorage.getItem('userRole') || 'tenant',
         }));
 
         // Load user's posts
         try {
           setLoadingPosts(true);
-          const postsRes = await getPosts(0, 50, true);
+          const userId = u.userId || u._id || localStorage.getItem('userId');
+          const postsRes = await getUserPosts(userId);
           if (postsRes?.data?.posts && Array.isArray(postsRes.data.posts)) {
-            const filtered = postsRes.data.posts.filter(
-              p => p?.author?.email === u.email
-            );
+            const filtered = postsRes.data.posts;
             setUserPosts(filtered);
 
             // Simulate saved posts - use first half of posts as saved

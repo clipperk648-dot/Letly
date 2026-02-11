@@ -108,26 +108,26 @@ const RegistrationForm = () => {
     setIsLoading(true);
 
     try {
-      const res = await registerUser(
-        {
-          fullName: formData.fullName,
-          email: formData.email,
-          password: formData.password,
-          phoneNumber: formData.phoneNumber,
-          role: formData.role,
-          username: formData.username || undefined,
-          bio: formData.bio || undefined,
-        },
-        { headers: { "Content-Type": "application/json" } }
-      );
+      const payload = {
+        fullName: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        phoneNumber: formData.phoneNumber,
+        role: formData.role,
+        username: formData.username || formData.fullName.replace(/\s+/g, '_').toLowerCase() + Math.floor(Math.random() * 1000),
+        bio: formData.bio || undefined,
+      };
+
+      const res = await registerUser(payload, { headers: { "Content-Type": "application/json" } });
 
       const userId = res?.data?.userId;
-      const username = res?.data?.username;
+      const username = res?.data?.username || formData.username || formData.fullName;
       const googleDriveConnected = res?.data?.googleDriveConnected;
 
       if (res?.data?.success) {
         if (userId) try { localStorage.setItem('userId', userId); } catch {}
         if (username) try { localStorage.setItem('username', username); } catch {}
+        try { localStorage.setItem('fullName', formData.fullName); } catch {}
         if (googleDriveConnected !== undefined) {
           localStorage.setItem('googleDriveConnected', String(googleDriveConnected));
         }

@@ -32,8 +32,14 @@ export const getPosts = async () => {
   return res;
 };
 
-export const createPost = (data) => {
+export const createPost = async (data) => {
   const { userId, username } = getStoredUser();
+
+  if (!userId || !username) {
+    console.error('Missing userId or username for post creation', { userId, username });
+    throw new Error('You must be logged in with a valid profile to post.');
+  }
+
   // Map frontend data to backend schema
   const mappedData = {
     userId: data.userId || userId,
@@ -42,6 +48,7 @@ export const createPost = (data) => {
     mediaType: data.imageUrl ? 'image' : 'text',
     mediaUrl: data.imageUrl || ''
   };
+
   return api.post('/posts', mappedData);
 };
 
