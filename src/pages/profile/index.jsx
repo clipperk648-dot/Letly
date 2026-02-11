@@ -7,7 +7,7 @@ import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Image from '../../components/AppImage';
 import { getProfile } from '../../services/authServices';
-import { getPosts } from '../../services/socialService';
+import { getPosts, getUserPosts } from '../../services/socialService';
 import { RoleBadge } from '../../components/ui/Badge';
 
 // TODO: Replace with API call to fetch activity

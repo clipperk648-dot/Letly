@@ -46,8 +46,11 @@ export const createPost = async (data) => {
     username: data.username || username,
     content: data.caption || data.content,
     mediaType: data.imageUrl ? 'image' : 'text',
-    mediaUrl: data.imageUrl || ''
   };
+
+  if (data.imageUrl) {
+    mappedData.mediaUrl = data.imageUrl;
+  }
 
   return api.post('/posts', mappedData);
 };

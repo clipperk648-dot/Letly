@@ -240,7 +240,7 @@ const FeedPage = () => {
                             className="font-semibold text-sm text-gray-900 truncate cursor-pointer hover:underline"
                             onClick={() => navigate(`/social-profile?userId=${post?.author?.userId || post?.userId}`)}
                           >
-                            {post?.author?.fullName || 'Unknown User'}
+                            {post?.author?.fullName || post?.author?.username || 'User'}
                           </p>
                           <RoleBadge role={post?.author?.role} />
                         </div>
@@ -334,7 +334,7 @@ const FeedPage = () => {
                     <div className="px-4 py-3 border-b border-gray-100">
                       {post?.caption && (
                         <p className="text-sm text-gray-900 mb-2">
-                          <span className="font-semibold">{post?.author?.fullName || 'Unknown'}</span>{' '}
+                          <span className="font-semibold">{post?.author?.fullName || post?.author?.username || 'User'}</span>{' '}
                           {post.caption}
                         </p>
                       )}

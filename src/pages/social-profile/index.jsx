@@ -304,9 +304,12 @@ const SocialProfilePage = () => {
 
             {/* Profile Info */}
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile.fullName || 'Unknown'}</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile.fullName || profile.username || 'User'}</h1>
               <div className="flex items-center gap-2 mb-3">
                 <RoleBadge role={profile.role} />
+                {profile.username && (
+                  <span className="text-sm text-gray-600">@{profile.username}</span>
+                )}
               </div>
 
               {profile.bio && (

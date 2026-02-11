@@ -123,8 +123,10 @@ const RegistrationForm = () => {
       const userId = res?.data?.userId;
       const username = res?.data?.username || formData.username || formData.fullName;
       const googleDriveConnected = res?.data?.googleDriveConnected;
+      const token = res?.data?.token;
 
       if (res?.data?.success) {
+        if (token) try { localStorage.setItem('authToken', token); } catch {}
         if (userId) try { localStorage.setItem('userId', userId); } catch {}
         if (username) try { localStorage.setItem('username', username); } catch {}
         try { localStorage.setItem('fullName', formData.fullName); } catch {}
