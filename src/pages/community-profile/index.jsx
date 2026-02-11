@@ -95,12 +95,10 @@ const CommunityProfile = () => {
       }
 
       // Load user's posts
-      const postsRes = await getPosts(0, 50, true);
+      const userId = profileRes?.data?.user?.userId || profileRes?.data?.user?._id;
+      const postsRes = await getUserPosts(userId);
       if (postsRes?.data?.posts && Array.isArray(postsRes.data.posts)) {
-        const userEmail = profileRes?.data?.user?.email;
-        const filtered = postsRes.data.posts.filter(
-          p => p?.author?.email === userEmail
-        );
+        const filtered = postsRes.data.posts;
         setUserPosts(filtered);
 
         // Simulate saved posts

@@ -96,14 +96,19 @@ const LoginForm = ({ onLogin, fillCredentials = null, intendedRole = null }) => 
           headers: { "Content-Type": "application/json" },
         });
 
-        const user = res?.data?.user;
         const token = res?.data?.token;
+        const userId = res?.data?.userId;
+        const username = res?.data?.username;
         if (token) try { localStorage.setItem('authToken', token); } catch {}
-        if (user) {
-          const resolvedRole = user?.role || userRole || 'tenant';
+        if (userId) try { localStorage.setItem('userId', userId); } catch {}
+        if (username) try { localStorage.setItem('username', username); } catch {}
+
+        if (res?.data?.success) {
           localStorage.setItem('isAuthenticated', 'true');
+          // For now, keep the role logic as is or use a default
+          const resolvedRole = res?.data?.user?.role || userRole || 'tenant';
           localStorage.setItem('userRole', resolvedRole);
-          localStorage.setItem('userEmail', user.email || formData?.email || '');
+          localStorage.setItem('userEmail', res?.data?.user?.email || formData?.email || '');
           if (typeof onLogin === 'function') onLogin(resolvedRole);
           navigate(resolvedRole === 'landlord' ? '/landlord-dashboard' : '/tenant-dashboard');
           return;

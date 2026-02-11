@@ -121,18 +121,21 @@ const RegistrationForm = () => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      const user = res?.data?.user;
-      const token = res?.data?.token;
-      if (token) try { localStorage.setItem('authToken', token); } catch {}
-      if (user) {
+      const userId = res?.data?.userId;
+      const username = res?.data?.username;
+
+      if (res?.data?.success) {
+        if (userId) try { localStorage.setItem('userId', userId); } catch {}
+        if (username) try { localStorage.setItem('username', username); } catch {}
+
         localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('userRole', user.role);
-        localStorage.setItem('userEmail', user.email);
+        localStorage.setItem('userRole', formData.role || 'tenant');
+        localStorage.setItem('userEmail', formData.email);
         toast.success('Account created successfully');
-        const dashboardPath = user.role === 'landlord' ? '/landlord-dashboard' : '/tenant-dashboard';
+        const dashboardPath = (formData.role === 'landlord') ? '/landlord-dashboard' : '/tenant-dashboard';
         navigate(dashboardPath);
       } else {
-        toast.error('Unexpected response from server');
+        toast.error(res?.data?.error || 'Unexpected response from server');
       }
     } catch (err) {
       toast.error(err?.response?.data?.error || 'Registration failed');

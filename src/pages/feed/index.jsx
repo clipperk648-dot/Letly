@@ -229,13 +229,17 @@ const FeedPage = () => {
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <motion.div
                         whileHover={{ scale: 1.05 }}
-                        className="flex-shrink-0 w-11 h-11 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-sm"
+                        onClick={() => navigate(`/social-profile?userId=${post?.author?.userId || post?.userId}`)}
+                        className="flex-shrink-0 w-11 h-11 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-sm cursor-pointer"
                       >
                         {post?.author?.fullName?.charAt(0) || 'U'}
                       </motion.div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <p className="font-semibold text-sm text-gray-900 truncate">
+                          <p
+                            className="font-semibold text-sm text-gray-900 truncate cursor-pointer hover:underline"
+                            onClick={() => navigate(`/social-profile?userId=${post?.author?.userId || post?.userId}`)}
+                          >
                             {post?.author?.fullName || 'Unknown User'}
                           </p>
                           <RoleBadge role={post?.author?.role} />
