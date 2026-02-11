@@ -99,9 +99,14 @@ const LoginForm = ({ onLogin, fillCredentials = null, intendedRole = null }) => 
         const token = res?.data?.token;
         const userId = res?.data?.userId;
         const username = res?.data?.username;
+        const googleDriveConnected = res?.data?.googleDriveConnected;
+
         if (token) try { localStorage.setItem('authToken', token); } catch {}
         if (userId) try { localStorage.setItem('userId', userId); } catch {}
         if (username) try { localStorage.setItem('username', username); } catch {}
+        if (googleDriveConnected !== undefined) {
+          localStorage.setItem('googleDriveConnected', String(googleDriveConnected));
+        }
 
         if (res?.data?.success) {
           localStorage.setItem('isAuthenticated', 'true');
@@ -120,6 +125,24 @@ const LoginForm = ({ onLogin, fillCredentials = null, intendedRole = null }) => 
         if (typeof onLogin === 'function') onLogin(userRole);
         navigate(userRole === 'landlord' ? '/landlord-dashboard' : '/tenant-dashboard');
       } catch (err) {
+        // Check if it's a mock user
+        const isMockLandlord = formData?.email === mockCredentials?.landlord?.email && formData?.password === mockCredentials?.landlord?.password;
+        const isMockTenant = formData?.email === mockCredentials?.tenant?.email && formData?.password === mockCredentials?.tenant?.password;
+
+        if (isMockLandlord || isMockTenant) {
+          const resolvedRole = isMockLandlord ? 'landlord' : 'tenant';
+          localStorage.setItem('isAuthenticated', 'true');
+          localStorage.setItem('userRole', resolvedRole);
+          localStorage.setItem('userEmail', formData?.email);
+          // Assign a dummy userId for social features to not crash
+          localStorage.setItem('userId', isMockLandlord ? 'mock-landlord-id' : 'mock-tenant-id');
+          localStorage.setItem('username', isMockLandlord ? 'landlord_demo' : 'tenant_demo');
+
+          if (typeof onLogin === 'function') onLogin(resolvedRole);
+          navigate(resolvedRole === 'landlord' ? '/landlord-dashboard' : '/tenant-dashboard');
+          return;
+        }
+
         toast.error(err?.response?.data?.error || 'Login failed');
         setIsLoading(false);
         return;

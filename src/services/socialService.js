@@ -20,6 +20,7 @@ export const getPosts = async () => {
     // Map backend schema to frontend schema
     res.data.posts = res.data.posts.map(post => ({
       ...post,
+      _id: post._id || post.id,
       caption: post.caption || post.content,
       imageUrl: post.imageUrl || post.mediaUrl,
       author: post.author || {
@@ -49,10 +50,12 @@ export const deletePost = (postId) =>
 
 // Comments
 export const getComments = async (postId) => {
+  if (!postId) return Promise.reject({ message: 'No postId provided' });
   const res = await api.get(`/posts/${postId}/comments`);
   if (res.data && Array.isArray(res.data.comments)) {
     res.data.comments = res.data.comments.map(comment => ({
       ...comment,
+      _id: comment._id || comment.id,
       author: comment.author || {
         fullName: comment.username || 'User'
       }
@@ -62,6 +65,7 @@ export const getComments = async (postId) => {
 };
 
 export const addComment = async (postId, text) => {
+  if (!postId) return Promise.reject({ message: 'No postId provided' });
   const { userId, username } = getStoredUser();
   const res = await api.post(`/posts/${postId}/comments`, {
     userId,
@@ -71,6 +75,7 @@ export const addComment = async (postId, text) => {
   if (res.data && res.data.comment) {
     res.data.comment = {
       ...res.data.comment,
+      _id: res.data.comment._id || res.data.comment.id,
       author: res.data.comment.author || {
         fullName: res.data.comment.username || username || 'User'
       }
@@ -115,14 +120,17 @@ export const getFollowing = (userId) =>
 export const getUserProfile = (userId = null) => {
   const { userId: storedUserId } = getStoredUser();
   const id = userId || storedUserId;
+  if (!id) return Promise.reject({ message: 'No userId provided' });
   return api.get(`/users/${id}`);
 };
 
 export const getUserPosts = async (userId) => {
+  if (!userId) return Promise.reject({ message: 'No userId provided' });
   const res = await api.get(`/users/${userId}/posts`);
   if (res.data && Array.isArray(res.data.posts)) {
     res.data.posts = res.data.posts.map(post => ({
       ...post,
+      _id: post._id || post.id,
       caption: post.caption || post.content,
       imageUrl: post.imageUrl || post.mediaUrl,
       author: post.author || {

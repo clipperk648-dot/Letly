@@ -25,7 +25,7 @@ const FeedPage = () => {
     const initializeData = async () => {
       try {
         setError(null);
-        await Promise.all([fetchUserProfile(), fetchFeed()]);
+        await Promise.allSettled([fetchUserProfile(), fetchFeed()]);
       } catch (err) {
         console.error('Initialization error:', err);
         setError('Failed to load feed. Please refresh the page.');
@@ -368,8 +368,8 @@ const FeedPage = () => {
 
                       <div className="space-y-3">
                         {(expandedComments[post._id]
-                          ? post.comments
-                          : post.comments.slice(-2)
+                          ? (post.comments || [])
+                          : (post.comments || []).slice(-2)
                         ).map((comment, idx) => (
                           <motion.div
                             key={comment?._id || idx}

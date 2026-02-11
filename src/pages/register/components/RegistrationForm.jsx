@@ -123,10 +123,14 @@ const RegistrationForm = () => {
 
       const userId = res?.data?.userId;
       const username = res?.data?.username;
+      const googleDriveConnected = res?.data?.googleDriveConnected;
 
       if (res?.data?.success) {
         if (userId) try { localStorage.setItem('userId', userId); } catch {}
         if (username) try { localStorage.setItem('username', username); } catch {}
+        if (googleDriveConnected !== undefined) {
+          localStorage.setItem('googleDriveConnected', String(googleDriveConnected));
+        }
 
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userRole', formData.role || 'tenant');
