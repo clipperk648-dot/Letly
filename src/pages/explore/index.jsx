@@ -85,12 +85,22 @@ const ExplorePage = () => {
                 <div className="flex items-center gap-3">
                   <motion.div
                     whileHover={{ scale: 1.05 }}
-                    className="w-11 h-11 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm"
+                    onClick={() => {
+                      onClose();
+                      navigate(`/social-profile?userId=${post?.author?.userId || post?.userId}`);
+                    }}
+                    className="w-11 h-11 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm cursor-pointer"
                   >
                     {post?.author?.fullName?.charAt(0) || 'U'}
                   </motion.div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm text-gray-900 truncate">
+                    <p
+                      className="font-semibold text-sm text-gray-900 truncate cursor-pointer hover:underline"
+                      onClick={() => {
+                        onClose();
+                        navigate(`/social-profile?userId=${post?.author?.userId || post?.userId}`);
+                      }}
+                    >
                       {post?.author?.fullName || 'Unknown'}
                     </p>
                     <RoleBadge role={post?.author?.role} />

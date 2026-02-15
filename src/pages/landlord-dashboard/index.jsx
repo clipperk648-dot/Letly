@@ -14,20 +14,28 @@ import { formatCurrency } from '../../utils/currency';
 const LandlordDashboard = () => {
   const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
-  const [currentUser, setCurrentUser] = useState({ name: '', email: '', role: 'landlord', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face' });
+  const [currentUser, setCurrentUser] = useState({
+    name: localStorage.getItem('fullName') || localStorage.getItem('username') || '',
+    email: localStorage.getItem('userEmail') || '',
+    role: 'landlord',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face'
+  });
 
   useEffect(() => {
     (async () => {
       try {
         const res = await getProfile();
         const u = res?.data?.user || {};
+        const fullName = u.fullName || u.name || localStorage.getItem('fullName') || localStorage.getItem('username') || '';
         setCurrentUser({
-          name: u.fullName || u.name || '',
-          email: u.email || '',
+          name: fullName,
+          email: u.email || localStorage.getItem('userEmail') || '',
           role: u.role || 'landlord',
           avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
         });
-      } catch {}
+      } catch (err) {
+        console.error('Error fetching profile:', err);
+      }
     })();
   }, []);
 
@@ -77,7 +85,7 @@ const LandlordDashboard = () => {
           <div className="flex items-center justify-between mb-6 gap-2 h-16">
             <div className="min-w-0">
               <h1 className="text-xl sm:text-3xl font-bold text-foreground truncate">
-                Welcome back, {currentUser?.name?.split(' ')?.[0] || '—'}!
+                Welcome back, {currentUser?.name?.split(' ')?.[0] || 'User'}!
               </h1>
               <p className="hidden sm:block text-muted-foreground mt-1">Here's what's happening with your properties today.</p>
             </div>

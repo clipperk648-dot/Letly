@@ -2,13 +2,18 @@
 import api from "../utils/api";
 
 export const loginUser = (data, config = {}) =>
-  api.post("/auth/login", data, config);
+  api.post("/users/login", data, config);
 
 export const registerUser = (data, config = {}) =>
-  api.post("/auth/register", data, config);
+  api.post("/users/register", data, config);
 
-export const getProfile = (config = {}) =>
-  api.get("/auth/profile", config);
+export const getProfile = (userId, config = {}) => {
+  const finalUserId = userId || localStorage.getItem('userId');
+  if (!finalUserId) return Promise.reject('No userId provided');
+  return api.get(`/users/${finalUserId}`, config);
+};
 
-export const updateProfile = (data, config = {}) =>
-  api.put("/auth/profile", data, config);
+export const updateProfile = (userId, data, config = {}) => {
+  const finalUserId = userId || localStorage.getItem('userId');
+  return api.put(`/users/${finalUserId}`, data, config);
+};

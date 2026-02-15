@@ -78,10 +78,14 @@ const CreatePostPage = () => {
       };
 
       const result = await createPost(postData);
-      
-      if (result?.data) {
+
+      if (result?.data?.success) {
         toast.success('Post created successfully! 🎉');
         navigate('/feed');
+      } else {
+        const errorMessage = result?.data?.error || 'Failed to create post';
+        setError(errorMessage);
+        toast.error(errorMessage);
       }
     } catch (error) {
       console.error('Error creating post:', error);

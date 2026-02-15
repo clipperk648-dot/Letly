@@ -2,8 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "/api",
-  withCredentials: true,
+  baseURL: "https://social-media-backend-1-5l20.onrender.com/api",
 });
 
 api.interceptors.request.use((config) => {

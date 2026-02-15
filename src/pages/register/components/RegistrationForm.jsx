@@ -108,31 +108,40 @@ const RegistrationForm = () => {
     setIsLoading(true);
 
     try {
-      const res = await registerUser(
-        {
-          fullName: formData.fullName,
-          email: formData.email,
-          password: formData.password,
-          phoneNumber: formData.phoneNumber,
-          role: formData.role,
-          username: formData.username || undefined,
-          bio: formData.bio || undefined,
-        },
-        { headers: { "Content-Type": "application/json" } }
-      );
+      const payload = {
+        fullName: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        phoneNumber: formData.phoneNumber,
+        role: formData.role,
+        username: formData.username || formData.fullName.replace(/\s+/g, '_').toLowerCase() + Math.floor(Math.random() * 1000),
+        bio: formData.bio || undefined,
+      };
 
-      const user = res?.data?.user;
+      const res = await registerUser(payload, { headers: { "Content-Type": "application/json" } });
+
+      const userId = res?.data?.userId;
+      const username = res?.data?.username || formData.username || formData.fullName;
+      const googleDriveConnected = res?.data?.googleDriveConnected;
       const token = res?.data?.token;
-      if (token) try { localStorage.setItem('authToken', token); } catch {}
-      if (user) {
+
+      if (res?.data?.success) {
+        if (token) try { localStorage.setItem('authToken', token); } catch {}
+        if (userId) try { localStorage.setItem('userId', userId); } catch {}
+        if (username) try { localStorage.setItem('username', username); } catch {}
+        try { localStorage.setItem('fullName', formData.fullName); } catch {}
+        if (googleDriveConnected !== undefined) {
+          localStorage.setItem('googleDriveConnected', String(googleDriveConnected));
+        }
+
         localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('userRole', user.role);
-        localStorage.setItem('userEmail', user.email);
+        localStorage.setItem('userRole', formData.role || 'tenant');
+        localStorage.setItem('userEmail', formData.email);
         toast.success('Account created successfully');
-        const dashboardPath = user.role === 'landlord' ? '/landlord-dashboard' : '/tenant-dashboard';
+        const dashboardPath = (formData.role === 'landlord') ? '/landlord-dashboard' : '/tenant-dashboard';
         navigate(dashboardPath);
       } else {
-        toast.error('Unexpected response from server');
+        toast.error(res?.data?.error || 'Unexpected response from server');
       }
     } catch (err) {
       toast.error(err?.response?.data?.error || 'Registration failed');

@@ -90,17 +90,21 @@ const CommunityProfile = () => {
       if (profileRes?.data?.user) {
         setProfile(profileRes.data.user);
       } else {
-        setError('Failed to load profile');
-        toast.error('Failed to load profile');
+        const fallbackProfile = {
+          fullName: localStorage.getItem('fullName') || localStorage.getItem('username') || 'User',
+          username: localStorage.getItem('username'),
+          role: localStorage.getItem('userRole'),
+          email: localStorage.getItem('userEmail'),
+          userId: localStorage.getItem('userId')
+        };
+        setProfile(fallbackProfile);
       }
 
       // Load user's posts
-      const postsRes = await getPosts(0, 50, true);
+      const userId = profileRes?.data?.user?.userId || profileRes?.data?.user?._id;
+      const postsRes = await getUserPosts(userId);
       if (postsRes?.data?.posts && Array.isArray(postsRes.data.posts)) {
-        const userEmail = profileRes?.data?.user?.email;
-        const filtered = postsRes.data.posts.filter(
-          p => p?.author?.email === userEmail
-        );
+        const filtered = postsRes.data.posts;
         setUserPosts(filtered);
 
         // Simulate saved posts
@@ -243,10 +247,10 @@ const CommunityProfile = () => {
 
             {/* Profile Info */}
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile.fullName || 'Unknown'}</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile.fullName || profile.username || 'User'}</h1>
               <div className="flex items-center gap-2 mb-3">
                 <RoleBadge role={profile.role} />
-                <span className="text-sm text-gray-600">@{profile.username || profile.email?.split('@')[0]}</span>
+                <span className="text-sm text-gray-600">@{profile.username || profile.email?.split('@')[0] || 'user'}</span>
               </div>
 
               {profile.bio && (

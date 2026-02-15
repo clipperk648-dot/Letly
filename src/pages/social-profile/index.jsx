@@ -69,7 +69,7 @@ const PostGridItem = ({ post, index }) => (
 const SocialProfilePage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const userEmail = searchParams.get('email');
+  const userId = searchParams.get('userId');
 
   const [profile, setProfile] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
@@ -84,7 +84,7 @@ const SocialProfilePage = () => {
 
   useEffect(() => {
     loadProfile();
-  }, [userEmail]);
+  }, [userId]);
 
   const loadProfile = async () => {
     try {
@@ -96,18 +96,17 @@ const SocialProfilePage = () => {
         setCurrentUser(currentUserRes.data.user);
       }
 
-      const profileRes = await getUserProfile(userEmail || currentUserRes?.data?.user?.email);
+      const profileRes = await getUserProfile(userId || currentUserRes?.data?.user?.userId || currentUserRes?.data?.user?._id);
       if (profileRes?.data?.user) {
         setProfile(profileRes.data.user);
         setIsFollowing(profileRes.data.user.isFollowing || false);
       }
 
       // Load user's posts
-      const postsRes = await getPosts(0, 50, true);
+      const finalUserId = userId || currentUserRes?.data?.user?.userId || currentUserRes?.data?.user?._id;
+      const postsRes = await getUserPosts(finalUserId);
       if (postsRes?.data?.posts && Array.isArray(postsRes.data.posts)) {
-        const filtered = postsRes.data.posts.filter(
-          p => p?.author?.email === (userEmail || currentUserRes?.data?.user?.email)
-        );
+        const filtered = postsRes.data.posts;
         setUserPosts(filtered);
 
         // Simulate saved posts (in real app, would come from API)
@@ -305,9 +304,12 @@ const SocialProfilePage = () => {
 
             {/* Profile Info */}
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile.fullName || 'Unknown'}</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile.fullName || profile.username || 'User'}</h1>
               <div className="flex items-center gap-2 mb-3">
                 <RoleBadge role={profile.role} />
+                {profile.username && (
+                  <span className="text-sm text-gray-600">@{profile.username}</span>
+                )}
               </div>
 
               {profile.bio && (
