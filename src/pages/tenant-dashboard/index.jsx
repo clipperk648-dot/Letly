@@ -17,20 +17,28 @@ import { getProfile } from '../../services/authServices';
 
 const TenantDashboard = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ name: '', email: '', role: 'tenant', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face' });
+  const [user, setUser] = useState({
+    name: localStorage.getItem('fullName') || localStorage.getItem('username') || '',
+    email: localStorage.getItem('userEmail') || '',
+    role: localStorage.getItem('userRole') || 'tenant',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face'
+  });
 
   useEffect(() => {
     (async () => {
       try {
         const res = await getProfile();
         const u = res?.data?.user || {};
+        const fullName = u.fullName || u.name || localStorage.getItem('fullName') || localStorage.getItem('username') || '';
         setUser({
-          name: u.fullName || u.name || '',
-          email: u.email || '',
-          role: u.role || 'tenant',
+          name: fullName,
+          email: u.email || localStorage.getItem('userEmail') || '',
+          role: u.role || localStorage.getItem('userRole') || 'tenant',
           avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
         });
-      } catch {}
+      } catch (err) {
+        console.error('Error fetching profile:', err);
+      }
     })();
   }, []);
 
@@ -48,7 +56,7 @@ const TenantDashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-2">
             <div className="min-w-0">
-              <h1 className="text-xl md:text-2xl font-bold text-foreground truncate">Welcome back, {user?.name?.split(' ')?.[0] || '—'}!</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-foreground truncate">Welcome back, {user?.name?.split(' ')?.[0] || 'User'}!</h1>
               <p className="hidden sm:block text-sm text-muted-foreground">
                 {new Date()?.toLocaleDateString('en-US', {
                   weekday: 'long',
